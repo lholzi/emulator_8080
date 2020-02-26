@@ -7,7 +7,7 @@ package body Emulator_8080.Processor is
 
    procedure Print_Exception(Throwing_Function, Exception_Cause : in String) is
    begin
-      ADa.Text_IO.Put(Throwing_Function & " threw exception: ");
+      ADa.Text_IO.Put(Throwing_Function & " threw exception-> ");
       Ada.Text_IO.Put_Line(Exception_Cause);
    end Print_Exception;
 
