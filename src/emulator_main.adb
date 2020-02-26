@@ -10,7 +10,7 @@ procedure Emulator_Main is
 
    Rom_File : Rom_IO.File_Type;
 
-   Rom_Directory_Path : constant String := "/home/lholzi/Schreibtisch/Projects/Emulator_8080/rom/";
+   Rom_Directory_Path : constant String := "/home/lholzi/Schreibtisch/Projects/emulator_8080/rom/";
    Rom_File_Size : constant Natural :=
        Natural(Ada.Directories.Size(Rom_Directory_Path & "invaders.h")) +
        Natural(Ada.Directories.Size(Rom_Directory_Path & "invaders.g")) +

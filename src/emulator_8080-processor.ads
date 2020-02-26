@@ -49,11 +49,13 @@ private
    end record;
    for Byte_Pair_Type'Size use 16;
 
-   function Convert_To_Combined_Register is new Unchecked_Conversion(Source => Byte_Pair_Type,
+   function Convert_To_Concatenated_Register is new Unchecked_Conversion(Source => Byte_Pair_Type,
                                                                      Target => Concatenated_Register_Type);
    function Convert_To_Address is new Unchecked_Conversion(Source => Byte_Pair_Type,
                                                            Target => Address_Type);
    function Convert_To_Byte_Pair is new Unchecked_Conversion(Source => Address_Type,
+                                                             Target => Byte_Pair_Type);
+   function Convert_To_Byte_Pair is new Unchecked_Conversion(Source => Concatenated_Register_Type,
                                                              Target => Byte_Pair_Type);
 
 

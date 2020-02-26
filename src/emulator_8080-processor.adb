@@ -1,5 +1,11 @@
 with Ada.Text_IO;
+with GNAT.Current_Exception;
 package body Emulator_8080.Processor is
+
+   procedure Print_Exception(M: in String) is
+   begin
+      Ada.Text_IO.Put_Line(M);
+   end Print_Exception;
 
    procedure NOP is
    begin
@@ -21,16 +27,25 @@ package body Emulator_8080.Processor is
    begin
       Processor.RAM(BC) := Processor.A;
       Ada.Text_IO.Put_Line("STAX");
+   exception
+      when others =>
+         Print_Exception(GNAT.Current_Exception.Exception_Information);
    end Stax_B;
 
    procedure INX_B(Processor : in out Processor_Type) is
    begin
       Ada.Text_IO.Put_Line("INX_B NOT YET IMPLEMENTED");
+   exception
+      when others =>
+         Print_Exception(GNAT.Current_Exception.Exception_Information);
    end INX_B;
 
    procedure INR_B(Processor : in out Processor_Type) is
    begin
       Processor.B := Processor.B + 1;
+   exception
+      when others =>
+         Print_Exception(GNAT.Current_Exception.Exception_Information);
    end INR_B;
 
    procedure DCR_B(Processor : in out Processor_Type) is
@@ -42,6 +57,9 @@ package body Emulator_8080.Processor is
                       Processor : in out Processor_Type) is
    begin
       Processor.B := Byte_2;
+   exception
+      when others =>
+         Print_Exception(GNAT.Current_Exception.Exception_Information);
    end MVI_BxD8;
 
    procedure RLC(Processor : in out Processor_Type) is
@@ -52,11 +70,28 @@ package body Emulator_8080.Processor is
    begin
       --TODO SET CARRY?
       Processor.A := Register_Type(Tmp);
+   exception
+      when others =>
+         Print_Exception(GNAT.Current_Exception.Exception_Information);
    end RLC;
 
    procedure DAD_B(Processor : in out Processor_Type) is
-   begin
+      use Interfaces;
+      HL : constant Concatenated_Register_Type :=
+        Convert_To_Concatenated_Register(Byte_Pair_Type'(High_Order_Byte => Processor.H,
+                                                        Low_Order_Byte  => Processor.L));
+      BC : constant Concatenated_Register_Type :=
+        Convert_To_Concatenated_Register(Byte_Pair_Type'(High_Order_Byte => Processor.B,
+                                                        Low_Order_Byte  => Processor.C));
 
+      Result : constant Concatenated_Register_Type := HL + BC;
+      Converted_Result : constant Byte_Pair_Type := Convert_To_Byte_Pair(Result);
+   begin
+      Processor.H := Converted_Result.High_Order_Byte;
+      Processor.L := Converted_Result.Low_Order_Byte;
+   exception
+      when others =>
+         Print_Exception(GNAT.Current_Exception.Exception_Information);
    end DAD_B;
 
    procedure Unimplemented_Instruction is

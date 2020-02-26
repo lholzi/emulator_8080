@@ -34,6 +34,15 @@ package body Emulator_8080.Disassembler is
                   Emulator_8080.Processor.MVI_BxD8(Byte_2    => Rom_Bytes(Program_Counter + 1),
                                                    Processor => Processor);
                   Program_Counter := Program_Counter + 2;
+               when 16#7# =>
+                  Emulator_8080.Processor.RLC(Processor);
+                  Program_Counter := Program_Counter + 1;
+               when 16#8# =>
+                  Emulator_8080.Processor.NOP;
+                  Program_Counter := Program_Counter + 1;
+               when 16#9# =>
+                  Emulator_8080.Processor.DAD_B(Processor);
+                  Program_Counter := Program_Counter + 1;
                when others =>
                   Emulator_8080.Processor.Unimplemented_Instruction;
                   Program_Counter := Program_Counter + 1;
