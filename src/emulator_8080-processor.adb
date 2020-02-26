@@ -94,6 +94,16 @@ package body Emulator_8080.Processor is
          Print_Exception(GNAT.Current_Exception.Exception_Information);
    end DAD_B;
 
+   procedure LDAX_B(Processor : in out Processor_Type) is
+      Adress_Byte_Pair : constant Byte_Pair_Type := (High_Order_Byte => Processor.B,
+                                                     Low_Order_Byte  => Processor.C);
+      Adress : constant Address_Type := Convert_To_Address(Adress_Byte_Pair);
+      Value : constant Byte_Type := Processor.RAM(Adress);
+      --Adress : constant Address_Type := Convert
+   begin
+      Processor.A := Value;
+   end LDAX_B;
+
    procedure Unimplemented_Instruction is
    begin
       null;--Ada.Text_IO.Put_Line("Not yet implemented");
