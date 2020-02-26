@@ -26,11 +26,11 @@ package Emulator_8080.Processor is
 
    procedure NOP;
    procedure LXI_BxD16(Byte_2, Byte_3 : in Emulator_8080.Byte_Type;
-                       Processor : in out Emulator_8080.Processor.Processor_Type);
-   procedure STAX_B(Processor : in out Emulator_8080.Processor.Processor_Type);
-   procedure INX_B(Processor : in out Emulator_8080.Processor.Processor_Type);
-   procedure INR_B(Processor : in out Emulator_8080.Processor.Processor_Type);
-   procedure DCR_B(Processor : in out Emulator_8080.Processor.Processor_Type);
+                       Processor : in out Processor_Type);
+   procedure STAX_B(Processor : in out Processor_Type);
+   procedure INX_B(Processor : in out Processor_Type);
+   procedure INR_B(Processor : in out Processor_Type);
+   procedure DCR_B(Processor : in out Processor_Type);
    procedure MVI_BxD8(Byte_2 : in Emulator_8080.Byte_Type;
                       Processor : in out Processor_Type);
    procedure RLC(Processor : in out Processor_Type);

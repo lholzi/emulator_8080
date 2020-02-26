@@ -14,7 +14,7 @@ package body Emulator_8080.Processor is
 
 
    procedure LXI_BxD16(Byte_2, Byte_3 : in Emulator_8080.Byte_Type;
-                       Processor : in out Emulator_8080.Processor.Processor_Type) is
+                       Processor : in out Processor_Type) is
    begin
       Processor.B := Byte_3;
       Processor.C := Byte_2;
