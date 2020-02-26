@@ -13,35 +13,38 @@ package body Emulator_8080.Disassembler is
                when 16#0# =>
                   Emulator_8080.Processor.NOP;
                   Program_Counter := Program_Counter + 1;
-               when 16#1# =>
+               when 16#01# =>
                   Emulator_8080.Processor.LXI_BxD16(Byte_2    => Rom_Bytes(Program_Counter + 1),
                                                     Byte_3    => Rom_Bytes(Program_Counter + 2),
                                                     Processor => Processor);
                   Program_Counter:= Program_Counter + 3;
-               when 16#2# =>
+               when 16#02# =>
                   Emulator_8080.Processor.STAX_B(Processor);
                   Program_Counter := Program_Counter + 1;
-               when 16#3# =>
+               when 16#03# =>
                   Emulator_8080.Processor.INX_B(Processor);
                   Program_Counter := Program_Counter + 1;
-               when 16#4# =>
+               when 16#04# =>
                   Emulator_8080.Processor.INR_B(Processor);
                   Program_Counter := Program_Counter + 1;
-               when 16#5# =>
+               when 16#05# =>
                   Emulator_8080.Processor.DCR_B(Processor);
                   Program_Counter := Program_Counter + 1;
-               when 16#6# =>
+               when 16#06# =>
                   Emulator_8080.Processor.MVI_BxD8(Byte_2    => Rom_Bytes(Program_Counter + 1),
                                                    Processor => Processor);
                   Program_Counter := Program_Counter + 2;
-               when 16#7# =>
+               when 16#07# =>
                   Emulator_8080.Processor.RLC(Processor);
                   Program_Counter := Program_Counter + 1;
-               when 16#8# =>
+               when 16#08# =>
                   Emulator_8080.Processor.NOP;
                   Program_Counter := Program_Counter + 1;
-               when 16#9# =>
+               when 16#09# =>
                   Emulator_8080.Processor.DAD_B(Processor);
+                  Program_Counter := Program_Counter + 1;
+               when 16#0a# =>
+                  Emulator_8080.Processor.LDAX_B(Processor);
                   Program_Counter := Program_Counter + 1;
                when others =>
                   Emulator_8080.Processor.Unimplemented_Instruction;
