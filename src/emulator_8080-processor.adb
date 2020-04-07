@@ -34,7 +34,6 @@ package body Emulator_8080.Processor is
       BC : constant Address_Type := Convert_To_Address(C);
    begin
       Processor.RAM(BC) := Processor.A;
-      Ada.Text_IO.Put_Line("STAX");
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -42,8 +41,15 @@ package body Emulator_8080.Processor is
    end Stax_B;
 
    procedure INX_B(Processor : in out Processor_Type) is
+      use Interfaces;
+      BC : constant Concatenated_Register_Type :=
+        Convert_To_Concatenated_Register(Byte_Pair_Type'(High_Order_Byte => Processor.B,
+                                                         Low_Order_Byte  => Processor.C));
+      Result : constant Concatenated_Register_Type := BC + 1;
+      Converted_Result : constant Byte_Pair_Type := Convert_To_Byte_Pair(BC);
    begin
-      Ada.Text_IO.Put_Line("INX_B NOT YET IMPLEMENTED");
+      Processor.B := Converted_Result.High_Order_Byte;
+      Processor.C := Converted_Result.High_Order_Byte;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
