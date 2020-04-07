@@ -36,6 +36,7 @@ package Emulator_8080.Processor is
    procedure RLC(Processor : in out Processor_Type);
    procedure DAD_B(Processor : in out Processor_Type);
    procedure LDAX_B(Processor : in out Processor_Type);
+   procedure DCX_B(Processor : in out Processor_Type);
    procedure Unimplemented_Instruction;
 
 private
