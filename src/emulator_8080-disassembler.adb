@@ -59,7 +59,7 @@ package body Emulator_8080.Disassembler is
                   Emulator_8080.Processor.DCR_C(Processor);
                   Program_Counter := Program_Counter + 1;
                when 16#0e# =>
-                  Emulator_8080.Processor.MVI_CxD8(Byte_2 => Rom_Bytes(Program_Counter + 1),
+                  Emulator_8080.Processor.MVI_CxD8(Byte_2    => Rom_Bytes(Program_Counter + 1),
                                                    Processor => Processor);
                   Program_Counter := Program_Counter + 2;
                when 16#0f# =>
@@ -73,6 +73,9 @@ package body Emulator_8080.Disassembler is
                                                     Byte_3    => Rom_Bytes(Program_Counter + 2),
                                                     Processor => Processor);
                   Program_Counter := Program_Counter + 3;
+               when 16#12# =>
+                  Emulator_8080.Processor.STAX_D(Processor);
+                  Program_Counter := Program_Counter + 1;
                when others =>
                   Emulator_8080.Processor.Unimplemented_Instruction;
                   Program_Counter := Program_Counter + 1;

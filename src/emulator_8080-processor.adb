@@ -203,6 +203,18 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end LXI_DxD16;
 
+   procedure STAX_D(Processor : in out Processor_Type) is
+      C : constant Byte_Pair_Type := (High_Order_Byte => Processor.D,
+                                      Low_Order_Byte => Processor.E);
+      DE : constant Address_Type := Convert_To_Address(C);
+   begin
+      Processor.RAM(DE) := Processor.A;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end Stax_D;
+
    procedure Unimplemented_Instruction is
    begin
       null;--Ada.Text_IO.Put_Line("Not yet implemented");
