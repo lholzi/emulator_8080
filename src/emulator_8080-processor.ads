@@ -34,6 +34,7 @@ package Emulator_8080.Processor is
    procedure MVI_BxD8(Byte_2 : in Emulator_8080.Byte_Type;
                       Processor : in out Processor_Type);
    procedure RLC(Processor : in out Processor_Type);
+   --
    procedure DAD_B(Processor : in out Processor_Type);
    procedure LDAX_B(Processor : in out Processor_Type);
    procedure DCX_B(Processor : in out Processor_Type);
@@ -41,6 +42,8 @@ package Emulator_8080.Processor is
    procedure DCR_C(Processor : in out Processor_Type);
    procedure MVI_CxD8(Byte_2 : in Emulator_8080.Byte_Type;
                       Processor: in out Processor_Type);
+   procedure RRC(Processor : in out Processor_Type);
+   --
    procedure Unimplemented_Instruction;
 
 private

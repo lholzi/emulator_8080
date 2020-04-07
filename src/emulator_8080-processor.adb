@@ -166,6 +166,21 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end MVI_CxD8;
 
+
+   procedure RRC(Processor : in out Processor_Type) is
+      use Interfaces;
+      Tmp : constant Unsigned_8 := Unsigned_8(Processor.A);
+      Prev_Bit_0 : constant Unsigned_8 := Shift_Right(Shift_Left(Tmp, 7), 7);
+      Result : constant Unsigned_8 := Shift_Left(Tmp, 1) or Prev_Bit_0;
+   begin
+      --TODO SET CARRY?
+      Processor.A := Register_Type(Tmp);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end RRC;
+
    procedure Unimplemented_Instruction is
    begin
       null;--Ada.Text_IO.Put_Line("Not yet implemented");
