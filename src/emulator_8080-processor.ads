@@ -48,6 +48,7 @@ package Emulator_8080.Processor is
                        Processor : in out Processor_Type);
    procedure STAX_D(Processor : in out Processor_Type);
    procedure INX_D(Processor : in out Processor_Type);
+   procedure INR_D(Processor : in out Processor_Type);
    procedure Unimplemented_Instruction;
 
 private
