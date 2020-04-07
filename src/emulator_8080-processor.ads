@@ -44,6 +44,8 @@ package Emulator_8080.Processor is
                       Processor: in out Processor_Type);
    procedure RRC(Processor : in out Processor_Type);
    --
+   procedure LXI_DxD16(Byte_2, Byte_3 : in Emulator_8080.Byte_Type;
+                       Processor : in out Processor_Type);
    procedure Unimplemented_Instruction;
 
 private

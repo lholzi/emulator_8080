@@ -22,6 +22,10 @@ package body Emulator_8080.Processor is
    begin
       Processor.B := Byte_3;
       Processor.C := Byte_2;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end LXI_BxD16;
 
    procedure STAX_B(Processor : in out Processor_Type) is
@@ -180,6 +184,18 @@ package body Emulator_8080.Processor is
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end RRC;
+
+
+   procedure LXI_DxD16(Byte_2, Byte_3 : in Emulator_8080.Byte_Type;
+                       Processor : in out Processor_Type) is
+   begin
+      Processor.D := Byte_3;
+      Processor.E := Byte_2;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end LXI_DxD16;
 
    procedure Unimplemented_Instruction is
    begin
