@@ -8,8 +8,6 @@ procedure Emulator_Main is
    package Rom_IO is new Ada.Sequential_IO(Element_Type => Emulator_8080.Byte_Type);
    package Rom_Text_IO is new Ada.Text_IO.Integer_IO(Emulator_8080.Byte_Type);
 
-   Rom_File : Rom_IO.File_Type;
-
    Rom_Directory_Path : constant String := "/home/lholzi/Schreibtisch/Projects/emulator_8080/rom/";
    Rom_File_Size : constant Natural :=
        Natural(Ada.Directories.Size(Rom_Directory_Path & "invaders.h")) +
@@ -17,6 +15,7 @@ procedure Emulator_Main is
        Natural(Ada.Directories.Size(Rom_Directory_Path & "invaders.f")) +
        Natural(Ada.Directories.Size(Rom_Directory_Path & "invaders.e"));
 
+   Rom_File : Rom_IO.File_Type;
    Rom_File_Content : Emulator_8080.Byte_Array_Type( 0 .. Rom_File_Size);
    Processor : Emulator_8080.Processor.Processor_Type;
    Rom_Byte_Index : Natural := 0;
