@@ -11,11 +11,16 @@ package body Emulator_8080.Processor is
       Ada.Text_IO.Put_Line(Exception_Cause);
    end Print_Exception;
 
+   function Initialize(Rom : in Byte_Array_Type) return Processor_Type is
+      Processor : Processor_Type;
+   begin
+      return Processor;
+   end Initialize;
+
    procedure NOP is
    begin
       null;--Ada.Text_IO.Put_Line("NOP");
    end NOP;
-
 
    procedure LXI_BxD16(Byte_2, Byte_3 : in Emulator_8080.Byte_Type;
                        Processor : in out Processor_Type) is
@@ -33,7 +38,7 @@ package body Emulator_8080.Processor is
                                       Low_Order_Byte => Processor.B);
       BC : constant Address_Type := Convert_To_Address(C);
    begin
-      Processor.RAM(BC) := Processor.A;
+      Processor.Memory(BC) := Processor.A;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -122,7 +127,7 @@ package body Emulator_8080.Processor is
       Adress_Byte_Pair : constant Byte_Pair_Type := (High_Order_Byte => Processor.B,
                                                      Low_Order_Byte  => Processor.C);
       Adress : constant Address_Type := Convert_To_Address(Adress_Byte_Pair);
-      Value : constant Byte_Type := Processor.RAM(Adress);
+      Value : constant Byte_Type := Processor.Memory(Adress);
       --Adress : constant Address_Type := Convert
    begin
       Processor.A := Value;
@@ -208,7 +213,7 @@ package body Emulator_8080.Processor is
                                       Low_Order_Byte => Processor.E);
       DE : constant Address_Type := Convert_To_Address(C);
    begin
-      Processor.RAM(DE) := Processor.A;
+      Processor.Memory(DE) := Processor.A;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,

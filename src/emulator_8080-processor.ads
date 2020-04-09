@@ -5,7 +5,7 @@ package Emulator_8080.Processor is
    subtype Register_Type is Emulator_8080.Byte_Type;
    type Address_Type is new Natural range 0 .. 16#FFFF#;
    type Flag_Type is (Not_Set, Set) with Size => 1;
-   type Ram_Type is array (Address_Type) of Byte_Type;
+   type Memory_Type is array (Address_Type) of Byte_Type;
    type Processor_Type is record
       A : Register_Type := 0;
       B : Register_Type := 0;
@@ -21,9 +21,11 @@ package Emulator_8080.Processor is
       Carry_Flag : Flag_Type := Not_Set;
       Auxillary_Carry : Flag_Type := Not_Set;
 
-      RAM : Ram_Type := (others => 0);
+      Memory : Memory_Type := (others => 0);
+      Program_Counter : Natural := 0;
    end record;
 
+   function Initialize(Rom : in Byte_Array_Type) return Processor_Type;
    procedure NOP;
    procedure LXI_BxD16(Byte_2, Byte_3 : in Emulator_8080.Byte_Type;
                        Processor : in out Processor_Type);
