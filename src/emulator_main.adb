@@ -18,6 +18,7 @@ procedure Emulator_Main is
    Rom_File : Rom_IO.File_Type;
    Rom_File_Content : Emulator_8080.Byte_Array_Type( 0 .. Rom_File_Size);
    Rom_Byte_Index : Natural := 0;
+   Processor : Emulator_8080.Processor.Processor_Type;
 
    procedure Read_Rom_File(Rom_File_Path : in String) is
       Current_Rom_Byte : Emulator_8080.Byte_Type := 0;
@@ -31,7 +32,6 @@ procedure Emulator_Main is
       Rom_IO.Close(Rom_File);
    end Read_Rom_File;
 
-   Processor : Emulator_8080.Processor.Processor_Type;
 begin
    Read_Rom_File(Rom_Directory_Path & "invaders.h");
    Read_Rom_File(Rom_Directory_Path & "invaders.g");
