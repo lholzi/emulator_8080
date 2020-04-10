@@ -65,6 +65,7 @@ package Emulator_8080.Processor is
    procedure SHLD_Adr(Processor : in out Processor_Type);
    procedure INX_H(Processor : in out Processor_Type);
    procedure INR_H(Processor : in out Processor_Type);
+   procedure DCR_H(Processor : in out Processor_Type);
    procedure Unimplemented_Instruction;
 
 private
