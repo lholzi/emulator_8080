@@ -45,14 +45,15 @@ package Emulator_8080.Processor is
    procedure MVI_CxD8(Byte_2 : in Byte_Type; Processor: in out Processor_Type);
    procedure RRC(Processor : in out Processor_Type);
    --
-   procedure LXI_DxD16(Byte_2, Byte_3 : in Emulator_8080.Byte_Type;
-                       Processor : in out Processor_Type);
+   procedure LXI_DxD16(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
    procedure STAX_D(Processor : in out Processor_Type);
    procedure INX_D(Processor : in out Processor_Type);
    procedure INR_D(Processor : in out Processor_Type);
    procedure DCR_D(Processor : in out Processor_Type);
    procedure MVI_DxD8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
    procedure RAL(Processor : in out Processor_Type);
+   --
+   procedure DAD_D(Processor : in out Processor_Type);
    procedure Unimplemented_Instruction;
 
 private
