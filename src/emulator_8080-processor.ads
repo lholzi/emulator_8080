@@ -4,6 +4,7 @@ private with Interfaces;
 package Emulator_8080.Processor is
    subtype Register_Type is Emulator_8080.Byte_Type;
    type Address_Type is new Natural range 0 .. 16#FFFF#;
+   subtype Rom_Address_Type is Address_Type range 0 .. 16#1FFF#;
    type Flag_Type is (Not_Set, Set) with Size => 1;
    type Memory_Type is array (Address_Type) of Byte_Type;
    type Processor_Type is record
