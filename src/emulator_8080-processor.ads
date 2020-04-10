@@ -28,8 +28,7 @@ package Emulator_8080.Processor is
 
    function Initialize(Rom : in Byte_Array_Type) return Processor_Type;
    procedure NOP;
-   procedure LXI_BxD16(Byte_2, Byte_3 : in Emulator_8080.Byte_Type;
-                       Processor : in out Processor_Type);
+   procedure LXI_BxD16(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
    procedure STAX_B(Processor : in out Processor_Type);
    procedure INX_B(Processor : in out Processor_Type);
    procedure INR_B(Processor : in out Processor_Type);
