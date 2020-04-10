@@ -102,6 +102,12 @@ package body Emulator_8080.Disassembler is
                when 16#1b# =>
                   Emulator_8080.Processor.DCX_D(Processor);
                   Processor.Program_Counter := Processor.Program_Counter + 1;
+               when 16#1c# =>
+                  Emulator_8080.Processor.INR_E(Processor);
+                  Processor.Program_Counter := Processor.Program_Counter + 1;
+               when 16#1d# =>
+                  Emulator_8080.Processor.DCR_E(Processor);
+                  Processor.Program_Counter := Processor.Program_Counter + 1;
                when others =>
                   Emulator_8080.Processor.Unimplemented_Instruction;
                   Processor.Program_Counter := Processor.Program_Counter + 1;
