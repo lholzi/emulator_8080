@@ -17,7 +17,6 @@ procedure Emulator_Main is
 
    Rom_File : Rom_IO.File_Type;
    Rom_File_Content : Emulator_8080.Byte_Array_Type( 0 .. Rom_File_Size);
-   Processor : Emulator_8080.Processor.Processor_Type;
    Rom_Byte_Index : Natural := 0;
 
    procedure Read_Rom_File(Rom_File_Path : in String) is
@@ -32,6 +31,7 @@ procedure Emulator_Main is
       Rom_IO.Close(Rom_File);
    end Read_Rom_File;
 
+   Processor : Emulator_8080.Processor.Processor_Type;
 begin
    Read_Rom_File(Rom_Directory_Path & "invaders.h");
    Read_Rom_File(Rom_Directory_Path & "invaders.g");
@@ -39,6 +39,6 @@ begin
    Read_Rom_File(Rom_Directory_Path & "invaders.e");
    Ada.Text_IO.Put_Line("File size: " & Rom_File_Size'Img);
    Ada.Text_IO.Put_Line("last Index: " & Rom_Byte_Index'Img);
-   Emulator_8080.Disassembler.Read_Rom(Rom_Bytes => Rom_File_Content,
-                                       Processor => Processor);
+   Processor := Emulator_8080.Processor.Initialize(Rom_File_Content);
+   Emulator_8080.Disassembler.Read_Rom(Processor);
 end Emulator_Main;

@@ -22,7 +22,7 @@ package Emulator_8080.Processor is
       Auxillary_Carry : Flag_Type := Not_Set;
 
       Memory : Memory_Type := (others => 0);
-      Program_Counter : Natural := 0;
+      Program_Counter : Address_Type := 0;
    end record;
 
    function Initialize(Rom : in Byte_Array_Type) return Processor_Type;
@@ -33,8 +33,7 @@ package Emulator_8080.Processor is
    procedure INX_B(Processor : in out Processor_Type);
    procedure INR_B(Processor : in out Processor_Type);
    procedure DCR_B(Processor : in out Processor_Type);
-   procedure MVI_BxD8(Byte_2 : in Emulator_8080.Byte_Type;
-                      Processor : in out Processor_Type);
+   procedure MVI_BxD8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
    procedure RLC(Processor : in out Processor_Type);
    --
    procedure DAD_B(Processor : in out Processor_Type);
@@ -42,8 +41,7 @@ package Emulator_8080.Processor is
    procedure DCX_B(Processor : in out Processor_Type);
    procedure INR_C(Processor : in out Processor_Type);
    procedure DCR_C(Processor : in out Processor_Type);
-   procedure MVI_CxD8(Byte_2 : in Emulator_8080.Byte_Type;
-                      Processor: in out Processor_Type);
+   procedure MVI_CxD8(Byte_2 : in Byte_Type; Processor: in out Processor_Type);
    procedure RRC(Processor : in out Processor_Type);
    --
    procedure LXI_DxD16(Byte_2, Byte_3 : in Emulator_8080.Byte_Type;
@@ -52,6 +50,7 @@ package Emulator_8080.Processor is
    procedure INX_D(Processor : in out Processor_Type);
    procedure INR_D(Processor : in out Processor_Type);
    procedure DCR_D(Processor : in out Processor_Type);
+   procedure MVI_DxD8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
    procedure Unimplemented_Instruction;
 
 private

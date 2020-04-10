@@ -1,7 +1,7 @@
 with Ada.Text_IO;
 with GNAT.Source_Info;
 with GNAT.Current_Exception;
-
+with Ada.Text_IO;
 
 package body Emulator_8080.Processor is
 
@@ -13,8 +13,19 @@ package body Emulator_8080.Processor is
 
    function Initialize(Rom : in Byte_Array_Type) return Processor_Type is
       Processor : Processor_Type;
+      Counter : Address_Type := Processor.Memory'First;
    begin
+      for I in Rom'Range loop
+         Processor.Memory(Counter) := Rom(I);
+         Counter := Counter + 1;
+      end loop;
+      Ada.Text_IO.Put_Line("Counter: " & Counter'Img);
       return Processor;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+         return Processor;
    end Initialize;
 
    procedure NOP is
@@ -253,6 +264,16 @@ package body Emulator_8080.Processor is
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end DCR_D;
+
+   procedure MVI_DxD8(Byte_2 : in Emulator_8080.Byte_Type;
+                      Processor : in out Processor_Type) is
+   begin
+      Processor.D := Byte_2;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end MVI_DxD8;
 
    procedure Unimplemented_Instruction is
    begin

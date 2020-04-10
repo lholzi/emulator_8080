@@ -1,21 +1,20 @@
-with Emulator_8080.Processor;
 package body Emulator_8080.Disassembler is
 
-   procedure Read_Rom(Rom_Bytes : in Byte_Array_Type;
-                      Processor : in out Emulator_8080.Processor.Processor_Type) is
-      Program_Counter : Natural := Rom_Bytes'First;
+   procedure Read_Rom(Processor : in out Emulator_8080.Processor.Processor_Type) is
+      use Emulator_8080.Processor;
+      Program_Counter : Emulator_8080.Processor.Address_Type := Emulator_8080.Processor.Address_Type'First;
    begin
-      while Program_Counter < Rom_Bytes'Last loop
+      while Program_Counter <= Emulator_8080.Processor.Address_Type'Last loop
          declare
-            Current_Instruction : constant Byte_Type := Rom_Bytes(Program_Counter);
+            Current_Instruction : constant Byte_Type := Processor.Memory(Program_Counter);
          begin
             case Current_Instruction is
                when 16#0# =>
                   Emulator_8080.Processor.NOP;
                   Program_Counter := Program_Counter + 1;
                when 16#01# =>
-                  Emulator_8080.Processor.LXI_BxD16(Byte_2    => Rom_Bytes(Program_Counter + 1),
-                                                    Byte_3    => Rom_Bytes(Program_Counter + 2),
+                  Emulator_8080.Processor.LXI_BxD16(Byte_2    => Processor.Memory(Program_Counter + 1),
+                                                    Byte_3    => Processor.Memory(Program_Counter + 2),
                                                     Processor => Processor);
                   Program_Counter:= Program_Counter + 3;
                when 16#02# =>
@@ -31,7 +30,7 @@ package body Emulator_8080.Disassembler is
                   Emulator_8080.Processor.DCR_B(Processor);
                   Program_Counter := Program_Counter + 1;
                when 16#06# =>
-                  Emulator_8080.Processor.MVI_BxD8(Byte_2    => Rom_Bytes(Program_Counter + 1),
+                  Emulator_8080.Processor.MVI_BxD8(Byte_2    => Processor.Memory(Program_Counter + 1),
                                                    Processor => Processor);
                   Program_Counter := Program_Counter + 2;
                when 16#07# =>
@@ -59,7 +58,7 @@ package body Emulator_8080.Disassembler is
                   Emulator_8080.Processor.DCR_C(Processor);
                   Program_Counter := Program_Counter + 1;
                when 16#0e# =>
-                  Emulator_8080.Processor.MVI_CxD8(Byte_2    => Rom_Bytes(Program_Counter + 1),
+                  Emulator_8080.Processor.MVI_CxD8(Byte_2    => Processor.Memory(Program_Counter + 1),
                                                    Processor => Processor);
                   Program_Counter := Program_Counter + 2;
                when 16#0f# =>
@@ -69,8 +68,8 @@ package body Emulator_8080.Disassembler is
               ------
 
                when 16#11# =>
-                  Emulator_8080.Processor.LXI_DxD16(Byte_2    => Rom_Bytes(Program_Counter + 1),
-                                                    Byte_3    => Rom_Bytes(Program_Counter + 2),
+                  Emulator_8080.Processor.LXI_DxD16(Byte_2    => Processor.Memory(Program_Counter + 1),
+                                                    Byte_3    => Processor.Memory(Program_Counter + 2),
                                                     Processor => Processor);
                   Program_Counter := Program_Counter + 3;
                when 16#12# =>
@@ -82,9 +81,13 @@ package body Emulator_8080.Disassembler is
                when 16#14# =>
                   Emulator_8080.Processor.INR_D(Processor);
                   Program_Counter := Program_Counter + 1;
-               when 16#15#=>
+               when 16#15# =>
                   Emulator_8080.Processor.DCR_D(Processor);
                   Program_Counter := Program_Counter + 1;
+               when 16#16# =>
+                  Emulator_8080.Processor.MVI_DxD8(Byte_2    => Processor.Memory(Program_Counter + 1),
+                                                   Processor => Processor);
+                  Program_Counter := Program_Counter + 2;
                when others =>
                   Emulator_8080.Processor.Unimplemented_Instruction;
                   Program_Counter := Program_Counter + 1;
