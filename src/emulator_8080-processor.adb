@@ -304,6 +304,36 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end DAD_D;
 
+   procedure LDAX_D(Processor : in out Processor_Type) is
+      Adress_Byte_Pair : constant Byte_Pair_Type := (High_Order_Byte => Processor.D,
+                                                     Low_Order_Byte  => Processor.E);
+      Adress : constant Address_Type := Convert_To_Address(Adress_Byte_Pair);
+      Value : constant Byte_Type := Processor.Memory(Adress);
+      --Adress : constant Address_Type := Convert
+   begin
+      Processor.A := Value;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end LDAX_D;
+
+   procedure DCX_D(Processor : in out Processor_Type) is
+      use Interfaces;
+      DE : constant Concatenated_Register_Type :=
+        Convert_To_Concatenated_Register(Byte_Pair_Type'(High_Order_Byte => Processor.D,
+                                                         Low_Order_Byte  => Processor.E));
+      Result : constant Concatenated_Register_Type := DE - 1;
+      Converted_Result : constant Byte_Pair_Type := Convert_To_Byte_Pair(Result);
+   begin
+      Processor.D := Converted_Result.High_Order_Byte;
+      Processor.E := Converted_Result.Low_Order_Byte;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end DCX_D;
+
    procedure Unimplemented_Instruction is
    begin
       null;--Ada.Text_IO.Put_Line("Not yet implemented");

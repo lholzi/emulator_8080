@@ -54,6 +54,8 @@ package Emulator_8080.Processor is
    procedure RAL(Processor : in out Processor_Type);
    --
    procedure DAD_D(Processor : in out Processor_Type);
+   procedure LDAX_D(Processor : in out Processor_Type);
+   procedure DCX_D(Processor : in out Processor_Type);
    procedure Unimplemented_Instruction;
 
 private
