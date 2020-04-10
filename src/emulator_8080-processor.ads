@@ -58,6 +58,8 @@ package Emulator_8080.Processor is
    procedure DCX_D(Processor : in out Processor_Type);
    procedure INR_E(Processor : in out Processor_Type);
    procedure DCR_E(Processor : in out Processor_Type);
+   procedure MVI_ExD8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
+   procedure RAR(Processor : in out Processor_Type);
    procedure Unimplemented_Instruction;
 
 private
