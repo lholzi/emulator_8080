@@ -148,6 +148,11 @@ package body Emulator_8080.Disassembler is
                when 16#29# =>
                   Emulator_8080.Processor.DAD_H(Processor);
                   Processor.Program_Counter := Processor.Program_Counter + 1;
+               when 16#2a# =>
+                  Emulator_8080.Processor.LHLD(Byte_2    => Processor.Memory(Processor.Program_Counter + 1),
+                                               Byte_3    => Processor.Memory(Processor.Program_Counter + 2),
+                                               Processor => Processor);
+                  Processor.Program_Counter := Processor.Program_Counter + 3;
                when others =>
                   Emulator_8080.Processor.Unimplemented_Instruction;
                   Processor.Program_Counter := Processor.Program_Counter + 1;

@@ -460,6 +460,20 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end DAD_H;
 
+   procedure LHLD(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type) is
+      Address : constant Address_Type := Convert_To_Address(Byte_Pair_Type'(High_Order_Byte => Byte_2,
+                                                                            Low_Order_Byte  => Byte_3));
+      L_Value : constant Byte_Type := Processor.Memory(Address);
+      H_Value : constant Byte_Type := Processor.Memory(Address + 1);
+   begin
+      Processor.L := L_Value;
+      Processor.H := H_Value;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end LHLD;
+
    procedure Unimplemented_Instruction is
    begin
       null;--Ada.Text_IO.Put_Line("Not yet implemented");
