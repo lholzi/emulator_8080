@@ -7,7 +7,7 @@ package body Emulator_8080.Processor is
 
    procedure Print_Exception(Throwing_Function, Exception_Cause : in String) is
    begin
-      ADa.Text_IO.Put(Throwing_Function & " threw exception-> ");
+      ADa.Text_IO.Put(Throwing_Function & " threw exception -> ");
       Ada.Text_IO.Put_Line(Exception_Cause);
    end Print_Exception;
 
@@ -517,6 +517,15 @@ package body Emulator_8080.Processor is
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end MVI_LxD8;
+
+   procedure CMA(Processor : in out Processor_Type) is
+   begin
+      Processor.A := Processor.A xor Processor.A;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end CMA;
 
    procedure Unimplemented_Instruction is
    begin
