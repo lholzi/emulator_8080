@@ -508,6 +508,16 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end DCR_L;
 
+   procedure MVI_LxD8(Byte_2 : in Emulator_8080.Byte_Type;
+                      Processor : in out Processor_Type) is
+   begin
+      Processor.L := Byte_2;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end MVI_LxD8;
+
    procedure Unimplemented_Instruction is
    begin
       null;--Ada.Text_IO.Put_Line("Not yet implemented");
