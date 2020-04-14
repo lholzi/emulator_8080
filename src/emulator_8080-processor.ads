@@ -72,6 +72,7 @@ package Emulator_8080.Processor is
    procedure DAD_H(Processor : in out Processor_Type);
    procedure LHLD(Byte_2, Byte_3 : in Byte_Type; Processor: in out Processor_Type);
    procedure DCX_H(Processor : in out Processor_Type);
+   procedure INR_L(Processor : in out Processor_Type);
 
    procedure Unimplemented_Instruction;
 
