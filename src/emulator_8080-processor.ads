@@ -24,6 +24,7 @@ package Emulator_8080.Processor is
 
       Memory : Memory_Type := (others => 0);
       Program_Counter : Address_Type := 0;
+      Stack_Pointer : Register_Type := 0;
    end record;
 
    function Initialize(Rom : in Byte_Array_Type) return Processor_Type;
@@ -68,6 +69,7 @@ package Emulator_8080.Processor is
    procedure MVI_HxD8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
    procedure DAA(Processor : in out Processor_Type);
    --
+   procedure DAD_H(Processor : in out Processor_Type);
    procedure Unimplemented_Instruction;
 
 private
