@@ -529,6 +529,17 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end CMA;
 
+   procedure LXI_SPxD16(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type) is
+      use Interfaces;
+   begin
+      Processor.Stack_Pointer := Convert_To_Stack_Pointer(Byte_Pair_Type'(High_Order_Byte => Byte_3,
+                                                                          Low_Order_Byte  => Byte_2));
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end LXI_SPxD16;
+
    procedure Unimplemented_Instruction is
    begin
       null;--Ada.Text_IO.Put_Line("Not yet implemented");

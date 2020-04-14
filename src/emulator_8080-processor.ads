@@ -1,7 +1,8 @@
 private with Unchecked_Conversion;
-private with Interfaces;
+with Interfaces;
 
 package Emulator_8080.Processor is
+   subtype Stack_Pointer_Type is Interfaces.Unsigned_16;
    subtype Register_Type is Emulator_8080.Byte_Type;
    type Address_Type is new Natural range 0 .. 16#FFFF#;
    subtype Rom_Address_Type is Address_Type range 0 .. 16#1FFF#;
@@ -24,7 +25,7 @@ package Emulator_8080.Processor is
 
       Memory : Memory_Type := (others => 0);
       Program_Counter : Address_Type := 0;
-      Stack_Pointer : Register_Type := 0;
+      Stack_Pointer : Stack_Pointer_Type := 0;
    end record;
 
    function Initialize(Rom : in Byte_Array_Type) return Processor_Type;
@@ -76,7 +77,8 @@ package Emulator_8080.Processor is
    procedure DCR_L(Processor : in out Processor_Type);
    procedure MVI_LxD8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
    procedure CMA(Processor : in out Processor_Type);
-
+   --
+   procedure LXI_SPxD16(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
    procedure Unimplemented_Instruction;
 
 private
@@ -91,8 +93,10 @@ private
    end record;
    for Byte_Pair_Type'Size use 16;
 
+   function Convert_To_Stack_Pointer is new Unchecked_Conversion(Source => Byte_Pair_Type,
+                                                                Target => Stack_Pointer_Type);
    function Convert_To_Concatenated_Register is new Unchecked_Conversion(Source => Byte_Pair_Type,
-                                                                     Target => Concatenated_Register_Type);
+                                                                         Target => Concatenated_Register_Type);
    function Convert_To_Address is new Unchecked_Conversion(Source => Byte_Pair_Type,
                                                            Target => Address_Type);
    function Convert_To_Byte_Pair is new Unchecked_Conversion(Source => Address_Type,
