@@ -116,18 +116,18 @@ package body Emulator_8080.Processor is
 
    procedure DAD_B(Processor : in out Processor_Type) is
       use Interfaces;
-      HL : constant Concatenated_Register_Type :=
+      HI : constant Concatenated_Register_Type :=
         Convert_To_Concatenated_Register(Byte_Pair_Type'(High_Order_Byte => Processor.H,
-                                                        Low_Order_Byte  => Processor.L));
+                                                        Low_Order_Byte  => Processor.I));
       BC : constant Concatenated_Register_Type :=
         Convert_To_Concatenated_Register(Byte_Pair_Type'(High_Order_Byte => Processor.B,
                                                         Low_Order_Byte  => Processor.C));
 
-      Result : constant Concatenated_Register_Type := HL + BC;
+      Result : constant Concatenated_Register_Type := HI + BC;
       Converted_Result : constant Byte_Pair_Type := Convert_To_Byte_Pair(Result);
    begin
       Processor.H := Converted_Result.High_Order_Byte;
-      Processor.L := Converted_Result.Low_Order_Byte;
+      Processor.I := Converted_Result.Low_Order_Byte;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -286,18 +286,18 @@ package body Emulator_8080.Processor is
 
    procedure DAD_D(Processor : in out Processor_Type) is
       use Interfaces;
-      HL : constant Concatenated_Register_Type :=
+      HI : constant Concatenated_Register_Type :=
         Convert_To_Concatenated_Register(Byte_Pair_Type'(High_Order_Byte => Processor.H,
-                                                        Low_Order_Byte  => Processor.L));
+                                                        Low_Order_Byte  => Processor.I));
       DE : constant Concatenated_Register_Type :=
         Convert_To_Concatenated_Register(Byte_Pair_Type'(High_Order_Byte => Processor.D,
                                                         Low_Order_Byte  => Processor.E));
 
-      Result : constant Concatenated_Register_Type := HL + DE;
+      Result : constant Concatenated_Register_Type := HI + DE;
       Converted_Result : constant Byte_Pair_Type := Convert_To_Byte_Pair(Result);
    begin
       Processor.H := Converted_Result.High_Order_Byte;
-      Processor.L := Converted_Result.Low_Order_Byte;
+      Processor.I := Converted_Result.Low_Order_Byte;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -375,7 +375,7 @@ package body Emulator_8080.Processor is
                        Processor : in out Processor_Type) is
    begin
       Processor.H := Byte_3;
-      Processor.L := Byte_2;
+      Processor.I := Byte_2;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -393,14 +393,14 @@ package body Emulator_8080.Processor is
 
    procedure INX_H(Processor : in out Processor_Type) is
       use Interfaces;
-      HL : constant Concatenated_Register_Type :=
+      HI : constant Concatenated_Register_Type :=
         Convert_To_Concatenated_Register(Byte_Pair_Type'(High_Order_Byte => Processor.H,
-                                                         Low_Order_Byte  => Processor.L));
-      Result : constant Concatenated_Register_Type := HL + 1;
-      Converted_Result : constant Byte_Pair_Type := Convert_To_Byte_Pair(HL);
+                                                         Low_Order_Byte  => Processor.I));
+      Result : constant Concatenated_Register_Type := HI + 1;
+      Converted_Result : constant Byte_Pair_Type := Convert_To_Byte_Pair(HI);
    begin
       Processor.H := Converted_Result.High_Order_Byte;
-      Processor.L := Converted_Result.High_Order_Byte;
+      Processor.I := Converted_Result.High_Order_Byte;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,

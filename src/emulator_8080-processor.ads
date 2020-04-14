@@ -14,7 +14,7 @@ package Emulator_8080.Processor is
       D : Register_Type := 0;
       E : Register_Type := 0;
       H : Register_Type := 0;
-      L : Register_Type := 0;
+      I : Register_Type := 0;
 
       Sign_Flag : Flag_Type := Not_Set;
       Zero_Flag : Flag_Type := Not_Set;
