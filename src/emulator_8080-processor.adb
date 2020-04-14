@@ -530,7 +530,6 @@ package body Emulator_8080.Processor is
    end CMA;
 
    procedure LXI_SPxD16(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type) is
-      use Interfaces;
    begin
       Processor.Stack_Pointer := Convert_To_Stack_Pointer(Byte_Pair_Type'(High_Order_Byte => Byte_3,
                                                                           Low_Order_Byte  => Byte_2));
@@ -539,6 +538,17 @@ package body Emulator_8080.Processor is
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end LXI_SPxD16;
+
+   procedure STA(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type) is
+      Address : constant Address_Type := Convert_To_Address(Byte_Pair_Type'(High_Order_Byte => Byte_3,
+                                                                            Low_Order_Byte  => Byte_2));
+   begin
+      Processor.Memory(Address) := Processor.A;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end STA;
 
    procedure Unimplemented_Instruction is
    begin

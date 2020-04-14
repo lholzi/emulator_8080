@@ -79,6 +79,7 @@ package Emulator_8080.Processor is
    procedure CMA(Processor : in out Processor_Type);
    --
    procedure LXI_SPxD16(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
+   procedure STA(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
    procedure Unimplemented_Instruction;
 
 private
