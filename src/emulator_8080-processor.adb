@@ -519,8 +519,10 @@ package body Emulator_8080.Processor is
    end MVI_LxD8;
 
    procedure CMA(Processor : in out Processor_Type) is
+      use Interfaces;
+      A : constant Interfaces.Unsigned_8 := Interfaces.Unsigned_8(Processor.A);
    begin
-      Processor.A := Processor.A xor Processor.A;
+      Processor.A := Byte_Type(A xor A);
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
