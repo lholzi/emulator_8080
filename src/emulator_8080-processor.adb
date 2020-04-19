@@ -602,6 +602,23 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end STC;
 
+   procedure DAD_SP(Processor : in out Processor_Type) is
+      use Interfaces;
+      HL : constant Concatenated_Register_Type :=
+        Convert_To_Concatenated_Register(Byte_Pair_Type'(High_Order_Byte => Processor.H,
+                                                        Low_Order_Byte  => Processor.L));
+
+      Result : constant Concatenated_Register_Type := HL + Processor.Stack_Pointer;
+      Converted_Result : constant Byte_Pair_Type := Convert_To_Byte_Pair(Result);
+   begin
+      Processor.H := Converted_Result.High_Order_Byte;
+      Processor.L := Converted_Result.Low_Order_Byte;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end DAD_SP;
+
    procedure Unimplemented_Instruction is
    begin
       null;--Ada.Text_IO.Put_Line("Not yet implemented");

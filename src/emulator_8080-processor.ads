@@ -85,6 +85,8 @@ package Emulator_8080.Processor is
    procedure DCR_M(Processor : in out Processor_Type);
    procedure MVI_MxD8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
    procedure STC(Processor : in out Processor_Type);
+   --
+   procedure DAD_SP(Processor : in out Processor_Type);
    procedure Unimplemented_Instruction;
 
 private
