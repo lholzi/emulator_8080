@@ -93,6 +93,16 @@ package Emulator_8080.Processor is
    procedure DCR_A(Processor : in out Processor_Type);
    procedure MVI_AxD8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
    procedure CMC(Processor : in out Processor_Type);
+   --
+   procedure MOV_BxB(Processor : in out Processor_Type);
+   procedure MOV_BxC(Processor : in out Processor_Type);
+   procedure MOV_BxD(Processor : in out Processor_Type);
+   procedure MOV_BxE(Processor : in out Processor_Type);
+   procedure MOV_BxH(Processor : in out Processor_Type);
+   procedure MOV_BxL(Processor : in out Processor_Type);
+   procedure MOV_BxM(Processor : in out Processor_Type);
+   procedure MOV_BxA(Processor : in out Processor_Type);
+   --
    procedure Unimplemented_Instruction;
 
 private
