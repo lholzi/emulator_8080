@@ -87,6 +87,7 @@ package Emulator_8080.Processor is
    procedure STC(Processor : in out Processor_Type);
    --
    procedure DAD_SP(Processor : in out Processor_Type);
+   procedure LDA(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
    procedure Unimplemented_Instruction;
 
 private
