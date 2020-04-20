@@ -252,6 +252,34 @@ package body Emulator_8080.Disassembler is
                when 16#47# =>
                   Emulator_8080.Processor.MOV_BxA(Processor);
                   Processor.Program_Counter := Processor.Program_Counter + 1;
+
+              ------
+
+               when 16#48# =>
+                  Emulator_8080.Processor.MOV_CxB(Processor);
+                  Processor.Program_Counter := Processor.Program_Counter + 1;
+               when 16#49# =>
+                  Emulator_8080.Processor.MOV_CxC(Processor);
+                  Processor.Program_Counter := Processor.Program_Counter + 1;
+               when 16#4a# =>
+                  Emulator_8080.Processor.MOV_CxD(Processor);
+                  Processor.Program_Counter := Processor.Program_Counter + 1;
+               when 16#4b# =>
+                  Emulator_8080.Processor.MOV_CxE(Processor);
+                  Processor.Program_Counter := Processor.Program_Counter + 1;
+               when 16#4c# =>
+                  Emulator_8080.Processor.MOV_CxH(Processor);
+                  Processor.Program_Counter := Processor.Program_Counter + 1;
+               when 16#4d# =>
+                  Emulator_8080.Processor.MOV_CxL(Processor);
+                  Processor.Program_Counter := Processor.Program_Counter + 1;
+               when 16#4e# =>
+                  Emulator_8080.Processor.MOV_CxM(Processor);
+                  Processor.Program_Counter := Processor.Program_Counter + 1;
+               when 16#4f# =>
+                  Emulator_8080.Processor.MOV_CxA(Processor);
+                  Processor.Program_Counter := Processor.Program_Counter + 1;
+
                when others =>
                   Emulator_8080.Processor.Unimplemented_Instruction;
                   Processor.Program_Counter := Processor.Program_Counter + 1;
