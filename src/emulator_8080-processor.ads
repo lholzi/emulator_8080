@@ -154,6 +154,8 @@ package Emulator_8080.Processor is
    procedure MOV_MxE(Processor : in out Processor_Type);
    procedure MOV_MxH(Processor : in out Processor_Type);
    procedure MOV_MxL(Processor : in out Processor_Type);
+   procedure HLT(Processor : in out Processor_Type);
+   --
    procedure Unimplemented_Instruction;
 
 private
