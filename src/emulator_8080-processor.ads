@@ -121,6 +121,15 @@ package Emulator_8080.Processor is
    procedure MOV_DxM(Processor : in out Processor_Type);
    procedure MOV_DxA(Processor : in out Processor_Type);
    --
+   procedure MOV_ExB(Processor : in out Processor_Type);
+   procedure MOV_ExC(Processor : in out Processor_Type);
+   procedure MOV_ExD(Processor : in out Processor_Type);
+   procedure MOV_ExE(Processor : in out Processor_Type);
+   procedure MOV_ExH(Processor : in out Processor_Type);
+   procedure MOV_ExL(Processor : in out Processor_Type);
+   procedure MOV_ExM(Processor : in out Processor_Type);
+   procedure MOV_ExA(Processor : in out Processor_Type);
+   --
    procedure Unimplemented_Instruction;
 
 private
