@@ -828,6 +828,80 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end MOV_CxA;
 
+   procedure MOV_DxB(Processor : in out Processor_Type) is
+   begin
+      Processor.D := Processor.B;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end MOV_DxB;
+
+   procedure MOV_DxC(Processor : in out Processor_Type) is
+   begin
+      Processor.D := Processor.C;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end MOV_DxC;
+
+   procedure MOV_DxD(Processor : in out Processor_Type) is
+   begin
+      Processor.D := Processor.D;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end MOV_DxD;
+
+   procedure MOV_DxE(Processor : in out Processor_Type) is
+   begin
+      Processor.D := Processor.E;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end MOV_DxE;
+
+   procedure MOV_DxH(Processor : in out Processor_Type) is
+   begin
+      Processor.D := Processor.H;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end MOV_DxH;
+
+   procedure MOV_DxL(Processor : in out Processor_Type) is
+   begin
+      Processor.D := Processor.L;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end MOV_DxL;
+
+   procedure MOV_DxM(Processor : in out Processor_Type) is
+      Address : constant Address_Type := Convert_To_Address(Byte_Pair_Type'(High_Order_Byte => Processor.H,
+                                                                            Low_Order_Byte  => Processor.L));
+   begin
+      Processor.D := Processor.Memory(Address);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end MOV_DxM;
+
+   procedure MOV_DxA(Processor : in out Processor_Type) is
+   begin
+      Processor.D := Processor.A;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end MOV_DxA;
+
    procedure Unimplemented_Instruction is
    begin
       null;--Ada.Text_IO.Put_Line("Not yet implemented");
