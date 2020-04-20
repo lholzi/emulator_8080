@@ -400,7 +400,7 @@ package body Emulator_8080.Processor is
       Converted_Result : constant Byte_Pair_Type := Convert_To_Byte_Pair(HL);
    begin
       Processor.H := Converted_Result.High_Order_Byte;
-      Processor.L := Converted_Result.High_Order_Byte;
+      Processor.L := Converted_Result.Low_Order_Byte;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
