@@ -174,6 +174,15 @@ package Emulator_8080.Processor is
    procedure ADD_L(Processor : in out Processor_Type);
    procedure ADD_M(Processor : in out Processor_Type);
    procedure ADD_A(Processor : in out Processor_Type);
+   --
+   procedure ADC_B(Processor : in out Processor_Type);
+   procedure ADC_C(Processor : in out Processor_Type);
+   procedure ADC_D(Processor : in out Processor_Type);
+   procedure ADC_E(Processor : in out Processor_Type);
+   procedure ADC_H(Processor : in out Processor_Type);
+   procedure ADC_L(Processor : in out Processor_Type);
+   procedure ADC_M(Processor : in out Processor_Type);
+   procedure ADC_A(Processor : in out Processor_Type);
    procedure Unimplemented_Instruction;
 
 private
@@ -192,6 +201,7 @@ private
    procedure Set_Sign_Flag_If_Applicable(Value : in Interfaces.Unsigned_16; Processor : in out Processor_Type);
    procedure Set_Carry_Flag_If_Applicable(Value : in Interfaces.Unsigned_16; Processor : in out Processor_Type);
    procedure Add(Summand : in Register_Type; Processor : in out Processor_Type);
+   procedure Add_With_Carry(Summand : in Register_Type; Processor : in out Processor_Type);
 
    function Convert_To_Stack_Pointer is new Unchecked_Conversion(Source => Byte_Pair_Type,
                                                                 Target => Stack_Pointer_Type);

@@ -68,6 +68,19 @@ package body Emulator_8080.Processor is
       Processor.A := Register_Type(Result and 16#ff#);
    end Add;
 
+   procedure Add_With_Carry(Summand : in Register_Type; Processor : in out Processor_Type) is
+      use Interfaces;
+      Result : Unsigned_16 := Unsigned_16(Processor.A) + Unsigned_16(Summand);
+      Carry_Summand : Unsigned_16 := 0;
+   begin
+      if(Processor.Carry_Flag = Set) then Carry_Summand := 1; end if;
+      Result := Result + Carry_Summand;
+      Set_Zero_Flag_If_Applicable(Value => Result, Processor => Processor);
+      Set_Sign_Flag_If_Applicable(Value => Result, Processor => Processor);
+      Set_Carry_Flag_If_Applicable(Value => Result, Processor => Processor);
+      Processor.A := Register_Type(Result and 16#ff#);
+   end Add_With_Carry;
+
    procedure NOP is
    begin
       null;--Ada.Text_IO.Put_Line("NOP");
@@ -1405,6 +1418,88 @@ package body Emulator_8080.Processor is
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end ADD_A;
+
+   procedure ADC_B(Processor : in out Processor_Type) is
+   begin
+      Add_With_Carry(Summand   => Processor.B,
+                     Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ADC_B;
+
+   procedure ADC_C(Processor : in out Processor_Type) is
+   begin
+      Add_With_Carry(Summand   => Processor.C,
+                     Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ADC_C;
+
+   procedure ADC_D(Processor : in out Processor_Type) is
+   begin
+      Add_With_Carry(Summand   => Processor.D,
+                     Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ADC_D;
+
+   procedure ADC_E(Processor : in out Processor_Type) is
+   begin
+      Add_With_Carry(Summand   => Processor.E,
+          Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ADC_E;
+
+   procedure ADC_H(Processor : in out Processor_Type) is
+   begin
+      Add_With_Carry(Summand   => Processor.H,
+                     Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ADC_H;
+
+   procedure ADC_L(Processor : in out Processor_Type) is
+   begin
+      Add_With_Carry(Summand   => Processor.L,
+                     Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ADC_L;
+
+   procedure ADC_M(Processor : in out Processor_Type) is
+      Address : constant Address_Type := Convert_To_Address(Byte_Pair_Type'(High_Order_Byte => Processor.H,
+                                                                            Low_Order_Byte  => Processor.L));
+   begin
+      Add_With_Carry(Summand   => Processor.Memory(Address),
+                     Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ADC_M;
+
+   procedure ADC_A(Processor : in out Processor_Type) is
+   begin
+      Add_With_Carry(Summand   => Processor.A,
+                     Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ADC_A;
 
    procedure Unimplemented_Instruction is
    begin
