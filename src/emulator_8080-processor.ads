@@ -188,6 +188,9 @@ private
    end record;
    for Byte_Pair_Type'Size use 16;
 
+   procedure Set_Zero_Flag_If_Applicable(Value : in Interfaces.Unsigned_16; Processor : in out Processor_Type);
+   procedure Set_Sign_Flag_If_Applicable(Value : in Interfaces.Unsigned_16; Processor : in out Processor_Type);
+   procedure Set_Carry_Flag_If_Applicable(Value : in Interfaces.Unsigned_16; Processor : in out Processor_Type);
    procedure Add(Summand : in Register_Type; Processor : in out Processor_Type);
 
    function Convert_To_Stack_Pointer is new Unchecked_Conversion(Source => Byte_Pair_Type,

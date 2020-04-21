@@ -28,25 +28,43 @@ package body Emulator_8080.Processor is
          return Processor;
    end Initialize;
 
-   procedure Add(Summand : in Register_Type; Processor : in out Processor_Type) is
+   procedure Set_Zero_Flag_If_Applicable(Value : in Interfaces.Unsigned_16; Processor : in out Processor_Type) is
       use Interfaces;
-      Result : constant Unsigned_16 := Unsigned_16(Processor.A) + Unsigned_16(Summand);
    begin
-      if (Result and 16#ff#) = 0 then
+      if (Value and 16#ff#) = 0 then
          Processor.Zero_Flag := Set;
       else
          Processor.Zero_Flag := Not_Set;
       end if;
-      if (Result and 16#80#) = 16#80# then
+   end Set_Zero_Flag_If_Applicable;
+
+   procedure Set_Sign_Flag_If_Applicable(Value : in Interfaces.Unsigned_16; Processor : in out Processor_Type) is
+      use Interfaces;
+   begin
+      if (Value and 16#80#) = 16#80# then
          Processor.Sign_Flag := Set;
       else
          Processor.Sign_Flag := Not_Set;
       end if;
-      if Result > 16#ff# then
+   end Set_Sign_Flag_If_Applicable;
+
+   procedure Set_Carry_Flag_If_Applicable(Value : in Interfaces.Unsigned_16; Processor : in out Processor_Type) is
+      use Interfaces;
+   begin
+      if Value > 16#ff# then
          Processor.Carry_Flag := Set;
       else
          Processor.Carry_Flag := Not_Set;
       end if;
+   end Set_Carry_Flag_If_Applicable;
+
+   procedure Add(Summand : in Register_Type; Processor : in out Processor_Type) is
+      use Interfaces;
+      Result : constant Unsigned_16 := Unsigned_16(Processor.A) + Unsigned_16(Summand);
+   begin
+      Set_Zero_Flag_If_Applicable(Value => Result, Processor => Processor);
+      Set_Sign_Flag_If_Applicable(Value => Result, Processor => Processor);
+      Set_Carry_Flag_If_Applicable(Value => Result, Processor => Processor);
       Processor.A := Register_Type(Result and 16#ff#);
    end Add;
 
