@@ -165,6 +165,15 @@ package Emulator_8080.Processor is
    procedure MOV_AxL(Processor : in out Processor_Type);
    procedure MOV_AxM(Processor : in out Processor_Type);
    procedure MOV_AxA(Processor : in out Processor_Type);
+   --
+   procedure ADD_B(Processor : in out Processor_Type);
+   procedure ADD_C(Processor : in out Processor_Type);
+   procedure ADD_D(Processor : in out Processor_Type);
+   procedure ADD_E(Processor : in out Processor_Type);
+   procedure ADD_H(Processor : in out Processor_Type);
+   procedure ADD_L(Processor : in out Processor_Type);
+   procedure ADD_M(Processor : in out Processor_Type);
+   procedure ADD_A(Processor : in out Processor_Type);
    procedure Unimplemented_Instruction;
 
 private
@@ -178,6 +187,8 @@ private
       Low_Order_Byte at 1 range 0 .. 7;
    end record;
    for Byte_Pair_Type'Size use 16;
+
+   procedure Add(Summand : in Register_Type; Processor : in out Processor_Type);
 
    function Convert_To_Stack_Pointer is new Unchecked_Conversion(Source => Byte_Pair_Type,
                                                                 Target => Stack_Pointer_Type);

@@ -7,7 +7,7 @@ package body Emulator_8080.Processor is
 
    procedure Print_Exception(Throwing_Function, Exception_Cause : in String) is
    begin
-      ADa.Text_IO.Put(Throwing_Function & " threw exception -> ");
+      Ada.Text_IO.Put(Throwing_Function & " threw exception -> ");
       Ada.Text_IO.Put_Line(Exception_Cause);
    end Print_Exception;
 
@@ -27,6 +27,28 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
          return Processor;
    end Initialize;
+
+   procedure Add(Summand : in Register_Type; Processor : in out Processor_Type) is
+      use Interfaces;
+      Result : constant Unsigned_16 := Unsigned_16(Processor.A) + Unsigned_16(Summand);
+   begin
+      if (Result and 16#ff#) = 0 then
+         Processor.Zero_Flag := Set;
+      else
+         Processor.Zero_Flag := Not_Set;
+      end if;
+      if (Result and 16#80#) = 16#80# then
+         Processor.Sign_Flag := Set;
+      else
+         Processor.Sign_Flag := Not_Set;
+      end if;
+      if Result > 16#ff# then
+         Processor.Carry_Flag := Set;
+      else
+         Processor.Carry_Flag := Not_Set;
+      end if;
+      Processor.A := Register_Type(Result and 16#ff#);
+   end Add;
 
    procedure NOP is
    begin
@@ -1283,6 +1305,88 @@ package body Emulator_8080.Processor is
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end MOV_AxA;
+
+   procedure ADD_B(Processor : in out Processor_Type) is
+   begin
+      Add(Summand   => Processor.B,
+          Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ADD_B;
+
+   procedure ADD_C(Processor : in out Processor_Type) is
+   begin
+      Add(Summand   => Processor.C,
+          Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ADD_C;
+
+   procedure ADD_D(Processor : in out Processor_Type) is
+   begin
+      Add(Summand   => Processor.D,
+          Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ADD_D;
+
+   procedure ADD_E(Processor : in out Processor_Type) is
+   begin
+      Add(Summand   => Processor.E,
+          Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ADD_E;
+
+   procedure ADD_H(Processor : in out Processor_Type) is
+   begin
+      Add(Summand   => Processor.H,
+          Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ADD_H;
+
+   procedure ADD_L(Processor : in out Processor_Type) is
+   begin
+      Add(Summand   => Processor.L,
+          Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ADD_L;
+
+   procedure ADD_M(Processor : in out Processor_Type) is
+      Address : constant Address_Type := Convert_To_Address(Byte_Pair_Type'(High_Order_Byte => Processor.H,
+                                                                            Low_Order_Byte  => Processor.L));
+   begin
+      Add(Summand   => Processor.Memory(Address),
+          Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ADD_M;
+
+   procedure ADD_A(Processor : in out Processor_Type) is
+   begin
+      Add(Summand   => Processor.A,
+          Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ADD_A;
 
    procedure Unimplemented_Instruction is
    begin
