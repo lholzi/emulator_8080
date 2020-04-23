@@ -91,6 +91,19 @@ package body Emulator_8080.Processor is
       Processor.A := Register_Type(Result and 16#ff#);
    end Sub;
 
+   procedure Sub_With_Carry(Subtrahend : in Register_Type; Processor : in out Processor_Type) is
+      use Interfaces;
+      Result : Unsigned_16 := Unsigned_16(Processor.A) - Unsigned_16(Subtrahend);
+      Carry_Subtrahend : Unsigned_16 := 0;
+   begin
+      if(Processor.Carry_Flag = Set) then Carry_Subtrahend := 1; end if;
+      Result := Result - Carry_Subtrahend;
+      Set_Zero_Flag_If_Applicable(Value => Result, Processor => Processor);
+      Set_Sign_Flag_If_Applicable(Value => Result, Processor => Processor);
+      Set_Carry_Flag_If_Applicable(Value => Result, Processor => Processor);
+      Processor.A := Register_Type(Result and 16#ff#);
+   end Sub_With_Carry;
+
    procedure NOP is
    begin
       null;--Ada.Text_IO.Put_Line("NOP");
@@ -1592,6 +1605,88 @@ package body Emulator_8080.Processor is
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end SUB_A;
+
+   procedure SBB_B(Processor : in out Processor_Type) is
+   begin
+      Sub_With_Carry(Subtrahend => Processor.B,
+                     Processor  => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end SBB_B;
+
+   procedure SBB_C(Processor : in out Processor_Type) is
+   begin
+      Sub_With_Carry(Subtrahend => Processor.C,
+                     Processor  => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end SBB_C;
+
+   procedure SBB_D(Processor : in out Processor_Type) is
+   begin
+      Sub_With_Carry(Subtrahend => Processor.D,
+                     Processor  => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end SBB_D;
+
+   procedure SBB_E(Processor : in out Processor_Type) is
+   begin
+      Sub_With_Carry(Subtrahend => Processor.E,
+                     Processor  => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end SBB_E;
+
+   procedure SBB_H(Processor : in out Processor_Type) is
+   begin
+      Sub_With_Carry(Subtrahend => Processor.H,
+                     Processor  => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end SBB_H;
+
+   procedure SBB_L(Processor : in out Processor_Type) is
+   begin
+      Sub_With_Carry(Subtrahend => Processor.L,
+                     Processor  => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end SBB_L;
+
+   procedure SBB_M(Processor : in out Processor_Type) is
+      Address : constant Address_Type := Convert_To_Address(Byte_Pair_Type'(High_Order_Byte => Processor.H,
+                                                                            Low_Order_Byte  => Processor.L));
+   begin
+      Sub_With_Carry(Subtrahend => Processor.Memory(Address),
+                     Processor  => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end SBB_M;
+
+   procedure SBB_A(Processor : in out Processor_Type) is
+   begin
+      Sub_With_Carry(Subtrahend => Processor.A,
+                     Processor  => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end SBB_A;
 
    procedure Unimplemented_Instruction is
    begin
