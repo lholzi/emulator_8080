@@ -201,6 +201,15 @@ package Emulator_8080.Processor is
    procedure SBB_L(Processor : in out Processor_Type);
    procedure SBB_M(Processor : in out Processor_Type);
    procedure SBB_A(Processor : in out Processor_Type);
+   --
+   procedure ANA_B(Processor : in out Processor_Type);
+   procedure ANA_C(Processor : in out Processor_Type);
+   procedure ANA_D(Processor : in out Processor_Type);
+   procedure ANA_E(Processor : in out Processor_Type);
+   procedure ANA_H(Processor : in out Processor_Type);
+   procedure ANA_L(Processor : in out Processor_Type);
+   procedure ANA_M(Processor : in out Processor_Type);
+   procedure ANA_A(Processor : in out Processor_Type);
 
    procedure Unimplemented_Instruction;
 
@@ -223,6 +232,7 @@ private
    procedure Add_With_Carry(Summand : in Register_Type; Processor : in out Processor_Type);
    procedure Sub(Subtrahend : in Register_Type; Processor : in out Processor_Type);
    procedure Sub_With_Carry(Subtrahend : in Register_Type; Processor : in out Processor_Type);
+   procedure And_A(Value : in Register_Type; Processor : in out Processor_Type);
 
    function Convert_To_Stack_Pointer is new Unchecked_Conversion(Source => Byte_Pair_Type,
                                                                 Target => Stack_Pointer_Type);
