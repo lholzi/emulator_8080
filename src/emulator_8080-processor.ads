@@ -253,6 +253,7 @@ private
    procedure And_A(Value : in Register_Type; Processor : in out Processor_Type);
    procedure Xor_A(Value : in Register_Type; Processor : in out Processor_Type);
    procedure Or_A(Value : in Register_Type; Processor : in out Processor_Type);
+   procedure Compare_A(Value : in Register_Type; Processor : in out Processor_Type);
 
    function Convert_To_Stack_Pointer is new Unchecked_Conversion(Source => Byte_Pair_Type,
                                                                 Target => Stack_Pointer_Type);

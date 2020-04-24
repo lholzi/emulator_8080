@@ -134,6 +134,23 @@ package body Emulator_8080.Processor is
       Processor.A := Register_Type(Result and 16#ff#);
    end Or_A;
 
+   procedure Compare_A(Value : in Register_Type; Processor : in out Processor_Type) is
+      use Interfaces;
+      Result : constant Unsigned_8 := Unsigned_8(Processor.A) - Unsigned_8(Value);
+   begin
+      if Result = 0 then
+         Processor.Zero_Flag := Set;
+      end if;
+
+      if (16#80# = (Result and 16#80#)) then
+         Processor.Sign_Flag := Set;
+      end if;
+      --TODO PARITY CHECK
+      if Processor.A < Value then
+         Processor.Carry_Flag := Set;
+      end if;
+   end Compare_A;
+
    procedure NOP is
    begin
       null;--Ada.Text_IO.Put_Line("NOP");
