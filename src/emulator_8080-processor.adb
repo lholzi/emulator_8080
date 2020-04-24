@@ -124,6 +124,16 @@ package body Emulator_8080.Processor is
       Processor.A := Register_Type(Result and 16#ff#);
    end Xor_A;
 
+   procedure Or_A(Value : in Register_Type; Processor : in out Processor_Type) is
+      use Interfaces;
+      Result : constant Unsigned_16 := Unsigned_16(Processor.A) or Unsigned_16(Value);
+   begin
+      Set_Zero_Flag_If_Applicable(Value => Result, Processor => Processor);
+      Set_Sign_Flag_If_Applicable(Value => Result, Processor => Processor);
+      Set_Carry_Flag_If_Applicable(Value => Result, Processor => Processor);
+      Processor.A := Register_Type(Result and 16#ff#);
+   end Or_A;
+
    procedure NOP is
    begin
       null;--Ada.Text_IO.Put_Line("NOP");
@@ -1871,6 +1881,88 @@ package body Emulator_8080.Processor is
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end XRA_A;
+
+   procedure ORA_B(Processor : in out Processor_Type) is
+   begin
+      Or_A(Value      => Processor.B,
+           Processor  => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ORA_B;
+
+   procedure ORA_C(Processor : in out Processor_Type) is
+   begin
+      Or_A(Value     => Processor.C,
+           Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ORA_C;
+
+   procedure ORA_D(Processor : in out Processor_Type) is
+   begin
+      Or_A(Value     => Processor.D,
+           Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ORA_D;
+
+   procedure ORA_E(Processor : in out Processor_Type) is
+   begin
+      Or_A(Value     => Processor.E,
+            Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ORA_E;
+
+   procedure ORA_H(Processor : in out Processor_Type) is
+   begin
+      Or_A(Value     => Processor.H,
+            Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ORA_H;
+
+   procedure ORA_L(Processor : in out Processor_Type) is
+   begin
+      Or_A(Value     => Processor.L,
+            Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ORA_L;
+
+   procedure ORA_M(Processor : in out Processor_Type) is
+      Address : constant Address_Type := Convert_To_Address(Byte_Pair_Type'(High_Order_Byte => Processor.H,
+                                                                            Low_Order_Byte  => Processor.L));
+   begin
+      Or_A(Value     => Processor.Memory(Address),
+            Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ORA_M;
+
+   procedure ORA_A(Processor : in out Processor_Type) is
+   begin
+      Or_A(Value     => Processor.A,
+            Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ORA_A;
 
    procedure Unimplemented_Instruction is
    begin
