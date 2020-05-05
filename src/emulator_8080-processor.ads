@@ -228,6 +228,15 @@ package Emulator_8080.Processor is
    procedure ORA_L(Processor : in out Processor_Type);
    procedure ORA_M(Processor : in out Processor_Type);
    procedure ORA_A(Processor : in out Processor_Type);
+   --
+   procedure CMP_B(Processor : in out Processor_Type);
+   procedure CMP_C(Processor : in out Processor_Type);
+   procedure CMP_D(Processor : in out Processor_Type);
+   procedure CMP_E(Processor : in out Processor_Type);
+   procedure CMP_H(Processor : in out Processor_Type);
+   procedure CMP_L(Processor : in out Processor_Type);
+   procedure CMP_M(Processor : in out Processor_Type);
+   procedure CMP_A(Processor : in out Processor_Type);
 
    procedure Unimplemented_Instruction;
 

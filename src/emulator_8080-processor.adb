@@ -1981,6 +1981,88 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end ORA_A;
 
+   procedure CMP_B(Processor : in out Processor_Type) is
+   begin
+      Compare_A(Value      => Processor.B,
+                Processor  => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end CMP_B;
+
+   procedure CMP_C(Processor : in out Processor_Type) is
+   begin
+      Compare_A(Value     => Processor.C,
+                Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end CMP_C;
+
+   procedure CMP_D(Processor : in out Processor_Type) is
+   begin
+      Compare_A(Value     => Processor.D,
+                Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end CMP_D;
+
+   procedure CMP_E(Processor : in out Processor_Type) is
+   begin
+      Compare_A(Value     => Processor.E,
+                Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end CMP_E;
+
+   procedure CMP_H(Processor : in out Processor_Type) is
+   begin
+      Compare_A(Value     => Processor.H,
+               Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end CMP_H;
+
+   procedure CMP_L(Processor : in out Processor_Type) is
+   begin
+      Compare_A(Value     => Processor.L,
+                Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end CMP_L;
+
+   procedure CMP_M(Processor : in out Processor_Type) is
+      Address : constant Address_Type := Convert_To_Address(Byte_Pair_Type'(High_Order_Byte => Processor.H,
+                                                                            Low_Order_Byte  => Processor.L));
+   begin
+      Or_A(Value     => Processor.Memory(Address),
+           Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end CMP_M;
+
+   procedure CMP_A(Processor : in out Processor_Type) is
+   begin
+      Compare_A(Value     => Processor.A,
+                Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end CMP_A;
+
    procedure Unimplemented_Instruction is
    begin
       null;--Ada.Text_IO.Put_Line("Not yet implemented");
