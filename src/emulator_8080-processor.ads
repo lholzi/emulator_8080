@@ -246,6 +246,7 @@ package Emulator_8080.Processor is
    procedure PUSH_B(Processor : in out Processor_Type);
    procedure ADI_D8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
    procedure RST_0(Processor : in out Processor_Type);
+   procedure JZ(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
 
    procedure CALL(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
 
