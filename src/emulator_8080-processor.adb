@@ -2125,9 +2125,11 @@ package body Emulator_8080.Processor is
 
    procedure CNZ(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type) is
    begin
-      CALL(Byte_2    => Byte_2,
-           Byte_3    => Byte_3,
-           Processor => Processor);
+      if Processor.Zero_Flag = Not_Set then
+         CALL(Byte_2    => Byte_2,
+              Byte_3    => Byte_3,
+              Processor => Processor);
+      end if;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
