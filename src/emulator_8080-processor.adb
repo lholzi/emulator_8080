@@ -2168,6 +2168,17 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end RST_0;
 
+   procedure RZ(Processor : in out Processor_Type) is
+   begin
+      if Processor.Zero_Flag = Set then
+         RET(Processor);
+       end if;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end RZ;
+
    procedure JZ(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type) is
    begin
       if Processor.Zero_Flag = Set then

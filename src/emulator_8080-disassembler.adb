@@ -691,6 +691,9 @@ package body Emulator_8080.Disassembler is
                when 16#c7# =>
                   Emulator_8080.Processor.RST_0(Processor);
                   Processor.Program_Counter := Processor.Program_Counter +1;
+               when 16#c8# =>
+                  Emulator_8080.Processor.RZ(Processor);
+                  Processor.Program_Counter := Processor.Program_Counter +1;
 
                when 16#ca# =>
                   Emulator_8080.Processor.JZ(Byte_2    => Processor.Memory(Processor.Program_Counter + 1),
