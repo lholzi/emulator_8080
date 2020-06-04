@@ -2123,6 +2123,26 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end RET;
 
+
+
+
+
+   procedure CALL(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type) is
+      SP_Values : constant Byte_Pair_Type := Convert_To_Byte_Pair(Processor.Stack_Pointer);
+      PC : constant Address_Type := Convert_To_Address(Byte_Pair_Type'(High_Order_Byte => Byte_3,
+                                                                            Low_Order_Byte  => Byte_2));
+   begin
+      Processor.Memory(Processor.Stack_Pointer - 1) := SP_Values.High_Order_Byte;
+      Processor.Memory(Processor.Stack_Pointer - 2) := SP_Values.Low_Order_Byte;
+      Processor.Stack_Pointer := Processor.Stack_Pointer - 2;
+      Processor.Program_Counter := PC;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end CALL;
+
+
    procedure Unimplemented_Instruction is
    begin
       null;--Ada.Text_IO.Put_Line("Not yet implemented");
