@@ -2192,7 +2192,18 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end JZ;
 
-
+   procedure CZ(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type) is
+   begin
+      if Processor.Zero_Flag = Set then
+         CALL(Byte_2    => Byte_2,
+             Byte_3    => Byte_3,
+             Processor => Processor);
+       end if;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end CZ;
 
    procedure CALL(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type) is
       SP_Values : constant Byte_Pair_Type := Convert_To_Byte_Pair(Processor.Stack_Pointer);
