@@ -242,6 +242,7 @@ package Emulator_8080.Processor is
    procedure JNZ(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
    procedure JMP(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
    procedure RET(Processor : in out Processor_Type);
+   procedure CNZ(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
 
    procedure CALL(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
 
