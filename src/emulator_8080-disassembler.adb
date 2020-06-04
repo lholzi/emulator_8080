@@ -1,3 +1,4 @@
+with Ada.Text_IO;
 package body Emulator_8080.Disassembler is
 
    procedure Read_Rom(Processor : in out Emulator_8080.Processor.Processor_Type) is
@@ -7,6 +8,8 @@ package body Emulator_8080.Disassembler is
          declare
             Current_Instruction : constant Byte_Type := Processor.Memory(Processor.Program_Counter);
          begin
+            Ada.Text_IO.Put_Line("TEST:" & Processor.Program_Counter'Img);
+            Ada.Text_IO.Put_Line("Instruction: " & Current_Instruction'Img);
             case Current_Instruction is
                when 16#0# =>
                   Emulator_8080.Processor.NOP;
@@ -657,6 +660,22 @@ package body Emulator_8080.Disassembler is
                when 16#bf# =>
                   Emulator_8080.Processor.CMP_A(Processor);
                   Processor.Program_Counter := Processor.Program_Counter + 1;
+               when 16#c0# =>
+                  Emulator_8080.Processor.RNZ(Processor);
+                  Processor.Program_Counter := Processor.Program_Counter + 1;
+               when 16#c1# =>
+                  Emulator_8080.Processor.POP_B(Processor);
+                  Processor.Program_Counter := Processor.Program_Counter + 1;
+               when 16#c2# =>
+                  Emulator_8080.Processor.JNZ(Byte_2    => Processor.Memory(Processor.Program_Counter + 1),
+                                              Byte_3    => Processor.Memory(Processor.Program_Counter + 2),
+                                              Processor => Processor);
+                  Processor.Program_Counter := Processor.PRogram_Counter + 3;
+               when 16#c3# =>
+                  Emulator_8080.Processor.JMP(Byte_2    => Processor.Memory(Processor.Program_Counter + 1),
+                                              Byte_3    => Processor.Memory(Processor.Program_Counter + 2),
+                                              Processor => Processor);
+                  Processor.Program_Counter := Processor.PRogram_Counter + 3;
 
                when others =>
                   Emulator_8080.Processor.Unimplemented_Instruction;

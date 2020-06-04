@@ -654,7 +654,7 @@ package body Emulator_8080.Processor is
 
    procedure LXI_SPxD16(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type) is
    begin
-      Processor.Stack_Pointer := Convert_To_Stack_Pointer(Byte_Pair_Type'(High_Order_Byte => Byte_3,
+      Processor.Stack_Pointer := Convert_To_Address(Byte_Pair_Type'(High_Order_Byte => Byte_3,
                                                                           Low_Order_Byte  => Byte_2));
    exception
       when others =>
@@ -731,7 +731,7 @@ package body Emulator_8080.Processor is
         Convert_To_Concatenated_Register(Byte_Pair_Type'(High_Order_Byte => Processor.H,
                                                         Low_Order_Byte  => Processor.L));
 
-      Result : constant Concatenated_Register_Type := HL + Processor.Stack_Pointer;
+      Result : constant Concatenated_Register_Type := HL + Unsigned_16(Processor.Stack_Pointer);
       Converted_Result : constant Byte_Pair_Type := Convert_To_Byte_Pair(Result);
    begin
       Processor.H := Converted_Result.High_Order_Byte;
@@ -2062,6 +2062,66 @@ package body Emulator_8080.Processor is
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end CMP_A;
+
+   procedure RNZ(Processor : in out Processor_Type) is
+   begin
+      if Processor.Zero_Flag = Not_Set then
+         RET(Processor);
+      end if;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end RNZ;
+
+   procedure POP_B(Processor : in out Processor_Type) is
+   begin
+      Processor.C := Processor.Memory(Processor.Stack_Pointer);
+      Processor.B := Processor.Memory(Processor.Stack_Pointer + 1);
+      Processor.Stack_Pointer := Processor.Stack_Pointer + 2;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end POP_B;
+
+   procedure JNZ(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type) is
+   begin
+      if Processor.Zero_Flag = Not_Set then
+         JMP(Byte_2    => Byte_2,
+             Byte_3    => Byte_3,
+             Processor => Processor);
+       end if;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end JNZ;
+
+   procedure JMP(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type) is
+      PC : constant Address_Type := Convert_To_Address(Byte_Pair_Type'(High_Order_Byte => Byte_3,
+                                                                            Low_Order_Byte  => Byte_2));
+   begin
+      Ada.Text_IO.Put_Line("JMP REACHED:" & PC'Img);
+      Processor.Program_Counter := PC;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end JMP;
+
+   procedure RET(Processor : in out Processor_Type) is
+      use Interfaces;
+      PC : constant Address_Type := Convert_To_Address(Byte_Pair_Type'(High_Order_Byte => Processor.Memory(Processor.Stack_Pointer + 1),
+                                                                       Low_Order_Byte  => Processor.Memory(Processor.Stack_Pointer)));
+   begin
+      Processor.Program_Counter := PC;
+      Processor.Stack_Pointer := Processor.Stack_Pointer + 2;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end RET;
 
    procedure Unimplemented_Instruction is
    begin
