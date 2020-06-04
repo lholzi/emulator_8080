@@ -2134,7 +2134,16 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end CNZ;
 
-
+   procedure PUSH_B(Processor : in out Processor_Type) is
+   begin
+      Processor.Memory(Processor.Stack_Pointer - 2) := Processor.C;
+      Processor.Memory(Processor.Stack_Pointer - 1) := Processor.B;
+      Processor.Stack_Pointer := Processor.Stack_Pointer - 2;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end PUSH_B;
 
 
    procedure CALL(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type) is
