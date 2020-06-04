@@ -2147,6 +2147,16 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end PUSH_B;
 
+   procedure ADI_D8(Byte_2 : in Byte_Type; Processor : in out Processor_Type) is
+   begin
+      Add(Summand   => Byte_2,
+          Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ADI_D8;
+
 
    procedure CALL(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type) is
       SP_Values : constant Byte_Pair_Type := Convert_To_Byte_Pair(Processor.Stack_Pointer);

@@ -244,6 +244,7 @@ package Emulator_8080.Processor is
    procedure RET(Processor : in out Processor_Type);
    procedure CNZ(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
    procedure PUSH_B(Processor : in out Processor_Type);
+   procedure ADI_D8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
 
    procedure CALL(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
 
