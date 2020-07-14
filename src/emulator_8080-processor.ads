@@ -259,6 +259,7 @@ package Emulator_8080.Processor is
    procedure OUT_D8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
    procedure CNC(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
    procedure PUSH_D(Processor : in out Processor_Type);
+   procedure SUI_D8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
 
 
    procedure Unimplemented_Instruction;
