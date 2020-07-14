@@ -740,6 +740,10 @@ package body Emulator_8080.Disassembler is
                                               Byte_3    => Processor.Memory(Processor.Program_Counter + 2),
                                               Processor => Processor);
                   Processor.Program_Counter := Processor.Program_Counter + 3;
+               when 16#d3# =>
+                  Emulator_8080.Processor.OUT_D8(Byte_2    => Processor.Memory(Processor.Program_Counter + 1),
+                                                 Processor => Processor);
+                  Processor.Program_Counter := Processor.Program_Counter + 2;
 
                when others =>
                   Emulator_8080.Processor.Unimplemented_Instruction;

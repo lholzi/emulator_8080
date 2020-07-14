@@ -256,6 +256,7 @@ package Emulator_8080.Processor is
    procedure RNC(Processor : in out Processor_Type);
    procedure POP_D(Processor : in out Processor_Type);
    procedure JNC(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
+   procedure OUT_D8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
 
 
    procedure Unimplemented_Instruction;
