@@ -251,6 +251,7 @@ package Emulator_8080.Processor is
    --
    procedure CZ(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
    procedure ACI_D8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
+   procedure RST_1(Processor : in out Processor_Type);
 
    procedure CALL(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
 

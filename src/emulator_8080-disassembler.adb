@@ -719,9 +719,12 @@ package body Emulator_8080.Disassembler is
                                                Processor => Processor);
                   Processor.Program_Counter := Processor.Program_Counter + 3;
                when 16#ce# =>
-                  Emulator_8080.Processor.ADI_D8(Byte_2    => Processor.Memory(Processor.Program_Counter + 1),
+                  Emulator_8080.Processor.ACI_D8(Byte_2    => Processor.Memory(Processor.Program_Counter + 1),
                                                  Processor => Processor);
                   Processor.Program_Counter := Processor.Program_Counter + 2;
+               when 16#cf# =>
+                  Emulator_8080.Processor.RST_1(Processor);
+                  Processor.Program_Counter := Processor.Program_Counter + 1;
 
 
                when others =>
