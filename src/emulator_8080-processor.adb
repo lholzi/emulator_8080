@@ -2341,6 +2341,19 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end RC;
 
+   procedure JC(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type) is
+   begin
+      if Processor.Carry_Flag = Set then
+         JMP(Byte_2    => Byte_2,
+             Byte_3    => Byte_3,
+             Processor => Processor);
+       end if;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end JC;
+
 
    procedure Unimplemented_Instruction is
    begin
