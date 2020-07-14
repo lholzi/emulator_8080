@@ -2241,6 +2241,28 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end RST_1;
 
+   procedure RNC(Processor : in out Processor_Type) is
+   begin
+      if Processor.Carry_Flag = Not_Set then
+         RET(Processor);
+      end if;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end RNC;
+
+   procedure POP_D(Processor : in out Processor_Type) is
+   begin
+      Processor.E := Processor.Memory(Processor.Stack_Pointer);
+      Processor.D := Processor.Memory(Processor.Stack_Pointer + 1);
+      Processor.Stack_Pointer := Processor.Stack_Pointer + 2;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end POP_D;
+
    procedure Unimplemented_Instruction is
    begin
       null;--Ada.Text_IO.Put_Line("Not yet implemented");

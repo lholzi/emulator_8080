@@ -250,10 +250,12 @@ package Emulator_8080.Processor is
    procedure JZ(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
    --
    procedure CZ(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
+   procedure CALL(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
    procedure ACI_D8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
    procedure RST_1(Processor : in out Processor_Type);
+   procedure RNC(Processor : in out Processor_Type);
+   procedure POP_D(Processor : in out Processor_Type);
 
-   procedure CALL(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
 
    procedure Unimplemented_Instruction;
 
