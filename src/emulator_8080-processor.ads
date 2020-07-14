@@ -264,6 +264,7 @@ package Emulator_8080.Processor is
    procedure RC(Processor : in out Processor_Type);
    --
    procedure JC(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
+   procedure IN_D8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
 
 
    procedure Unimplemented_Instruction;
