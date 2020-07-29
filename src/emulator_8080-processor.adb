@@ -13,13 +13,10 @@ package body Emulator_8080.Processor is
 
    function Initialize(Rom : in Byte_Array_Type) return Processor_Type is
       Processor : Processor_Type;
-      Counter : Address_Type := Processor.Memory'First;
    begin
       for I in Rom'Range loop
-         Processor.Memory(Counter) := Rom(I);
-         Counter := Counter + 1;
+         Processor.Memory(Address_Type(I)) := Rom(I);
       end loop;
-      Ada.Text_IO.Put_Line("Counter: " & Counter'Img);
       return Processor;
    exception
       when others =>

@@ -32,12 +32,19 @@ procedure Emulator_Main is
    end Read_Rom_File;
 
 begin
+   Ada.Text_IO.Put_Line("Starting emulator_8080.");
+   Ada.Text_IO.Put_Line("Reading Rom...");
    Read_Rom_File(Rom_Directory_Path & "invaders.h");
    Read_Rom_File(Rom_Directory_Path & "invaders.g");
    Read_Rom_File(Rom_Directory_Path & "invaders.f");
    Read_Rom_File(Rom_Directory_Path & "invaders.e");
-   Ada.Text_IO.Put_Line("File size: " & Rom_File_Size'Img);
-   Ada.Text_IO.Put_Line("last Index: " & Rom_Byte_Index'Img);
+
+   Ada.Text_IO.Put_Line("File read successfully.");
+   Ada.Text_IO.Put_Line("--> File size:  " & Rom_File_Size'Img);
+   Ada.Text_IO.Put_Line("--> last Index: " & Rom_Byte_Index'Img);
+
+   Ada.Text_IO.Put_Line("Initializing CPU");
    Processor := Emulator_8080.Processor.Initialize(Rom_File_Content);
+   Ada.Text_IO.Put_Line("Running emulation...");
    Emulator_8080.Disassembler.Read_Rom(Processor);
 end Emulator_Main;
