@@ -7,7 +7,7 @@ with Emulator_8080.Disassembler;
 procedure Emulator_Main is
    package Rom_IO is new Ada.Sequential_IO(Element_Type => Emulator_8080.Byte_Type);
 
-   Rom_Directory_Path : constant String := "/home/lholzi/Schreibtisch/Projects/emulator_8080/rom/";
+   Rom_Directory_Path : constant String := Ada.Directories.Current_Directory & "/rom/";
    Rom_File_Size : constant Natural :=
        Natural(Ada.Directories.Size(Rom_Directory_Path & "invaders.h")) +
        Natural(Ada.Directories.Size(Rom_Directory_Path & "invaders.g")) +
