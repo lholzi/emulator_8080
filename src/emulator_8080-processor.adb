@@ -89,6 +89,16 @@ package body Emulator_8080.Processor is
       Processor.A := Register_Type(Result and 16#ff#);
    end Sub;
 
+   procedure Sub(Subtrahend : in Byte_Type; Register : in out Register_Type; Processor : in out Processor_Type) is
+      use Interfaces;
+      Result : constant Unsigned_16 := Unsigned_16(Register) - Unsigned_16(Subtrahend);
+   begin
+      Set_Zero_Flag_If_Applicable(Value => Result, Processor => Processor);
+      Set_Sign_Flag_If_Applicable(Value => Result, Processor => Processor);
+      Set_Carry_Flag_If_Applicable(Value => Result, Processor => Processor);
+      Register := Register_Type(Result and 16#ff#);
+   end Sub;
+
    procedure Sub_With_Carry(Subtrahend : in Register_Type; Processor : in out Processor_Type) is
       use Interfaces;
       Result : Unsigned_16 := Unsigned_16(Processor.A) - Unsigned_16(Subtrahend);
@@ -203,8 +213,12 @@ package body Emulator_8080.Processor is
    end INR_B;
 
    procedure DCR_B(Processor : in out Processor_Type) is
+      Result : Register_Type := Processor.B;
    begin
-      Processor.B := Processor.B - 1;
+      Sub(Subtrahend => 1,
+          Register   => Result,
+          Processor  => Processor);
+      Processor.B := Result;
    exception
      when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,

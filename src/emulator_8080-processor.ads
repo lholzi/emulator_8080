@@ -290,6 +290,7 @@ private
    procedure Add(Summand : in Register_Type; Processor : in out Processor_Type);
    procedure Add_With_Carry(Summand : in Register_Type; Processor : in out Processor_Type);
    procedure Sub(Subtrahend : in Register_Type; Processor : in out Processor_Type);
+   procedure Sub(Subtrahend : in Byte_Type; Register : in out Register_Type; Processor : in out Processor_Type);
    procedure Sub_With_Carry(Subtrahend : in Register_Type; Processor : in out Processor_Type);
    procedure And_A(Value : in Register_Type; Processor : in out Processor_Type);
    procedure Xor_A(Value : in Register_Type; Processor : in out Processor_Type);
