@@ -375,7 +375,7 @@ package body Emulator_8080.Processor is
       Converted_Result : constant Byte_Pair_Type := Convert_To_Byte_Pair(DE);
    begin
       Processor.D := Converted_Result.High_Order_Byte;
-      Processor.E := Converted_Result.High_Order_Byte;
+      Processor.E := Converted_Result.Low_Order_Byte;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2179,10 +2179,16 @@ package body Emulator_8080.Processor is
 
    procedure RET(Processor : in out Processor_Type) is
       use Interfaces;
-      PC : constant Address_Type := Convert_To_Address(Byte_Pair_Type'(High_Order_Byte => Processor.Memory(Processor.Stack_Pointer + 1),
-                                                                       Low_Order_Byte  => Processor.Memory(Processor.Stack_Pointer)));
+      High_Order_Byte : constant Byte_Type := Processor.Memory(Processor.Stack_Pointer + 1);
+      Low_Order_Byte : constant Byte_Type := Processor.Memory(Processor.Stack_Pointer);
+      PC : constant Address_Type := Convert_To_Address(Byte_Pair_Type'(High_Order_Byte => High_Order_Byte,
+                                                                       Low_Order_Byte  =>Low_Order_Byte));
    begin
       Processor.Program_Counter := PC;
+      Ada.Text_IO.Put_Line("PC: " & Processor.Program_Counter'Img);
+      Ada.Text_IO.Put_Line("SP: " & Processor.Stack_Pointer'Img);
+      Ada.Text_IO.Put_Line("HOB: " & High_Order_Byte'Img);
+      Ada.Text_IO.Put_Line("LOB: " & Low_Order_Byte'Img);
       Processor.Stack_Pointer := Processor.Stack_Pointer + 2;
    exception
       when others =>
@@ -2217,14 +2223,14 @@ package body Emulator_8080.Processor is
    end CZ;
 
    procedure CALL(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type) is
-      SP_Values : constant Byte_Pair_Type := Convert_To_Byte_Pair(Processor.Stack_Pointer);
-      PC : constant Address_Type := Convert_To_Address(Byte_Pair_Type'(High_Order_Byte => Byte_3,
-                                                                            Low_Order_Byte  => Byte_2));
+      PC_Byte_Pair : constant Byte_Pair_Type := Convert_To_Byte_Pair(Processor.Program_Counter);
+      Next_PC : constant Address_Type := Convert_To_Address(Byte_Pair_Type'(Low_Order_Byte  => Byte_2,
+                                                                            High_Order_Byte => Byte_3));
    begin
-      Processor.Memory(Processor.Stack_Pointer - 1) := SP_Values.High_Order_Byte;
-      Processor.Memory(Processor.Stack_Pointer - 2) := SP_Values.Low_Order_Byte;
+      Processor.Memory(Processor.Stack_Pointer - 1) := PC_Byte_Pair.High_Order_Byte;
+      Processor.Memory(Processor.Stack_Pointer - 2) := PC_Byte_Pair.Low_Order_Byte;
       Processor.Stack_Pointer := Processor.Stack_Pointer - 2;
-      Processor.Program_Counter := PC;
+      Processor.Program_Counter := Next_PC;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,

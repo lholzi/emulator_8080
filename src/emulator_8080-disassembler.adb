@@ -1,4 +1,6 @@
 with Ada.Text_IO;
+with GNAT.Current_Exception;
+
 package body Emulator_8080.Disassembler is
 
    procedure Read_Rom(Processor : in out Emulator_8080.Processor.Processor_Type) is
@@ -7,6 +9,7 @@ package body Emulator_8080.Disassembler is
    begin
       while Processor.Program_Counter <= Emulator_8080.Processor.Rom_Address_Type'Last loop
          Current_Instruction := Processor.Memory(Processor.Program_Counter);
+         Ada.Text_IO.Put_Line(Current_Instruction'Img);
          case Current_Instruction is
             when 16#0# =>
                Emulator_8080.Processor.NOP;
@@ -693,7 +696,7 @@ package body Emulator_8080.Disassembler is
                Processor.Program_Counter := Processor.Program_Counter + 1;
             when 16#c9# =>
                Emulator_8080.Processor.RET(Processor);
-               Processor.Program_Counter := Processor.Program_Counter + 1;
+               --Processor.Program_Counter := Processor.Program_Counter + 1;
             when 16#ca# =>
                Emulator_8080.Processor.JZ( Byte_2    => Processor.Memory(Processor.Program_Counter + 1),
                                            Byte_3    => Processor.Memory(Processor.Program_Counter + 2),
@@ -798,9 +801,12 @@ package body Emulator_8080.Disassembler is
       end loop;
    exception
       when others =>
-         Ada.Text_IO.Put_Line("Exception was thrown while executing rom!");
-         Ada.Text_IO.Put_Line("--> Instruction: " & Current_Instruction'Img);
-         Ada.Text_IO.Put_Line("--> TEST:" & Processor.Program_Counter'Img);
+         Ada.Text_IO.Put_Line("Exception was thrown while executing rom. Informations:");
+         Ada.Text_IO.Put_Line("--> Instruction:     " & Current_Instruction'Img);
+         Ada.Text_IO.Put_Line("--> Program_Counter: " & Processor.Program_Counter'Img);
+         Ada.Text_IO.Put_Line("--> Stack_Pointer: " & Processor.Stack_Pointer'Img);
+         Ada.Text_IO.Put_Line("--> Message:");
+         Ada.Text_IO.Put_Line(GNAT.Current_Exception.Exception_Message);
    end Read_Rom;
 
 end Emulator_8080.Disassembler;
