@@ -2,7 +2,8 @@ with Ada.Text_IO;
 with GNAT.Source_Info;
 with GNAT.Current_Exception;
 with Ada.Text_IO;
-
+with Ada.Unchecked_Conversion;
+with GNAT.OS_Lib;
 package body Emulator_8080.Processor is
 
    procedure Print_Exception(Throwing_Function, Exception_Cause : in String) is
@@ -2099,7 +2100,6 @@ package body Emulator_8080.Processor is
       PC : constant Address_Type := Convert_To_Address(Byte_Pair_Type'(High_Order_Byte => Byte_3,
                                                                             Low_Order_Byte  => Byte_2));
    begin
-      Ada.Text_IO.Put_Line("JMP REACHED:" & PC'Img);
       Processor.Program_Counter := PC;
    exception
       when others =>

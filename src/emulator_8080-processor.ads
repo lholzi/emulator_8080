@@ -275,12 +275,12 @@ package Emulator_8080.Processor is
 private
    subtype Concatenated_Register_Type is Interfaces.Unsigned_16;
    type Byte_Pair_Type is record
-      High_Order_Byte : Byte_Type := 0;
       Low_Order_Byte  : Byte_Type := 0;
+      High_Order_Byte : Byte_Type := 0;
    end record;
    for Byte_Pair_Type use record
-      High_Order_Byte at 0 range 0 .. 7;
-      Low_Order_Byte at 1 range 0 .. 7;
+      Low_Order_Byte at 0 range 0 .. 7;
+      High_Order_Byte at 1 range 0 .. 7;
    end record;
    for Byte_Pair_Type'Size use 16;
 
@@ -296,10 +296,11 @@ private
    procedure Or_A(Value : in Register_Type; Processor : in out Processor_Type);
    procedure Compare_A(Value : in Register_Type; Processor : in out Processor_Type);
 
+
+    function Convert_To_Address is new Unchecked_Conversion(Source => Byte_Pair_Type,
+                                                            Target => Address_Type);
    function Convert_To_Concatenated_Register is new Unchecked_Conversion(Source => Byte_Pair_Type,
                                                                          Target => Concatenated_Register_Type);
-   function Convert_To_Address is new Unchecked_Conversion(Source => Byte_Pair_Type,
-                                                           Target => Address_Type);
    function Convert_To_Byte_Pair is new Unchecked_Conversion(Source => Address_Type,
                                                              Target => Byte_Pair_Type);
    function Convert_To_Byte_Pair is new Unchecked_Conversion(Source => Concatenated_Register_Type,
