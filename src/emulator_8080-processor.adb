@@ -159,9 +159,9 @@ package body Emulator_8080.Processor is
       end if;
    end Compare_A;
 
-   procedure NOP is
+   procedure NOP(Processor : in out Processor_Type) is
    begin
-      null;--Ada.Text_IO.Put_Line("NOP");
+       Processor.Program_Counter := Processor.Program_Counter + 1;
    end NOP;
 
    procedure LXI_BxD16(Byte_2, Byte_3 : in Emulator_8080.Byte_Type;
@@ -169,6 +169,7 @@ package body Emulator_8080.Processor is
    begin
       Processor.B := Byte_3;
       Processor.C := Byte_2;
+      Processor.Program_Counter:= Processor.Program_Counter + 3;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -181,6 +182,7 @@ package body Emulator_8080.Processor is
       BC : constant Address_Type := Convert_To_Address(C);
    begin
       Processor.Memory(BC) := Processor.A;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -197,6 +199,7 @@ package body Emulator_8080.Processor is
    begin
       Processor.B := Converted_Result.High_Order_Byte;
       Processor.C := Converted_Result.Low_Order_Byte;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -206,6 +209,7 @@ package body Emulator_8080.Processor is
    procedure INR_B(Processor : in out Processor_Type) is
    begin
       Processor.B := Processor.B + 1;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -219,6 +223,7 @@ package body Emulator_8080.Processor is
           Register   => Result,
           Processor  => Processor);
       Processor.B := Result;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
      when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -229,6 +234,7 @@ package body Emulator_8080.Processor is
                       Processor : in out Processor_Type) is
    begin
       Processor.B := Byte_2;
+      Processor.Program_Counter := Processor.Program_Counter + 2;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -243,6 +249,7 @@ package body Emulator_8080.Processor is
    begin
       --TODO SET CARRY?
       Processor.A := Register_Type(Tmp);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -263,6 +270,7 @@ package body Emulator_8080.Processor is
    begin
       Processor.H := Converted_Result.High_Order_Byte;
       Processor.L := Converted_Result.Low_Order_Byte;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -277,6 +285,7 @@ package body Emulator_8080.Processor is
       --Adress : constant Address_Type := Convert
    begin
       Processor.A := Value;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -293,6 +302,7 @@ package body Emulator_8080.Processor is
    begin
       Processor.B := Converted_Result.High_Order_Byte;
       Processor.C := Converted_Result.Low_Order_Byte;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -302,6 +312,7 @@ package body Emulator_8080.Processor is
    procedure INR_C(Processor : in out Processor_Type) is
    begin
       Processor.C := Processor.C + 1;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -311,6 +322,7 @@ package body Emulator_8080.Processor is
    procedure DCR_C(Processor : in out Processor_Type) is
    begin
       Processor.C := Processor.C - 1;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -321,6 +333,7 @@ package body Emulator_8080.Processor is
                       Processor : in out Processor_Type) is
    begin
       Processor.C := Byte_2;
+      Processor.Program_Counter := Processor.Program_Counter + 2;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -336,6 +349,7 @@ package body Emulator_8080.Processor is
    begin
       --TODO SET CARRY?
       Processor.A := Register_Type(Tmp);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -348,6 +362,7 @@ package body Emulator_8080.Processor is
    begin
       Processor.D := Byte_3;
       Processor.E := Byte_2;
+      Processor.Program_Counter := Processor.Program_Counter + 3;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -360,6 +375,7 @@ package body Emulator_8080.Processor is
       DE : constant Address_Type := Convert_To_Address(C);
    begin
       Processor.Memory(DE) := Processor.A;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -376,6 +392,7 @@ package body Emulator_8080.Processor is
    begin
       Processor.D := Converted_Result.High_Order_Byte;
       Processor.E := Converted_Result.Low_Order_Byte;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -385,6 +402,7 @@ package body Emulator_8080.Processor is
    procedure INR_D(Processor : in out Processor_Type) is
    begin
       Processor.D := Processor.D + 1;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -394,6 +412,7 @@ package body Emulator_8080.Processor is
    procedure DCR_D(Processor : in out Processor_Type) is
    begin
       Processor.D := Processor.D - 1;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -404,6 +423,7 @@ package body Emulator_8080.Processor is
                       Processor : in out Processor_Type) is
    begin
       Processor.D := Byte_2;
+      Processor.Program_Counter := Processor.Program_Counter + 2;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -413,6 +433,7 @@ package body Emulator_8080.Processor is
    procedure RAL(Processor : in out Processor_Type) is
    begin
       Ada.Text_IO.Put_Line("Procedure RAL not yet implemented");
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -433,6 +454,7 @@ package body Emulator_8080.Processor is
    begin
       Processor.H := Converted_Result.High_Order_Byte;
       Processor.L := Converted_Result.Low_Order_Byte;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -447,6 +469,7 @@ package body Emulator_8080.Processor is
       --Adress : constant Address_Type := Convert
    begin
       Processor.A := Value;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -463,6 +486,7 @@ package body Emulator_8080.Processor is
    begin
       Processor.D := Converted_Result.High_Order_Byte;
       Processor.E := Converted_Result.Low_Order_Byte;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -472,6 +496,7 @@ package body Emulator_8080.Processor is
    procedure INR_E(Processor : in out Processor_Type) is
    begin
       Processor.E := Processor.E + 1;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -481,6 +506,7 @@ package body Emulator_8080.Processor is
    procedure DCR_E(Processor : in out Processor_Type) is
    begin
       Processor.E := Processor.E - 1;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -491,6 +517,7 @@ package body Emulator_8080.Processor is
                       Processor : in out Processor_Type) is
    begin
       Processor.E := Byte_2;
+      Processor.Program_Counter := Processor.Program_Counter + 2;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -500,6 +527,7 @@ package body Emulator_8080.Processor is
    procedure RAR(Processor : in out Processor_Type) is
    begin
       Ada.Text_IO.Put_Line("Procedure RAR not yet implemented");
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -511,6 +539,7 @@ package body Emulator_8080.Processor is
    begin
       Processor.H := Byte_3;
       Processor.L := Byte_2;
+      Processor.Program_Counter := Processor.Program_Counter + 3;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -520,6 +549,7 @@ package body Emulator_8080.Processor is
    procedure SHLD_Adr(Processor : in out Processor_Type) is
    begin
       Ada.Text_IO.Put_Line("Procedure SHLD_Adr not yet implemented");
+               Processor.Program_Counter := Processor.Program_Counter + 3;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -536,6 +566,7 @@ package body Emulator_8080.Processor is
    begin
       Processor.H := Converted_Result.High_Order_Byte;
       Processor.L := Converted_Result.Low_Order_Byte;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -545,6 +576,7 @@ package body Emulator_8080.Processor is
    procedure INR_H(Processor : in out Processor_Type) is
    begin
       Processor.H := Processor.H + 1;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -554,6 +586,7 @@ package body Emulator_8080.Processor is
    procedure DCR_H(Processor : in out Processor_Type) is
    begin
       Processor.H := Processor.H - 1;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
      when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -564,6 +597,7 @@ package body Emulator_8080.Processor is
                       Processor : in out Processor_Type) is
    begin
       Processor.H := Byte_2;
+      Processor.Program_Counter := Processor.Program_Counter + 2;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -573,6 +607,7 @@ package body Emulator_8080.Processor is
    procedure DAA(Processor : in out Processor_Type) is
    begin
       Ada.Text_IO.Put_Line("Special function DAA");
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -589,6 +624,7 @@ package body Emulator_8080.Processor is
    begin
       Processor.H := Converted_Result.High_Order_Byte;
       Processor.L := Converted_Result.Low_Order_Byte;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -603,6 +639,7 @@ package body Emulator_8080.Processor is
    begin
       Processor.L := L_Value;
       Processor.H := H_Value;
+      Processor.Program_Counter := Processor.Program_Counter + 3;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -619,6 +656,7 @@ package body Emulator_8080.Processor is
    begin
       Processor.H := Converted_Result.High_Order_Byte;
       Processor.L := Converted_Result.Low_Order_Byte;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -628,6 +666,7 @@ package body Emulator_8080.Processor is
    procedure INR_L(Processor : in out Processor_Type) is
    begin
       Processor.L := Processor.L + 1;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -637,6 +676,7 @@ package body Emulator_8080.Processor is
    procedure DCR_L(Processor : in out Processor_Type) is
    begin
       Processor.L := Processor.L - 1;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -647,6 +687,7 @@ package body Emulator_8080.Processor is
                       Processor : in out Processor_Type) is
    begin
       Processor.L := Byte_2;
+      Processor.Program_Counter := Processor.Program_Counter + 2;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -658,6 +699,7 @@ package body Emulator_8080.Processor is
       A : constant Interfaces.Unsigned_8 := Interfaces.Unsigned_8(Processor.A);
    begin
       Processor.A := Byte_Type(A xor A);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -668,6 +710,7 @@ package body Emulator_8080.Processor is
    begin
       Processor.Stack_Pointer := Convert_To_Address(Byte_Pair_Type'(High_Order_Byte => Byte_3,
                                                                           Low_Order_Byte  => Byte_2));
+      Processor.Program_Counter := Processor.Program_Counter + 3;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -679,6 +722,7 @@ package body Emulator_8080.Processor is
                                                                             Low_Order_Byte  => Byte_2));
    begin
       Processor.Memory(Address) := Processor.A;
+      Processor.Program_Counter := Processor.Program_Counter + 3;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -689,6 +733,7 @@ package body Emulator_8080.Processor is
       use Interfaces;
    begin
       Processor.Stack_Pointer := Processor.Stack_Pointer + 1;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -700,6 +745,7 @@ package body Emulator_8080.Processor is
                                                                             Low_Order_Byte  => Processor.L));
    begin
       Processor.Memory(Address) := Processor.Memory(Address) + 1;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -711,6 +757,7 @@ package body Emulator_8080.Processor is
                                                                             Low_Order_Byte  => Processor.L));
    begin
       Processor.Memory(Address) := Processor.Memory(Address) - 1;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -722,6 +769,7 @@ package body Emulator_8080.Processor is
                                                                             Low_Order_Byte  => Processor.L));
    begin
       Processor.Memory(Address) := Byte_2;
+      Processor.Program_Counter := Processor.Program_Counter + 2;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -731,6 +779,7 @@ package body Emulator_8080.Processor is
    procedure STC(Processor : in out Processor_Type) is
    begin
       Processor.Carry_Flag := Set;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -748,6 +797,7 @@ package body Emulator_8080.Processor is
    begin
       Processor.H := Converted_Result.High_Order_Byte;
       Processor.L := Converted_Result.Low_Order_Byte;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -759,6 +809,7 @@ package body Emulator_8080.Processor is
                                                                             Low_Order_Byte  => Byte_2));
    begin
       Processor.A := Processor.Memory(Address);
+      Processor.Program_Counter := Processor.Program_Counter + 3;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -766,9 +817,9 @@ package body Emulator_8080.Processor is
    end LDA;
 
    procedure DCX_SP(Processor : in out Processor_Type) is
-      use Interfaces;
    begin
       Processor.Stack_Pointer := Processor.Stack_Pointer - 1;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -778,6 +829,7 @@ package body Emulator_8080.Processor is
    procedure INR_A(Processor : in out Processor_Type) is
    begin
       Processor.A := Processor.A + 1;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -787,6 +839,7 @@ package body Emulator_8080.Processor is
    procedure DCR_A(Processor : in out Processor_Type) is
    begin
       Processor.A := Processor.A - 1;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -796,6 +849,7 @@ package body Emulator_8080.Processor is
    procedure MVI_AxD8(Byte_2 : in Byte_Type; Processor : in out Processor_Type) is
    begin
       Processor.A := Byte_2;
+      Processor.Program_Counter := Processor.Program_Counter + 2;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -809,6 +863,7 @@ package body Emulator_8080.Processor is
       else
          Processor.Carry_Flag := Set;
       end if;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -818,6 +873,7 @@ package body Emulator_8080.Processor is
    procedure MOV_BxB(Processor : in out Processor_Type) is
    begin
       Processor.B := Processor.B;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -827,6 +883,7 @@ package body Emulator_8080.Processor is
    procedure MOV_BxC(Processor : in out Processor_Type) is
    begin
       Processor.B := Processor.C;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -836,6 +893,7 @@ package body Emulator_8080.Processor is
      procedure MOV_BxD(Processor : in out Processor_Type) is
    begin
       Processor.B := Processor.D;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -845,6 +903,7 @@ package body Emulator_8080.Processor is
    procedure MOV_BxE(Processor : in out Processor_Type) is
    begin
       Processor.B := Processor.E;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -854,6 +913,7 @@ package body Emulator_8080.Processor is
    procedure MOV_BxH(Processor : in out Processor_Type) is
    begin
       Processor.B := Processor.H;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -863,6 +923,7 @@ package body Emulator_8080.Processor is
      procedure MOV_BxL(Processor : in out Processor_Type) is
    begin
       Processor.B := Processor.L;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -874,6 +935,7 @@ package body Emulator_8080.Processor is
                                                                             Low_Order_Byte  => Processor.L));
    begin
       Processor.B := Processor.Memory(Address);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -883,6 +945,7 @@ package body Emulator_8080.Processor is
    procedure MOV_BxA(Processor : in out Processor_Type) is
    begin
       Processor.B := Processor.A;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -892,6 +955,7 @@ package body Emulator_8080.Processor is
    procedure MOV_CxB(Processor : in out Processor_Type) is
    begin
       Processor.C := Processor.B;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -901,6 +965,7 @@ package body Emulator_8080.Processor is
    procedure MOV_CxC(Processor : in out Processor_Type) is
    begin
       Processor.C := Processor.C;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -910,6 +975,7 @@ package body Emulator_8080.Processor is
      procedure MOV_CxD(Processor : in out Processor_Type) is
    begin
       Processor.C := Processor.D;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -919,6 +985,7 @@ package body Emulator_8080.Processor is
    procedure MOV_CxE(Processor : in out Processor_Type) is
    begin
       Processor.C := Processor.E;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -928,6 +995,7 @@ package body Emulator_8080.Processor is
    procedure MOV_CxH(Processor : in out Processor_Type) is
    begin
       Processor.C := Processor.H;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -937,6 +1005,7 @@ package body Emulator_8080.Processor is
      procedure MOV_CxL(Processor : in out Processor_Type) is
    begin
       Processor.C := Processor.L;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -948,6 +1017,7 @@ package body Emulator_8080.Processor is
                                                                             Low_Order_Byte  => Processor.L));
    begin
       Processor.C := Processor.Memory(Address);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -957,6 +1027,7 @@ package body Emulator_8080.Processor is
    procedure MOV_CxA(Processor : in out Processor_Type) is
    begin
       Processor.C := Processor.A;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -966,6 +1037,7 @@ package body Emulator_8080.Processor is
    procedure MOV_DxB(Processor : in out Processor_Type) is
    begin
       Processor.D := Processor.B;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -975,6 +1047,7 @@ package body Emulator_8080.Processor is
    procedure MOV_DxC(Processor : in out Processor_Type) is
    begin
       Processor.D := Processor.C;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -984,6 +1057,7 @@ package body Emulator_8080.Processor is
    procedure MOV_DxD(Processor : in out Processor_Type) is
    begin
       Processor.D := Processor.D;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -993,6 +1067,7 @@ package body Emulator_8080.Processor is
    procedure MOV_DxE(Processor : in out Processor_Type) is
    begin
       Processor.D := Processor.E;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1002,6 +1077,7 @@ package body Emulator_8080.Processor is
    procedure MOV_DxH(Processor : in out Processor_Type) is
    begin
       Processor.D := Processor.H;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1011,6 +1087,7 @@ package body Emulator_8080.Processor is
    procedure MOV_DxL(Processor : in out Processor_Type) is
    begin
       Processor.D := Processor.L;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1022,6 +1099,7 @@ package body Emulator_8080.Processor is
                                                                             Low_Order_Byte  => Processor.L));
    begin
       Processor.D := Processor.Memory(Address);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1031,6 +1109,7 @@ package body Emulator_8080.Processor is
    procedure MOV_DxA(Processor : in out Processor_Type) is
    begin
       Processor.D := Processor.A;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1040,6 +1119,7 @@ package body Emulator_8080.Processor is
    procedure MOV_ExB(Processor : in out Processor_Type) is
    begin
       Processor.E := Processor.B;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1049,6 +1129,7 @@ package body Emulator_8080.Processor is
    procedure MOV_ExC(Processor : in out Processor_Type) is
    begin
       Processor.E := Processor.C;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1058,6 +1139,7 @@ package body Emulator_8080.Processor is
    procedure MOV_ExD(Processor : in out Processor_Type) is
    begin
       Processor.E := Processor.D;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1067,6 +1149,7 @@ package body Emulator_8080.Processor is
    procedure MOV_ExE(Processor : in out Processor_Type) is
    begin
       Processor.E := Processor.E;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1076,6 +1159,7 @@ package body Emulator_8080.Processor is
    procedure MOV_ExH(Processor : in out Processor_Type) is
    begin
       Processor.E := Processor.H;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1085,6 +1169,7 @@ package body Emulator_8080.Processor is
    procedure MOV_ExL(Processor : in out Processor_Type) is
    begin
       Processor.E := Processor.L;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1096,6 +1181,7 @@ package body Emulator_8080.Processor is
                                                                             Low_Order_Byte  => Processor.L));
    begin
       Processor.E := Processor.Memory(Address);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1105,6 +1191,7 @@ package body Emulator_8080.Processor is
    procedure MOV_ExA(Processor : in out Processor_Type) is
    begin
       Processor.E := Processor.A;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1114,6 +1201,7 @@ package body Emulator_8080.Processor is
    procedure MOV_HxB(Processor : in out Processor_Type) is
    begin
       Processor.H := Processor.B;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1123,6 +1211,7 @@ package body Emulator_8080.Processor is
    procedure MOV_HxC(Processor : in out Processor_Type) is
    begin
       Processor.H := Processor.C;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1132,6 +1221,7 @@ package body Emulator_8080.Processor is
    procedure MOV_HxD(Processor : in out Processor_Type) is
    begin
       Processor.H := Processor.D;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1141,6 +1231,7 @@ package body Emulator_8080.Processor is
    procedure MOV_HxE(Processor : in out Processor_Type) is
    begin
       Processor.H := Processor.E;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1150,6 +1241,7 @@ package body Emulator_8080.Processor is
    procedure MOV_HxH(Processor : in out Processor_Type) is
    begin
       Processor.H := Processor.H;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1159,6 +1251,7 @@ package body Emulator_8080.Processor is
    procedure MOV_HxL(Processor : in out Processor_Type) is
    begin
       Processor.H := Processor.L;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1170,6 +1263,7 @@ package body Emulator_8080.Processor is
                                                                             Low_Order_Byte  => Processor.L));
    begin
       Processor.H := Processor.Memory(Address);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1179,6 +1273,7 @@ package body Emulator_8080.Processor is
    procedure MOV_HxA(Processor : in out Processor_Type) is
    begin
       Processor.H := Processor.A;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1188,6 +1283,7 @@ package body Emulator_8080.Processor is
    procedure MOV_LxB(Processor : in out Processor_Type) is
    begin
       Processor.L := Processor.B;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1197,6 +1293,7 @@ package body Emulator_8080.Processor is
    procedure MOV_LxC(Processor : in out Processor_Type) is
    begin
       Processor.L := Processor.C;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1206,6 +1303,7 @@ package body Emulator_8080.Processor is
    procedure MOV_LxD(Processor : in out Processor_Type) is
    begin
       Processor.L := Processor.D;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1215,6 +1313,7 @@ package body Emulator_8080.Processor is
    procedure MOV_LxE(Processor : in out Processor_Type) is
    begin
       Processor.L := Processor.E;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1224,6 +1323,7 @@ package body Emulator_8080.Processor is
    procedure MOV_LxH(Processor : in out Processor_Type) is
    begin
       Processor.L := Processor.H;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1233,6 +1333,7 @@ package body Emulator_8080.Processor is
    procedure MOV_LxL(Processor : in out Processor_Type) is
    begin
       Processor.L := Processor.L;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1244,6 +1345,7 @@ package body Emulator_8080.Processor is
                                                                             Low_Order_Byte  => Processor.L));
    begin
       Processor.L := Processor.Memory(Address);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1253,6 +1355,7 @@ package body Emulator_8080.Processor is
    procedure MOV_LxA(Processor : in out Processor_Type) is
    begin
       Processor.L := Processor.A;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1264,6 +1367,7 @@ package body Emulator_8080.Processor is
                                                                             Low_Order_Byte  => Processor.L));
    begin
       Processor.Memory(Address) := Processor.B;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1275,6 +1379,7 @@ package body Emulator_8080.Processor is
                                                                             Low_Order_Byte  => Processor.L));
    begin
       Processor.Memory(Address) := Processor.C;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1286,6 +1391,7 @@ package body Emulator_8080.Processor is
                                                                             Low_Order_Byte  => Processor.L));
    begin
       Processor.Memory(Address) := Processor.D;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1297,6 +1403,7 @@ package body Emulator_8080.Processor is
                                                                             Low_Order_Byte  => Processor.L));
    begin
       Processor.Memory(Address) := Processor.E;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1308,6 +1415,7 @@ package body Emulator_8080.Processor is
                                                                             Low_Order_Byte  => Processor.L));
    begin
       Processor.Memory(Address) := Processor.H;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1319,6 +1427,7 @@ package body Emulator_8080.Processor is
                                                                             Low_Order_Byte  => Processor.L));
    begin
       Processor.Memory(Address) := Processor.L;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1328,6 +1437,7 @@ package body Emulator_8080.Processor is
    procedure HLT(Processor : in out Processor_Type) is
    begin
       Ada.Text_IO.Put_Line("Special function HLT");
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1339,6 +1449,7 @@ package body Emulator_8080.Processor is
                                                                             Low_Order_Byte  => Processor.L));
    begin
       Processor.Memory(Address) := Processor.A;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1348,6 +1459,7 @@ package body Emulator_8080.Processor is
    procedure MOV_AxB(Processor : in out Processor_Type) is
    begin
       Processor.A := Processor.B;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1357,6 +1469,7 @@ package body Emulator_8080.Processor is
    procedure MOV_AxC(Processor : in out Processor_Type) is
    begin
       Processor.A := Processor.C;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1366,6 +1479,7 @@ package body Emulator_8080.Processor is
    procedure MOV_AxD(Processor : in out Processor_Type) is
    begin
       Processor.A := Processor.D;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1375,6 +1489,7 @@ package body Emulator_8080.Processor is
    procedure MOV_AxE(Processor : in out Processor_Type) is
    begin
       Processor.A := Processor.E;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1384,6 +1499,7 @@ package body Emulator_8080.Processor is
    procedure MOV_AxH(Processor : in out Processor_Type) is
    begin
       Processor.A := Processor.H;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1393,6 +1509,7 @@ package body Emulator_8080.Processor is
    procedure MOV_AxL(Processor : in out Processor_Type) is
    begin
       Processor.A := Processor.L;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1404,6 +1521,7 @@ package body Emulator_8080.Processor is
                                                                             Low_Order_Byte  => Processor.L));
    begin
       Processor.A := Processor.Memory(Address);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1413,6 +1531,7 @@ package body Emulator_8080.Processor is
    procedure MOV_AxA(Processor : in out Processor_Type) is
    begin
       Processor.A := Processor.A;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1423,6 +1542,7 @@ package body Emulator_8080.Processor is
    begin
       Add(Summand   => Processor.B,
           Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1433,6 +1553,7 @@ package body Emulator_8080.Processor is
    begin
       Add(Summand   => Processor.C,
           Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1443,6 +1564,7 @@ package body Emulator_8080.Processor is
    begin
       Add(Summand   => Processor.D,
           Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1453,6 +1575,7 @@ package body Emulator_8080.Processor is
    begin
       Add(Summand   => Processor.E,
           Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1463,6 +1586,7 @@ package body Emulator_8080.Processor is
    begin
       Add(Summand   => Processor.H,
           Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1473,6 +1597,7 @@ package body Emulator_8080.Processor is
    begin
       Add(Summand   => Processor.L,
           Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1485,6 +1610,7 @@ package body Emulator_8080.Processor is
    begin
       Add(Summand   => Processor.Memory(Address),
           Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1495,6 +1621,7 @@ package body Emulator_8080.Processor is
    begin
       Add(Summand   => Processor.A,
           Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1505,6 +1632,7 @@ package body Emulator_8080.Processor is
    begin
       Add_With_Carry(Summand   => Processor.B,
                      Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1515,6 +1643,7 @@ package body Emulator_8080.Processor is
    begin
       Add_With_Carry(Summand   => Processor.C,
                      Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1525,6 +1654,7 @@ package body Emulator_8080.Processor is
    begin
       Add_With_Carry(Summand   => Processor.D,
                      Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1535,6 +1665,7 @@ package body Emulator_8080.Processor is
    begin
       Add_With_Carry(Summand   => Processor.E,
           Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1545,6 +1676,7 @@ package body Emulator_8080.Processor is
    begin
       Add_With_Carry(Summand   => Processor.H,
                      Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1555,6 +1687,7 @@ package body Emulator_8080.Processor is
    begin
       Add_With_Carry(Summand   => Processor.L,
                      Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1567,6 +1700,7 @@ package body Emulator_8080.Processor is
    begin
       Add_With_Carry(Summand   => Processor.Memory(Address),
                      Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1577,6 +1711,7 @@ package body Emulator_8080.Processor is
    begin
       Add_With_Carry(Summand   => Processor.A,
                      Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1587,6 +1722,7 @@ package body Emulator_8080.Processor is
    begin
       Sub(Subtrahend => Processor.B,
           Processor  => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1597,6 +1733,7 @@ package body Emulator_8080.Processor is
    begin
       Sub(Subtrahend => Processor.C,
           Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1607,6 +1744,7 @@ package body Emulator_8080.Processor is
    begin
       Sub(Subtrahend => Processor.D,
           Processor  => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1617,6 +1755,7 @@ package body Emulator_8080.Processor is
    begin
       Sub(Subtrahend => Processor.E,
           Processor  => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1627,6 +1766,7 @@ package body Emulator_8080.Processor is
    begin
       Sub(Subtrahend => Processor.H,
           Processor  => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1637,6 +1777,7 @@ package body Emulator_8080.Processor is
    begin
       Sub(Subtrahend => Processor.L,
           Processor  => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1649,6 +1790,7 @@ package body Emulator_8080.Processor is
    begin
       Sub(Subtrahend => Processor.Memory(Address),
           Processor  => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1659,6 +1801,7 @@ package body Emulator_8080.Processor is
    begin
       Sub(Subtrahend => Processor.A,
           Processor  => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1669,6 +1812,7 @@ package body Emulator_8080.Processor is
    begin
       Sub_With_Carry(Subtrahend => Processor.B,
                      Processor  => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1679,6 +1823,7 @@ package body Emulator_8080.Processor is
    begin
       Sub_With_Carry(Subtrahend => Processor.C,
                      Processor  => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1689,6 +1834,7 @@ package body Emulator_8080.Processor is
    begin
       Sub_With_Carry(Subtrahend => Processor.D,
                      Processor  => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1699,6 +1845,7 @@ package body Emulator_8080.Processor is
    begin
       Sub_With_Carry(Subtrahend => Processor.E,
                      Processor  => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1709,6 +1856,7 @@ package body Emulator_8080.Processor is
    begin
       Sub_With_Carry(Subtrahend => Processor.H,
                      Processor  => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1719,6 +1867,7 @@ package body Emulator_8080.Processor is
    begin
       Sub_With_Carry(Subtrahend => Processor.L,
                      Processor  => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1731,6 +1880,7 @@ package body Emulator_8080.Processor is
    begin
       Sub_With_Carry(Subtrahend => Processor.Memory(Address),
                      Processor  => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1741,6 +1891,7 @@ package body Emulator_8080.Processor is
    begin
       Sub_With_Carry(Subtrahend => Processor.A,
                      Processor  => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1751,6 +1902,7 @@ package body Emulator_8080.Processor is
    begin
       And_A(Value      => Processor.B,
             Processor  => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1761,6 +1913,7 @@ package body Emulator_8080.Processor is
    begin
       And_A(Value     => Processor.C,
             Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1771,6 +1924,7 @@ package body Emulator_8080.Processor is
    begin
       And_A(Value     => Processor.D,
             Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1781,6 +1935,7 @@ package body Emulator_8080.Processor is
    begin
       And_A(Value     => Processor.E,
             Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1791,6 +1946,7 @@ package body Emulator_8080.Processor is
    begin
       And_A(Value     => Processor.H,
             Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1801,6 +1957,7 @@ package body Emulator_8080.Processor is
    begin
       And_A(Value     => Processor.L,
             Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1813,6 +1970,7 @@ package body Emulator_8080.Processor is
    begin
       And_A(Value     => Processor.Memory(Address),
             Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1823,6 +1981,7 @@ package body Emulator_8080.Processor is
    begin
       And_A(Value     => Processor.A,
             Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1833,6 +1992,7 @@ package body Emulator_8080.Processor is
    begin
       Xor_A(Value      => Processor.B,
             Processor  => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1843,6 +2003,7 @@ package body Emulator_8080.Processor is
    begin
       Xor_A(Value     => Processor.C,
             Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1853,6 +2014,7 @@ package body Emulator_8080.Processor is
    begin
       Xor_A(Value     => Processor.D,
             Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1863,6 +2025,7 @@ package body Emulator_8080.Processor is
    begin
       Xor_A(Value     => Processor.E,
             Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1873,6 +2036,7 @@ package body Emulator_8080.Processor is
    begin
       Xor_A(Value     => Processor.H,
             Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1883,6 +2047,7 @@ package body Emulator_8080.Processor is
    begin
       Xor_A(Value     => Processor.L,
             Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1895,6 +2060,7 @@ package body Emulator_8080.Processor is
    begin
       Xor_A(Value     => Processor.Memory(Address),
             Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1905,6 +2071,7 @@ package body Emulator_8080.Processor is
    begin
       Xor_A(Value     => Processor.A,
             Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1915,6 +2082,7 @@ package body Emulator_8080.Processor is
    begin
       Or_A(Value      => Processor.B,
            Processor  => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1925,6 +2093,7 @@ package body Emulator_8080.Processor is
    begin
       Or_A(Value     => Processor.C,
            Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1935,6 +2104,7 @@ package body Emulator_8080.Processor is
    begin
       Or_A(Value     => Processor.D,
            Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1945,6 +2115,7 @@ package body Emulator_8080.Processor is
    begin
       Or_A(Value     => Processor.E,
             Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1955,6 +2126,7 @@ package body Emulator_8080.Processor is
    begin
       Or_A(Value     => Processor.H,
             Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1965,6 +2137,7 @@ package body Emulator_8080.Processor is
    begin
       Or_A(Value     => Processor.L,
             Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1977,6 +2150,7 @@ package body Emulator_8080.Processor is
    begin
       Or_A(Value     => Processor.Memory(Address),
             Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1987,6 +2161,7 @@ package body Emulator_8080.Processor is
    begin
       Or_A(Value     => Processor.A,
             Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -1997,6 +2172,7 @@ package body Emulator_8080.Processor is
    begin
       Compare_A(Value      => Processor.B,
                 Processor  => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2007,6 +2183,7 @@ package body Emulator_8080.Processor is
    begin
       Compare_A(Value     => Processor.C,
                 Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2017,6 +2194,7 @@ package body Emulator_8080.Processor is
    begin
       Compare_A(Value     => Processor.D,
                 Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2027,6 +2205,7 @@ package body Emulator_8080.Processor is
    begin
       Compare_A(Value     => Processor.E,
                 Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2037,6 +2216,7 @@ package body Emulator_8080.Processor is
    begin
       Compare_A(Value     => Processor.H,
                Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2047,6 +2227,7 @@ package body Emulator_8080.Processor is
    begin
       Compare_A(Value     => Processor.L,
                 Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2059,6 +2240,7 @@ package body Emulator_8080.Processor is
    begin
       Or_A(Value     => Processor.Memory(Address),
            Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2069,6 +2251,7 @@ package body Emulator_8080.Processor is
    begin
       Compare_A(Value     => Processor.A,
                 Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2079,6 +2262,8 @@ package body Emulator_8080.Processor is
    begin
       if Processor.Zero_Flag = Not_Set then
          RET(Processor);
+      else
+         Processor.Program_Counter := Processor.Program_Counter + 1;
       end if;
    exception
       when others =>
@@ -2091,6 +2276,7 @@ package body Emulator_8080.Processor is
       Processor.C := Processor.Memory(Processor.Stack_Pointer);
       Processor.B := Processor.Memory(Processor.Stack_Pointer + 1);
       Processor.Stack_Pointer := Processor.Stack_Pointer + 2;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2103,7 +2289,9 @@ package body Emulator_8080.Processor is
          JMP(Byte_2    => Byte_2,
              Byte_3    => Byte_3,
              Processor => Processor);
-       end if;
+      else
+         Processor.Program_Counter := Processor.Program_Counter + 3;
+      end if;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2127,6 +2315,8 @@ package body Emulator_8080.Processor is
          CALL(Byte_2    => Byte_2,
               Byte_3    => Byte_3,
               Processor => Processor);
+      else
+         Processor.Program_Counter := Processor.Program_Counter + 3;
       end if;
    exception
       when others =>
@@ -2139,6 +2329,7 @@ package body Emulator_8080.Processor is
       Processor.Memory(Processor.Stack_Pointer - 2) := Processor.C;
       Processor.Memory(Processor.Stack_Pointer - 1) := Processor.B;
       Processor.Stack_Pointer := Processor.Stack_Pointer - 2;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2149,6 +2340,7 @@ package body Emulator_8080.Processor is
    begin
       Add(Summand   => Byte_2,
           Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 2;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2160,6 +2352,7 @@ package body Emulator_8080.Processor is
       CALL(Byte_2    => 0,
            Byte_3    => 0,
            Processor => Processor);
+      Ada.Text_IO.Put_Line("CALL RST 0");
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2170,7 +2363,9 @@ package body Emulator_8080.Processor is
    begin
       if Processor.Zero_Flag = Set then
          RET(Processor);
-       end if;
+      else
+         Processor.Program_Counter := Processor.Program_Counter + 1;
+      end if;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2202,7 +2397,9 @@ package body Emulator_8080.Processor is
          JMP(Byte_2    => Byte_2,
              Byte_3    => Byte_3,
              Processor => Processor);
-       end if;
+      else
+         Processor.Program_Counter := Processor.Program_Counter + 3;
+      end if;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2213,9 +2410,11 @@ package body Emulator_8080.Processor is
    begin
       if Processor.Zero_Flag = Set then
          CALL(Byte_2    => Byte_2,
-             Byte_3    => Byte_3,
-             Processor => Processor);
-       end if;
+              Byte_3    => Byte_3,
+              Processor => Processor);
+      else
+         Processor.Program_Counter := Processor.Program_Counter + 3;
+      end if;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2225,7 +2424,7 @@ package body Emulator_8080.Processor is
    procedure CALL(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type) is
       PC_Byte_Pair : constant Byte_Pair_Type := Convert_To_Byte_Pair(Processor.Program_Counter);
       Next_PC : constant Address_Type := Convert_To_Address(Byte_Pair_Type'(Low_Order_Byte  => Byte_2,
-                                                                            High_Order_Byte => Byte_3));
+                                                                            High_Order_Byte => Byte_3)) + 2;
    begin
       Processor.Memory(Processor.Stack_Pointer - 1) := PC_Byte_Pair.High_Order_Byte;
       Processor.Memory(Processor.Stack_Pointer - 2) := PC_Byte_Pair.Low_Order_Byte;
@@ -2241,6 +2440,7 @@ package body Emulator_8080.Processor is
    begin
       Add_With_Carry(Summand   => Byte_2,
                      Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 2;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2252,6 +2452,8 @@ package body Emulator_8080.Processor is
       CALL(Byte_2    => 0,
            Byte_3    => 0,
            Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 1;
+      Ada.Text_IO.Put_Line("CALL RST_1");
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2262,6 +2464,8 @@ package body Emulator_8080.Processor is
    begin
       if Processor.Carry_Flag = Not_Set then
          RET(Processor);
+      else
+         Processor.Program_Counter := Processor.Program_Counter + 1;
       end if;
    exception
       when others =>
@@ -2274,6 +2478,7 @@ package body Emulator_8080.Processor is
       Processor.E := Processor.Memory(Processor.Stack_Pointer);
       Processor.D := Processor.Memory(Processor.Stack_Pointer + 1);
       Processor.Stack_Pointer := Processor.Stack_Pointer + 2;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2286,7 +2491,9 @@ package body Emulator_8080.Processor is
          JMP(Byte_2    => Byte_2,
              Byte_3    => Byte_3,
              Processor => Processor);
-       end if;
+      else
+         Processor.Program_Counter := Processor.Program_Counter + 3;
+      end if;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2296,6 +2503,7 @@ package body Emulator_8080.Processor is
    procedure OUT_D8(Byte_2 : in Byte_Type; Processor : in out Processor_Type) is
    begin
       Ada.Text_IO.Put_Line("NOT IMPLEMENTED OUT_D8");
+      Processor.Program_Counter := Processor.Program_Counter + 2;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2308,6 +2516,8 @@ package body Emulator_8080.Processor is
          CALL(Byte_2    => Byte_2,
               Byte_3    => Byte_3,
               Processor => Processor);
+      else
+         Processor.Program_Counter := Processor.Program_Counter + 3;
       end if;
    exception
       when others =>
@@ -2320,6 +2530,7 @@ package body Emulator_8080.Processor is
       Processor.Memory(Processor.Stack_Pointer - 2) := Processor.E;
       Processor.Memory(Processor.Stack_Pointer - 1) := Processor.D;
       Processor.Stack_Pointer := Processor.Stack_Pointer - 2;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2330,6 +2541,7 @@ package body Emulator_8080.Processor is
    begin
       Sub(Subtrahend => Byte_2,
           Processor  => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 2;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2341,6 +2553,7 @@ package body Emulator_8080.Processor is
       CALL(Byte_2    => 0,
            Byte_3    => 0,
            Processor => Processor);
+      Ada.Text_IO.Put_Line("CALLED WITH NULL ADDRESS");
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2351,6 +2564,8 @@ package body Emulator_8080.Processor is
    begin
       if Processor.Carry_Flag = Set then
          RET(Processor);
+      else
+         Processor.Program_Counter := Processor.Program_Counter + 1;
       end if;
    exception
       when others =>
@@ -2364,7 +2579,9 @@ package body Emulator_8080.Processor is
          JMP(Byte_2    => Byte_2,
              Byte_3    => Byte_3,
              Processor => Processor);
-       end if;
+      else
+         Processor.Program_Counter := Processor.Program_Counter + 3;
+      end if;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2374,6 +2591,7 @@ package body Emulator_8080.Processor is
    procedure IN_D8(Byte_2 : in Byte_Type; Processor : in out Processor_Type) is
    begin
       Ada.Text_IO.Put_Line("NOT IMPLEMENTED IN_D8");
+      Processor.Program_Counter := Processor.Program_Counter + 2;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2386,6 +2604,8 @@ package body Emulator_8080.Processor is
          CALL(Byte_2    => Byte_2,
               Byte_3    => Byte_3,
               Processor => Processor);
+      else
+         Processor.Program_Counter := Processor.Program_Counter + 3;
       end if;
    exception
       when others =>
@@ -2397,6 +2617,7 @@ package body Emulator_8080.Processor is
    begin
       Sub_With_Carry(Subtrahend => Byte_2,
                      Processor  => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 2;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2414,9 +2635,10 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end RST_3;
 
-   procedure Unimplemented_Instruction is
+   procedure Unimplemented_Instruction(Processor : in out Processor_Type) is
    begin
-      null;--Ada.Text_IO.Put_Line("Not yet implemented");
+      --Ada.Text_IO.Put_Line("Not yet implemented");
+      Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
      when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,

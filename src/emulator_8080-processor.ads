@@ -28,7 +28,7 @@ package Emulator_8080.Processor is
    end record;
 
    function Initialize(Rom : in Byte_Array_Type) return Processor_Type;
-   procedure NOP;
+   procedure NOP(Processor : in out Processor_Type);
    procedure LXI_BxD16(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
    procedure STAX_B(Processor : in out Processor_Type);
    procedure INX_B(Processor : in out Processor_Type);
@@ -270,7 +270,7 @@ package Emulator_8080.Processor is
    procedure RST_3(Processor : in out Processor_Type);
 
 
-   procedure Unimplemented_Instruction;
+   procedure Unimplemented_Instruction(Processor : in out Processor_Type);
 
 private
    subtype Concatenated_Register_Type is Interfaces.Unsigned_16;

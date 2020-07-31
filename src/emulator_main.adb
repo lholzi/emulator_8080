@@ -31,6 +31,15 @@ procedure Emulator_Main is
       Rom_IO.Close(Rom_File);
    end Read_Rom_File;
 
+   procedure Write_Invaders_Rom(Rom_File_Path : in String) is
+   begin
+      Rom_IO.Open(File => Rom_File, Mode => Rom_IO.Out_File, Name => Rom_File_Path);
+      for I in Rom_File_Content'Range loop
+         Rom_IO.Write(File => Rom_File, Item => Rom_File_Content(I));
+      end loop;
+      Rom_IO.Close(Rom_File);
+   end Write_Invaders_Rom;
+
 begin
    Ada.Text_IO.Put_Line("Starting emulator_8080.");
    Ada.Text_IO.Put_Line("Reading Rom...");
@@ -38,6 +47,8 @@ begin
    Read_Rom_File(Rom_Directory_Path & "invaders.g");
    Read_Rom_File(Rom_Directory_Path & "invaders.f");
    Read_Rom_File(Rom_Directory_Path & "invaders.e");
+
+   Write_Invaders_Rom(Rom_Directory_Path & "invaders.rom");
 
    Ada.Text_IO.Put_Line("File read successfully.");
    Ada.Text_IO.Put_Line("--> File size:  " & Rom_File_Size'Img);
