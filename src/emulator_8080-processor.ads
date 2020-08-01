@@ -272,6 +272,7 @@ package Emulator_8080.Processor is
    procedure RPO(Processor : in out Processor_Type);
    procedure POP_H(Processor : in out Processor_Type);
    procedure JPO(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
+   procedure XTHL(Processor : in out Processor_Type);
 
 
    procedure Unimplemented_Instruction(Processor : in out Processor_Type);
