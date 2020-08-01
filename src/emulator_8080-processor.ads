@@ -277,6 +277,7 @@ package Emulator_8080.Processor is
    procedure PUSH_H(Processor : in out Processor_Type);
    procedure ANI_D8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
    procedure RST_4(Processor : in out Processor_Type);
+   procedure RPE(Processor : in out Processor_Type);
 
 
    procedure Unimplemented_Instruction(Processor : in out Processor_Type);
