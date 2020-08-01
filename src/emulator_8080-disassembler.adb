@@ -656,6 +656,8 @@ package body Emulator_8080.Disassembler is
             when 16#fe# =>
                Emulator_8080.Processor.CPI(Byte_2    => Processor.Memory(Processor.Program_Counter + 1),
                                            Processor => Processor);
+            when 16#ff# =>
+               Emulator_8080.Processor.RST_7(Processor => Processor);
 
             when others =>
                Emulator_8080.Processor.Unimplemented_Instruction(Processor);
