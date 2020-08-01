@@ -2380,10 +2380,6 @@ package body Emulator_8080.Processor is
                                                                        Low_Order_Byte  =>Low_Order_Byte));
    begin
       Processor.Program_Counter := PC;
-      Ada.Text_IO.Put_Line("PC: " & Processor.Program_Counter'Img);
-      Ada.Text_IO.Put_Line("SP: " & Processor.Stack_Pointer'Img);
-      Ada.Text_IO.Put_Line("HOB: " & High_Order_Byte'Img);
-      Ada.Text_IO.Put_Line("LOB: " & Low_Order_Byte'Img);
       Processor.Stack_Pointer := Processor.Stack_Pointer + 2;
    exception
       when others =>
@@ -2449,11 +2445,11 @@ package body Emulator_8080.Processor is
 
    procedure RST_1(Processor : in out Processor_Type) is
    begin
+      Ada.Text_IO.Put_Line("CALL RST_1");
       CALL(Byte_2    => 0,
            Byte_3    => 0,
            Processor => Processor);
       Processor.Program_Counter := Processor.Program_Counter + 1;
-      Ada.Text_IO.Put_Line("CALL RST_1");
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2550,10 +2546,10 @@ package body Emulator_8080.Processor is
 
    procedure RST_2(Processor : in out Processor_Type) is
    begin
+      Ada.Text_IO.Put_Line("CALLED WITH NULL ADDRESS");
       CALL(Byte_2    => 0,
            Byte_3    => 0,
            Processor => Processor);
-      Ada.Text_IO.Put_Line("CALLED WITH NULL ADDRESS");
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2888,7 +2884,7 @@ package body Emulator_8080.Processor is
 
    procedure DI(Processor : in out Processor_Type) is
    begin
-      Ada.Text_IO.Put_Line("DISABLE INTERRUPR!");
+      Ada.Text_IO.Put_Line("DISABLE INTERRUPT!");
       Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>

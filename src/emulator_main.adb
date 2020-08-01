@@ -1,6 +1,7 @@
 with Ada.Directories;
 with Ada.Sequential_IO;
 with Ada.Text_IO;
+with GNAT.Current_Exception;
 with Emulator_8080.Processor;
 with Emulator_8080.Disassembler;
 
@@ -57,5 +58,10 @@ begin
    Ada.Text_IO.Put_Line("Initializing CPU");
    Processor := Emulator_8080.Processor.Initialize(Rom_File_Content);
    Ada.Text_IO.Put_Line("Running emulation...");
-   Emulator_8080.Disassembler.Read_Rom(Processor);
+   Emulator_8080.Disassembler.Read_Rom(Execution_Mode => Emulator_8080.Disassembler.Execute_And_Print,
+                                       Processor      => Processor);
+exception
+   when others =>
+      Ada.Text_IO.Put_Line("EXCEPTION CAUGHT IN MAIN");
+      Ada.Text_IO.Put_Line(GNAT.Current_Exception.Exception_Information);
 end Emulator_Main;

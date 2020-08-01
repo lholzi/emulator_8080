@@ -1,15 +1,18 @@
 with Ada.Text_IO;
+with Ada.Text_IO.Bounded_IO;
 with GNAT.Current_Exception;
+private with Interfaces;
+private with Ada.Unchecked_Conversion;
 
 package body Emulator_8080.Disassembler is
 
-   procedure Read_Rom(Processor : in out Emulator_8080.Processor.Processor_Type) is
+   procedure Read_Rom(Execution_Mode : in Execution_Mode_Type; Processor : in out Emulator_8080.Processor.Processor_Type) is
       use Emulator_8080.Processor;
       Current_Instruction : Byte_Type := 0;
    begin
       while Processor.Program_Counter <= Emulator_8080.Processor.Rom_Address_Type'Last loop
          Current_Instruction := Processor.Memory(Processor.Program_Counter);
-         Ada.Text_IO.Put_Line(Current_Instruction'Img);
+         if Execution_Mode = Execute_And_Print then Print_Mnemonic_Information(Processor); end if;
          case Current_Instruction is
             when 16#0# =>
                Emulator_8080.Processor.NOP(Processor);
@@ -672,5 +675,32 @@ package body Emulator_8080.Disassembler is
          Ada.Text_IO.Put_Line("--> Message:");
          Ada.Text_IO.Put_Line(GNAT.Current_Exception.Exception_Message);
    end Read_Rom;
+
+   procedure Print_Mnemonic_Information(Processor : in Emulator_8080.Processor.Processor_Type) is
+      use Emulator_8080.Processor;
+      package Opcode_Information_IO is new Ada.Text_IO.Bounded_IO(Bounded => Opcode_String);
+      package Byte_IO is new Ada.Text_IO.Integer_IO(Byte_Type);
+      Current_Instruction  : constant Byte_Type := Processor.Memory(Processor.Program_Counter);
+      Mnemonic_Information : constant Opcode_Information_Type := Opcode_Mapper(Current_Instruction);
+   begin
+      Opcode_Information_IO.Put(Mnemonic_Information.Mnemonic);
+      case Mnemonic_Information.Size is
+      when 1 =>
+         Ada.Text_IO.Put_Line("");
+      when 2 =>
+         Ada.Text_IO.Put("    Byte_2: ");
+         Byte_IO.Put(Item  => Processor.Memory(Processor.Program_Counter + 1),
+                     Base  => 16);
+         Ada.Text_IO.Put_Line("");
+      when 3 =>
+         Ada.Text_IO.Put("    Byte_2: ");
+         Byte_IO.Put(Item  => Processor.Memory(Processor.Program_Counter + 1),
+                     Base  => 16);
+         Ada.Text_IO.Put("    Byte_3: ");
+         Byte_IO.Put(Item  => Processor.Memory(Processor.Program_Counter + 2),
+                     Base  => 16);
+         Ada.Text_IO.Put_Line("");
+      end case;
+   end Print_Mnemonic_Information;
 
 end Emulator_8080.Disassembler;
