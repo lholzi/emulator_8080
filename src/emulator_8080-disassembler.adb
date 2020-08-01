@@ -626,6 +626,8 @@ package body Emulator_8080.Disassembler is
                Emulator_8080.Processor.JP(Byte_2    => Processor.Memory(Processor.Program_Counter + 1),
                                           Byte_3    => Processor.Memory(Processor.Program_Counter + 2),
                                           Processor => Processor);
+            when 16#f3# =>
+               Emulator_8080.Processor.DI(Processor => Processor);
             when others =>
                Emulator_8080.Processor.Unimplemented_Instruction(Processor);
          end case;
