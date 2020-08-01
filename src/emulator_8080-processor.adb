@@ -2724,6 +2724,17 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end PUSH_H;
 
+   procedure ANI_D8(Byte_2 : in Byte_Type; Processor : in out Processor_Type) is
+   begin
+      And_A(Value     => Byte_2,
+            Processor => Processor);
+      Processor.Program_Counter := Processor.Program_Counter + 2;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end ANI_D8;
+
    procedure Unimplemented_Instruction(Processor : in out Processor_Type) is
    begin
       --Ada.Text_IO.Put_Line("Not yet implemented");
