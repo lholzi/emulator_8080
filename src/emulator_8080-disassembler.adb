@@ -639,6 +639,10 @@ package body Emulator_8080.Disassembler is
                                               Processor => Processor);
             when 16#f7# =>
                Emulator_8080.Processor.RST_6(Processor => Processor);
+            when 16#f8# =>
+               Emulator_8080.Processor.RM(Processor => Processor);
+            when 16#f9# =>
+               Emulator_8080.Processor.SPHL(Processor => Processor);
             when others =>
                Emulator_8080.Processor.Unimplemented_Instruction(Processor);
          end case;
