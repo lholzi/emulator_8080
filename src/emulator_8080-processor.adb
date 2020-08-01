@@ -2697,6 +2697,33 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end XTHL;
 
+   procedure CPO(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type) is
+   begin
+      if Processor.Parity = Odd then
+         CALL(Byte_2    => Byte_2,
+              Byte_3    => Byte_3,
+              Processor => Processor);
+      else
+         Processor.Program_Counter := Processor.Program_Counter + 3;
+      end if;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end CPO;
+
+   procedure PUSH_H(Processor : in out Processor_Type) is
+   begin
+      Processor.Memory(Processor.Stack_Pointer - 2) := Processor.L;
+      Processor.Memory(Processor.Stack_Pointer - 1) := Processor.H;
+      Processor.Stack_Pointer := Processor.Stack_Pointer - 2;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end PUSH_H;
+
    procedure Unimplemented_Instruction(Processor : in out Processor_Type) is
    begin
       --Ada.Text_IO.Put_Line("Not yet implemented");
