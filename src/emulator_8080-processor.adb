@@ -2841,6 +2841,19 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end RST_5;
 
+   procedure RP(Processor : in out Processor_Type) is
+   begin
+      if Processor.Sign_Flag = Not_Set then
+        RET(Processor);
+      else
+        Processor.Program_Counter := Processor.Program_Counter + 1;
+      end if;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end RP;
+
 
    procedure Unimplemented_Instruction(Processor : in out Processor_Type) is
    begin

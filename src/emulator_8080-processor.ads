@@ -285,6 +285,7 @@ package Emulator_8080.Processor is
    --
    procedure XRI_D8(Byte_2 : in Byte_Type; Processor: in out Processor_Type);
    procedure RST_5(Processor : in out Processor_Type);
+   procedure RP(Processor : in out Processor_Type);
 
 
    procedure Unimplemented_Instruction(Processor : in out Processor_Type);
