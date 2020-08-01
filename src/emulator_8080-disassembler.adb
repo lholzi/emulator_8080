@@ -620,6 +620,8 @@ package body Emulator_8080.Disassembler is
                Emulator_8080.Processor.RST_5(Processor => Processor);
             when 16#f0# =>
                Emulator_8080.Processor.RP(Processor => Processor);
+            when 16#f1# =>
+               Emulator_8080.Processor.POP_PSW(Processor => Processor);
             when others =>
                Emulator_8080.Processor.Unimplemented_Instruction(Processor);
          end case;

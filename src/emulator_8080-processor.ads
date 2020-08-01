@@ -6,8 +6,10 @@ package Emulator_8080.Processor is
    type Address_Type is new Natural range 0 .. 16#FFFF#;
    subtype Rom_Address_Type is Address_Type range 0 .. 16#1FFF#;
    type Flag_Type is (Not_Set, Set) with Size => 1;
+   for Flag_Type use (Not_Set => 0, Set => 1);
    type Memory_Type is array (Address_Type) of Byte_Type;
-   type Parity_Type is (Even, Odd);
+   type Parity_Type is (Odd, Even) with Size => 1;
+   for Parity_Type use (Odd => 0, Even => 1);
    type Processor_Type is record
       A : Register_Type := 0;
       B : Register_Type := 0;
@@ -286,6 +288,7 @@ package Emulator_8080.Processor is
    procedure XRI_D8(Byte_2 : in Byte_Type; Processor: in out Processor_Type);
    procedure RST_5(Processor : in out Processor_Type);
    procedure RP(Processor : in out Processor_Type);
+   procedure POP_PSW(Processor : in out Processor_Type);
 
 
    procedure Unimplemented_Instruction(Processor : in out Processor_Type);
@@ -301,6 +304,22 @@ private
       High_Order_Byte at 1 range 0 .. 7;
    end record;
    for Byte_Pair_Type'Size use 16;
+   type Flag_Storage_Type is record
+      Sign_Flag : Flag_Type := Not_Set;
+      Zero_Flag : Flag_Type := Not_Set;
+      Carry_Flag : Flag_Type := Not_Set;
+      Auxillary_Carry : Flag_Type := Not_Set;
+      Parity : Parity_Type := Odd;
+      Spare : Interfaces.Unsigned_8 range 0 .. 3;
+   end record;
+   for Flag_Storage_Type use record
+      Sign_Flag at 0 range 0 .. 0;
+      Zero_Flag at 0 range 1 .. 1;
+      Carry_Flag at 0 range 2 .. 2;
+      Auxillary_Carry at 0 range 3 .. 3;
+      Parity at 0 range 4 .. 4;
+      Spare at 0 range 5 .. 7;
+   end record;
 
    procedure Set_Zero_Flag_If_Applicable(Value : in Interfaces.Unsigned_16; Processor : in out Processor_Type);
    procedure Set_Sign_Flag_If_Applicable(Value : in Interfaces.Unsigned_16; Processor : in out Processor_Type);
@@ -316,7 +335,7 @@ private
    procedure Compare_A(Value : in Register_Type; Processor : in out Processor_Type);
 
 
-    function Convert_To_Address is new Unchecked_Conversion(Source => Byte_Pair_Type,
+   function Convert_To_Address is new Unchecked_Conversion(Source => Byte_Pair_Type,
                                                             Target => Address_Type);
    function Convert_To_Concatenated_Register is new Unchecked_Conversion(Source => Byte_Pair_Type,
                                                                          Target => Concatenated_Register_Type);
@@ -324,6 +343,10 @@ private
                                                              Target => Byte_Pair_Type);
    function Convert_To_Byte_Pair is new Unchecked_Conversion(Source => Concatenated_Register_Type,
                                                              Target => Byte_Pair_Type);
+   function Convert_To_Byte is new Unchecked_Conversion(Source => Flag_Storage_Type,
+                                                        Target => Byte_Type);
+   function Convert_To_Flag_Storage is new Unchecked_Conversion(Source => Byte_Type,
+                                                                Target => Flag_Storage_Type);
 
 
 end Emulator_8080.Processor;

@@ -2854,6 +2854,22 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end RP;
 
+   procedure POP_PSW(Processor : in out Processor_Type) is
+      Flag_Storage : constant Flag_Storage_Type := Convert_To_Flag_Storage(Processor.Memory(Processor.Stack_Pointer));
+   begin
+      Processor.Sign_Flag       := Flag_Storage.Sign_Flag;
+      Processor.Zero_Flag       := Flag_Storage.Zero_Flag;
+      Processor.Carry_Flag      := Flag_Storage.Carry_Flag;
+      Processor.Auxillary_Carry := Flag_Storage.Auxillary_Carry;
+      Processor.Parity          := Flag_Storage.Parity;
+      Processor.A               := Processor.Memory(Processor.Stack_Pointer + 1);
+      Processor.Stack_Pointer   := Processor.Stack_Pointer + 2;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end POP_PSW;
+
 
    procedure Unimplemented_Instruction(Processor : in out Processor_Type) is
    begin
