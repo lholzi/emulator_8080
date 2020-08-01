@@ -2786,6 +2786,23 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end JPE;
 
+   procedure XCHG(Processor : in out Processor_Type) is
+      L_Value_Before : constant Byte_Type := Processor.L;
+      H_Value_Before : constant Byte_Type := Processor.H;
+      E_Value_Before : constant Byte_Type := Processor.E;
+      D_Value_Before : constant Byte_Type := Processor.D;
+   begin
+      Processor.L := E_Value_Before;
+      Processor.E := L_Value_Before;
+      Processor.H := D_Value_Before;
+      Processor.D := H_Value_Before;
+      Processor.Program_Counter := Processor.Program_Counter + 1;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end XCHG;
+
    procedure Unimplemented_Instruction(Processor : in out Processor_Type) is
    begin
       --Ada.Text_IO.Put_Line("Not yet implemented");

@@ -280,6 +280,7 @@ package Emulator_8080.Processor is
    procedure RPE(Processor : in out Processor_Type);
    procedure PCHL(Processor : in out Processor_Type);
    procedure JPE(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
+   procedure XCHG(Processor : in out Processor_Type);
 
 
    procedure Unimplemented_Instruction(Processor : in out Processor_Type);
