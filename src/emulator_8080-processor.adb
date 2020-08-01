@@ -2760,6 +2760,17 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end RPE;
 
+   procedure PCHL(Processor : in out Processor_Type) is
+      New_Address : constant Byte_Pair_Type := Byte_Pair_Type'(Low_Order_Byte  => Processor.L,
+                                                               High_Order_Byte => Processor.H);
+   begin
+      Processor.Program_Counter := Convert_To_Address(New_Address);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end PCHL;
+
    procedure Unimplemented_Instruction(Processor : in out Processor_Type) is
    begin
       --Ada.Text_IO.Put_Line("Not yet implemented");
