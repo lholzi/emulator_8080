@@ -610,7 +610,7 @@ package body Emulator_8080.Disassembler is
             when 16#eb# =>
                Emulator_8080.Processor.XCHG(Processor => Processor);
             when 16#ec# =>
-               Emulator_8080.Processor.CPO(Byte_2    => Processor.Memory(Processor.Program_Counter + 1),
+               Emulator_8080.Processor.CPE(Byte_2    => Processor.Memory(Processor.Program_Counter + 1),
                                            Byte_3    => Processor.Memory(Processor.Program_Counter + 2),
                                            Processor => Processor);
             when others =>
