@@ -291,6 +291,8 @@ package Emulator_8080.Processor is
    procedure POP_PSW(Processor : in out Processor_Type);
    procedure JP(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
    procedure DI(Processor : in out Processor_Type);
+   procedure CP(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
+   procedure PUSH_PSW(Processor : in out Processor_Type);
 
 
    procedure Unimplemented_Instruction(Processor : in out Processor_Type);

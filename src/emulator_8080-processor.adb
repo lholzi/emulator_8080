@@ -2864,6 +2864,7 @@ package body Emulator_8080.Processor is
       Processor.Parity          := Flag_Storage.Parity;
       Processor.A               := Processor.Memory(Processor.Stack_Pointer + 1);
       Processor.Stack_Pointer   := Processor.Stack_Pointer + 2;
+      Processor.Program_Counter := Processor.Program_Counter + 3;
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2894,6 +2895,39 @@ package body Emulator_8080.Processor is
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end DI;
+
+   procedure CP(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type) is
+      Next_PC : constant Address_Type := Convert_To_Address(Byte_Pair_Type'(Low_Order_Byte  => Byte_2,
+                                                                            High_Order_Byte => Byte_3));
+   begin
+      if Processor.Sign_Flag = Not_Set then
+         PRocessor.Program_Counter := Next_PC;
+      else
+         Processor.Program_Counter := Processor.Program_Counter + 3;
+      end if;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end CP;
+
+   procedure PUSH_PSW(Processor : in out Processor_Type) is
+      Flag_Storage : Flag_Storage_Type := Flag_Storage_Type'(Sign_Flag       => Processor.Sign_Flag,
+                                                             Zero_Flag       => Processor.Zero_Flag,
+                                                             Carry_Flag      => Processor.Carry_Flag,
+                                                             Auxillary_Carry => Processor.Auxillary_Carry,
+                                                             Parity          => Processor.Parity,
+                                                             Spare           => 0);
+   begin
+      Processor.Memory(Processor.Stack_Pointer - 2) := Convert_To_Byte(Flag_Storage);
+      Processor.Memory(Processor.Stack_Pointer - 1) := Processor.A;
+      Processor.Stack_Pointer := Processor.Stack_Pointer - 2;
+      Processor.Program_Counter := Processor.Program_Counter + 3;
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end PUSH_PSW;
 
 
    procedure Unimplemented_Instruction(Processor : in out Processor_Type) is

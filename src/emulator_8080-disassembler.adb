@@ -628,6 +628,12 @@ package body Emulator_8080.Disassembler is
                                           Processor => Processor);
             when 16#f3# =>
                Emulator_8080.Processor.DI(Processor => Processor);
+            when 16#f4# =>
+               Emulator_8080.Processor.CP(Byte_2    => Processor.Memory(Processor.Program_Counter + 1),
+                                          Byte_3    => Processor.Memory(Processor.Program_Counter + 2),
+                                          Processor => Processor);
+            when 16#f5# =>
+               Emulator_8080.Processor.PUSH_PSW(Processor => Processor);
             when others =>
                Emulator_8080.Processor.Unimplemented_Instruction(Processor);
          end case;
