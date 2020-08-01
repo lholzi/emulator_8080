@@ -49,7 +49,9 @@ begin
    Read_Rom_File(Rom_Directory_Path & "invaders.f");
    Read_Rom_File(Rom_Directory_Path & "invaders.e");
 
-   Write_Invaders_Rom(Rom_Directory_Path & "invaders.rom");
+   if not Ada.Directories.Exists(Rom_Directory_Path & "invaders.rom") then
+      Write_Invaders_Rom(Rom_Directory_Path & "invaders.rom");
+   end if;
 
    Ada.Text_IO.Put_Line("File read successfully.");
    Ada.Text_IO.Put_Line("--> File size:  " & Rom_File_Size'Img);
