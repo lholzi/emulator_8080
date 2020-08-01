@@ -603,6 +603,10 @@ package body Emulator_8080.Disassembler is
                Emulator_8080.Processor.RPE(Processor => Processor);
             when 16#e9# =>
                Emulator_8080.Processor.PCHL(Processor => Processor);
+            when 16#ea# =>
+               Emulator_8080.Processor.JPE(Byte_2    => Processor.Memory(Processor.Program_Counter + 1),
+                                           Byte_3    => Processor.Memory(Processor.Program_Counter + 2),
+                                           Processor => Processor);
             when others =>
                Emulator_8080.Processor.Unimplemented_Instruction(Processor);
          end case;
