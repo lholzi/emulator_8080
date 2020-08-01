@@ -582,6 +582,10 @@ package body Emulator_8080.Disassembler is
                Emulator_8080.Processor.RPO(Processor);
             when 16#e1# =>
                Emulator_8080.Processor.POP_H(Processor);
+            when 16#e2# =>
+               Emulator_8080.Processor.JPO(Byte_2    => Processor.Memory(Processor.Program_Counter + 1),
+                                           Byte_3    => Processor.Memory(Processor.Program_Counter + 2),
+                                           Processor => Processor);
             when others =>
                Emulator_8080.Processor.Unimplemented_Instruction(Processor);
          end case;
