@@ -7,6 +7,7 @@ package Emulator_8080.Processor is
    subtype Rom_Address_Type is Address_Type range 0 .. 16#1FFF#;
    type Flag_Type is (Not_Set, Set) with Size => 1;
    type Memory_Type is array (Address_Type) of Byte_Type;
+   type Parity_Type is (Even, Odd);
    type Processor_Type is record
       A : Register_Type := 0;
       B : Register_Type := 0;
@@ -18,9 +19,9 @@ package Emulator_8080.Processor is
 
       Sign_Flag : Flag_Type := Not_Set;
       Zero_Flag : Flag_Type := Not_Set;
-      Parity_Flag : Flag_Type := Not_Set;
       Carry_Flag : Flag_Type := Not_Set;
       Auxillary_Carry : Flag_Type := Not_Set;
+      Parity : Parity_Type := Odd;
 
       Memory : Memory_Type := (others => 0);
       Program_Counter : Address_Type := 0;
@@ -268,6 +269,8 @@ package Emulator_8080.Processor is
    procedure CC(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
    procedure SBI_D8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
    procedure RST_3(Processor : in out Processor_Type);
+   procedure RPO(Processor : in out Processor_Type);
+   procedure POP_H(Processor : in out Processor_Type);
 
 
    procedure Unimplemented_Instruction(Processor : in out Processor_Type);
