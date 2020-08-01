@@ -2735,6 +2735,18 @@ package body Emulator_8080.Processor is
                          Exception_Cause   => GNAT.Current_Exception.Exception_Information);
    end ANI_D8;
 
+   procedure RST_4(Processor : in out Processor_Type) is
+   begin
+      Ada.Text_IO.Put_Line("RST 4!");
+      CALL(Byte_2    => 0,
+           Byte_3    => 0,
+           Processor => Processor);
+   exception
+      when others =>
+         Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
+                         Exception_Cause   => GNAT.Current_Exception.Exception_Information);
+   end RST_4;
+
    procedure Unimplemented_Instruction(Processor : in out Processor_Type) is
    begin
       --Ada.Text_IO.Put_Line("Not yet implemented");
