@@ -300,6 +300,7 @@ package Emulator_8080.Processor is
    procedure JM(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
    procedure EI(Processor : in out Processor_Type);
    procedure CM(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
+   procedure CPI(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
 
 
    procedure Unimplemented_Instruction(Processor : in out Processor_Type);
