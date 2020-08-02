@@ -3,13 +3,21 @@ with Interfaces;
 
 package Emulator_8080.Processor is
    subtype Register_Type is Emulator_8080.Byte_Type;
+
    type Address_Type is new Natural range 0 .. 16#FFFF#;
    subtype Rom_Address_Type is Address_Type range 0 .. 16#1FFF#;
+   subtype Ram_Address_Type is Address_Type range 16#2000# .. 16#23FF#;
+   subtype Vram_Address_Type is Address_Type range 16#2400# .. 16#3FFF#;
+
    type Flag_Type is (Not_Set, Set) with Size => 1;
    for Flag_Type use (Not_Set => 0, Set => 1);
+
    type Memory_Type is array (Address_Type) of Byte_Type;
+   type Vram_Type is array (Vram_Address_Type) of Byte_Type;
+
    type Parity_Type is (Odd, Even) with Size => 1;
    for Parity_Type use (Odd => 0, Even => 1);
+
    type Processor_Type is record
       A : Register_Type := 0;
       B : Register_Type := 0;

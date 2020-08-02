@@ -4,6 +4,7 @@ with GNAT.Current_Exception;
 with Ada.Text_IO;
 with Ada.Unchecked_Conversion;
 with GNAT.OS_Lib;
+
 package body Emulator_8080.Processor is
 
    procedure Print_Exception(Throwing_Function, Exception_Cause : in String) is

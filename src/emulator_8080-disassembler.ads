@@ -3,7 +3,11 @@ with Emulator_8080.Processor;
 
 package Emulator_8080.Disassembler is
    type Execution_Mode_Type is (Execute_And_Print, Execute_Only);
-   procedure Read_Rom(Execution_Mode : in Execution_Mode_Type; Processor : in out Emulator_8080.Processor.Processor_Type);
+   type Render_Step_Callback_Type is access procedure(Vram : in Processor.Vram_Type);
+
+   procedure Read_Rom(Render_Step_Callback : in Render_Step_Callback_Type := null;
+                      Execution_Mode : in Execution_Mode_Type;
+                      Processor : in out Emulator_8080.Processor.Processor_Type);
 
 private
    procedure Print_Mnemonic_Information(Processor : in Emulator_8080.Processor.Processor_Type);

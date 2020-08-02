@@ -6,13 +6,22 @@ private with Ada.Unchecked_Conversion;
 
 package body Emulator_8080.Disassembler is
 
-   procedure Read_Rom(Execution_Mode : in Execution_Mode_Type; Processor : in out Emulator_8080.Processor.Processor_Type) is
+   procedure Read_Rom(Render_Step_Callback : in Render_Step_Callback_Type := null;
+                      Execution_Mode       : in Execution_Mode_Type;
+                      Processor            : in out Emulator_8080.Processor.Processor_Type) is
       use Emulator_8080.Processor;
       Current_Instruction : Byte_Type := 0;
    begin
       while Processor.Program_Counter <= Emulator_8080.Processor.Rom_Address_Type'Last loop
          Current_Instruction := Processor.Memory(Processor.Program_Counter);
          if Execution_Mode = Execute_And_Print then Print_Mnemonic_Information(Processor); end if;
+         if Render_Step_Callback /= null then
+            declare
+               Vram : constant Vram_Type := Vram_Type(Processor.Memory(Vram_Address_Type'First .. Vram_Address_Type'Last));
+            begin
+               Render_Step_Callback(Vram);
+            end;
+         end if;
          case Current_Instruction is
             when 16#0# =>
                Emulator_8080.Processor.NOP(Processor);
