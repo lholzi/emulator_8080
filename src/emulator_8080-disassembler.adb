@@ -689,9 +689,13 @@ package body Emulator_8080.Disassembler is
       use Emulator_8080.Processor;
       package Opcode_Information_IO is new Ada.Text_IO.Bounded_IO(Bounded => Opcode_String);
       package Byte_IO is new Ada.Text_IO.Integer_IO(Byte_Type);
+      package Address_IO is new Ada.Text_IO.Integer_IO(Address_Type);
       Current_Instruction  : constant Byte_Type := Processor.Memory(Processor.Program_Counter);
       Mnemonic_Information : constant Opcode_Information_Type := Opcode_Mapper(Current_Instruction);
    begin
+      Address_IO.Put(Item  => Processor.Program_Counter,
+                     Base  => 16);
+      Ada.Text_IO.Put(": ");
       Opcode_Information_IO.Put(Mnemonic_Information.Mnemonic);
       case Mnemonic_Information.Size is
       when 1 =>
