@@ -2380,7 +2380,7 @@ package body Emulator_8080.Processor is
       PC : constant Address_Type := Convert_To_Address(Byte_Pair_Type'(High_Order_Byte => High_Order_Byte,
                                                                        Low_Order_Byte  =>Low_Order_Byte));
    begin
-      Processor.Program_Counter := PC;
+      Processor.Program_Counter := PC + 1;
       Processor.Stack_Pointer := Processor.Stack_Pointer + 2;
    exception
       when others =>
@@ -2421,7 +2421,7 @@ package body Emulator_8080.Processor is
    procedure CALL(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type) is
       PC_Byte_Pair : constant Byte_Pair_Type := Convert_To_Byte_Pair(Processor.Program_Counter);
       Next_PC : constant Address_Type := Convert_To_Address(Byte_Pair_Type'(Low_Order_Byte  => Byte_2,
-                                                                            High_Order_Byte => Byte_3)) + 2;
+                                                                            High_Order_Byte => Byte_3));
    begin
       Processor.Memory(Processor.Stack_Pointer - 1) := PC_Byte_Pair.High_Order_Byte;
       Processor.Memory(Processor.Stack_Pointer - 2) := PC_Byte_Pair.Low_Order_Byte;
