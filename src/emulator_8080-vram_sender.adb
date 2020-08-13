@@ -3,12 +3,16 @@ with Ada.Streams;
 with GNAT.Sockets;
 
 package body Emulator_8080.Vram_Sender is
+
+   Address : GNAT.Sockets.Sock_Addr_Type;
    procedure Initialize(Port : in Natural; Ip_Address : in String) is
-      Address : constant GNAT.Sockets.Sock_Addr_Type := GNAT.Sockets.Sock_Addr_Type'(Family => GNAT.Sockets.Family_Inet,
-                                                                                     Addr   => GNAT.Sockets.Inet_Addr(Ip_Address),
-                                                                                     Port   => GNAT.Sockets.Port_Type(Port));
    begin
-      GNAT.Sockets.Create_Socket(Sender_Socket);
+      Address := GNAT.Sockets.Sock_Addr_Type'(Family => GNAT.Sockets.Family_Inet,
+                                              Addr   => GNAT.Sockets.Inet_Addr(Ip_Address),
+                                              Port   => GNAT.Sockets.Port_Type(Port));
+      GNAT.Sockets.Create_Socket(Socket => Sender_Socket,
+                                 Family => GNAT.Sockets.Family_Inet,
+                                 Mode   => GNAT.Sockets.Socket_Datagram);
    end Initialize;
 
    procedure Close is
@@ -17,13 +21,16 @@ package body Emulator_8080.Vram_Sender is
    end Close;
 
    procedure Send_Vram(Vram : in Emulator_8080.Processor.Vram_Type) is
-      Data : aliased Ada.Streams.Stream_Element_Array(1 .. Vram'Length);
+      use Ada.Streams;
+      Data : Ada.Streams.Stream_Element_Array(1 .. Vram'Length);
+      Counter : Ada.Streams.Stream_Element_Offset := Data'First;
+      Last : Ada.Streams.Stream_Element_Offset;
    begin
-      --Emulator_8080.Processor.Vram_Type'Write(Data'Class, Vram);
       for I in Vram'Range loop
-         if Vram(I) /= 0 then
-            Ada.Text_IO.Put_Line(Vram(I)'Img);
-         end if;
+         Data(Counter) := Ada.Streams.Stream_Element(Vram(I));
+         Counter := Counter + 1;
       end loop;
+      Gnat.Sockets.Send_Socket (Sender_Socket, Data, Last, Address);
+      Ada.Text_IO.Put_Line("Last : " & Last'Img);
    end;
 end Emulator_8080.Vram_Sender;
