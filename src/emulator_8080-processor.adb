@@ -160,6 +160,12 @@ package body Emulator_8080.Processor is
       end if;
    end Compare_A;
 
+   procedure Inx(V1, V2 : in out Register_Type) is
+   begin
+      V1 := V1 + 1;
+      V2 := V2 + 1;
+   end Inx;
+
    procedure NOP(Processor : in out Processor_Type) is
    begin
        Processor.Program_Counter := Processor.Program_Counter + 1;
@@ -191,15 +197,9 @@ package body Emulator_8080.Processor is
    end Stax_B;
 
    procedure INX_B(Processor : in out Processor_Type) is
-      use Interfaces;
-      BC : constant Concatenated_Register_Type :=
-        Convert_To_Concatenated_Register(Byte_Pair_Type'(High_Order_Byte => Processor.B,
-                                                         Low_Order_Byte  => Processor.C));
-      Result : constant Concatenated_Register_Type := BC + 1;
-      Converted_Result : constant Byte_Pair_Type := Convert_To_Byte_Pair(BC);
    begin
-      Processor.B := Converted_Result.High_Order_Byte;
-      Processor.C := Converted_Result.Low_Order_Byte;
+      Inx(V1 => Processor.B,
+          V2 => Processor.C);
       Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
@@ -384,15 +384,9 @@ package body Emulator_8080.Processor is
    end Stax_D;
 
    procedure INX_D(Processor : in out Processor_Type) is
-      use Interfaces;
-      DE : constant Concatenated_Register_Type :=
-        Convert_To_Concatenated_Register(Byte_Pair_Type'(High_Order_Byte => Processor.D,
-                                                         Low_Order_Byte  => Processor.E));
-      Result : constant Concatenated_Register_Type := DE + 1;
-      Converted_Result : constant Byte_Pair_Type := Convert_To_Byte_Pair(DE);
    begin
-      Processor.D := Converted_Result.High_Order_Byte;
-      Processor.E := Converted_Result.Low_Order_Byte;
+      Inx(V1 => Processor.D,
+          V2 => Processor.E);
       Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
@@ -558,15 +552,11 @@ package body Emulator_8080.Processor is
    end SHLD_Adr;
 
    procedure INX_H(Processor : in out Processor_Type) is
-      use Interfaces;
-      HL : constant Concatenated_Register_Type :=
-        Convert_To_Concatenated_Register(Byte_Pair_Type'(High_Order_Byte => Processor.H,
-                                                         Low_Order_Byte  => Processor.L));
-      Result : constant Concatenated_Register_Type := HL + 1;
-      Converted_Result : constant Byte_Pair_Type := Convert_To_Byte_Pair(HL);
    begin
-      Processor.H := Converted_Result.High_Order_Byte;
-      Processor.L := Converted_Result.Low_Order_Byte;
+      Ada.Text_IO.Put_Line(Processor.H'Img);
+      Ada.Text_IO.Put_Line(Processor.L'Img);
+      Inx(V1 => Processor.H,
+          V2 => Processor.L);
       Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>

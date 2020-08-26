@@ -354,6 +354,7 @@ private
    procedure Xor_A(Value : in Register_Type; Processor : in out Processor_Type);
    procedure Or_A(Value : in Register_Type; Processor : in out Processor_Type);
    procedure Compare_A(Value : in Register_Type; Processor : in out Processor_Type);
+   procedure Inx(V1, V2 : in out Register_Type);
 
 
    function Convert_To_Address is new Unchecked_Conversion(Source => Byte_Pair_Type,

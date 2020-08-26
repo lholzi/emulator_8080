@@ -61,7 +61,7 @@ begin
 
    Ada.Text_IO.Put_Line("Initializing CPU");
    Emulator_8080.Vram_Sender.Initialize(Port       => 4242,
-                                        Ip_Address => "127.0.01");
+                                        Ip_Address => "192.168.178.32");
    Processor := Emulator_8080.Processor.Initialize(Rom_File_Content);
    Ada.Text_IO.Put_Line("Running emulation...");
    Emulator_8080.Disassembler.Read_Rom(Render_Step_Callback => Emulator_8080.Vram_Sender.Send_Vram'Access,

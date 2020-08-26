@@ -1,5 +1,5 @@
 package Emulator_8080 is
-   type Byte_Type is range 0 .. 2**8 - 1;
+   type Byte_Type is mod 256;
    for Byte_Type'Size use 8;
 
    type Byte_Array_Type is array(Natural range <>) of Byte_Type;

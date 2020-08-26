@@ -31,6 +31,5 @@ package body Emulator_8080.Vram_Sender is
          Counter := Counter + 1;
       end loop;
       Gnat.Sockets.Send_Socket (Sender_Socket, Data, Last, Address);
-      Ada.Text_IO.Put_Line("Last : " & Last'Img);
    end;
 end Emulator_8080.Vram_Sender;

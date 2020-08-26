@@ -688,7 +688,7 @@ package body Emulator_8080.Disassembler is
    procedure Print_Mnemonic_Information(Processor : in Emulator_8080.Processor.Processor_Type) is
       use Emulator_8080.Processor;
       package Opcode_Information_IO is new Ada.Text_IO.Bounded_IO(Bounded => Opcode_String);
-      package Byte_IO is new Ada.Text_IO.Integer_IO(Byte_Type);
+      package Byte_IO is new Ada.Text_IO.Modular_IO(Byte_Type);
       package Address_IO is new Ada.Text_IO.Integer_IO(Address_Type);
       Current_Instruction  : constant Byte_Type := Processor.Memory(Processor.Program_Counter);
       Mnemonic_Information : constant Opcode_Information_Type := Opcode_Mapper(Current_Instruction);
