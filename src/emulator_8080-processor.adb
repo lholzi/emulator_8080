@@ -2340,10 +2340,8 @@ package body Emulator_8080.Processor is
 
    procedure RST_0(Processor : in out Processor_Type) is
    begin
-      CALL(Byte_2    => 0,
-           Byte_3    => 0,
-           Processor => Processor);
-      Ada.Text_IO.Put_Line("CALL RST 0");
+      Ada.Text_IO.Put_Line("RST 0");
+      GNAT.OS_Lib.OS_Exit (0);
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2436,11 +2434,8 @@ package body Emulator_8080.Processor is
 
    procedure RST_1(Processor : in out Processor_Type) is
    begin
-      Ada.Text_IO.Put_Line("CALL RST_1");
-      CALL(Byte_2    => 0,
-           Byte_3    => 0,
-           Processor => Processor);
-      Processor.Program_Counter := Processor.Program_Counter + 1;
+      Ada.Text_IO.Put_Line("RST 1");
+      GNAT.OS_Lib.OS_Exit (0);
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2537,10 +2532,8 @@ package body Emulator_8080.Processor is
 
    procedure RST_2(Processor : in out Processor_Type) is
    begin
-      Ada.Text_IO.Put_Line("CALLED WITH NULL ADDRESS");
-      CALL(Byte_2    => 0,
-           Byte_3    => 0,
-           Processor => Processor);
+      Ada.Text_IO.Put_Line("RST 2");
+      GNAT.OS_Lib.OS_Exit (0);
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2613,9 +2606,8 @@ package body Emulator_8080.Processor is
 
    procedure RST_3(Processor : in out Processor_Type) is
    begin
-      CALL(Byte_2    => 0,
-           Byte_3    => 0,
-           Processor => Processor);
+      Ada.Text_IO.Put_Line("RST 3");
+      GNAT.OS_Lib.OS_Exit (0);
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2724,10 +2716,8 @@ package body Emulator_8080.Processor is
 
    procedure RST_4(Processor : in out Processor_Type) is
    begin
-      Ada.Text_IO.Put_Line("RST 4!");
-      CALL(Byte_2    => 0,
-           Byte_3    => 0,
-           Processor => Processor);
+      Ada.Text_IO.Put_Line("RST 4");
+      GNAT.OS_Lib.OS_Exit (0);
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2818,10 +2808,8 @@ package body Emulator_8080.Processor is
 
    procedure RST_5(Processor : in out Processor_Type) is
    begin
-      Ada.Text_IO.Put_Line("RST 5!");
-      CALL(Byte_2    => 0,
-           Byte_3    => 0,
-           Processor => Processor);
+      Ada.Text_IO.Put_Line("RST 5");
+      GNAT.OS_Lib.OS_Exit (0);
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2929,10 +2917,8 @@ package body Emulator_8080.Processor is
 
    procedure RST_6(Processor : in out Processor_Type) is
    begin
-      Ada.Text_IO.Put_Line("RST 6!");
-      CALL(Byte_2    => 0,
-           Byte_3    => 0,
-           Processor => Processor);
+      Ada.Text_IO.Put_Line("RST 6");
+      GNAT.OS_Lib.OS_Exit (0);
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -3017,10 +3003,8 @@ package body Emulator_8080.Processor is
 
    procedure RST_7(Processor : in out Processor_Type) is
    begin
-      Ada.Text_IO.Put_Line("RST 7!");
-      CALL(Byte_2    => 0,
-           Byte_3    => 0,
-           Processor => Processor);
+      Ada.Text_IO.Put_Line("RST 7");
+      GNAT.OS_Lib.OS_Exit (0);
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
