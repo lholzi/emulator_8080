@@ -18,6 +18,8 @@ package Emulator_8080.Processor is
    type Parity_Type is (Odd, Even) with Size => 1;
    for Parity_Type use (Odd => 0, Even => 1);
 
+   --type Shift_Hardware_Type is limited record
+   --end record;
    type Processor_Type is record
       A : Register_Type := 0;
       B : Register_Type := 0;

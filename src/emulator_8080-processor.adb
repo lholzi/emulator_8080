@@ -2483,8 +2483,24 @@ package body Emulator_8080.Processor is
    end JNC;
 
    procedure OUT_D8(Byte_2 : in Byte_Type; Processor : in out Processor_Type) is
+      subtype Out_Ports_Type is Byte_Type range 2 .. 6;
+      Port : constant Out_Ports_Type := Byte_2;
    begin
-      Ada.Text_IO.Put_Line("NOT IMPLEMENTED OUT_D8");
+      case Port is
+      when 2 =>
+         Ada.Text_IO.Put_Line("NOT IMPLEMENTED: OUT_D8 4 (Shift amount[3 bits])");
+         GNAT.OS_Lib.OS_Exit (0);
+      when 3 =>
+         null; -- sound bits
+      when 4 =>
+         Ada.Text_IO.Put_Line("NOT IMPLEMENTED: OUT_D8 4 (Shift data)");
+         GNAT.OS_Lib.OS_Exit (0);
+      when 5 =>
+         null; -- sound bits
+      when 6 =>
+         Ada.Text_IO.Put_Line("NOT IMPLEMENTED: OUT_D8 6. Not an issue for space invaders"); -- watchdog
+      end case;
+
       Processor.Program_Counter := Processor.Program_Counter + 2;
    exception
       when others =>
