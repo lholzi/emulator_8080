@@ -3020,7 +3020,7 @@ package body Emulator_8080.Processor is
    procedure RST_7(Processor : in out Processor_Type) is
    begin
       Ada.Text_IO.Put_Line("RST 7");
-      GNAT.OS_Lib.OS_Exit (0);
+      --GNAT.OS_Lib.OS_Exit (0);
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,

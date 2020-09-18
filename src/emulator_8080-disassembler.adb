@@ -21,6 +21,8 @@ package body Emulator_8080.Disassembler is
          TS := Clock - Start_Time;
 
          if TS >= Milliseconds(60) then
+            Processor.Set_Interrupt := True;
+            Start_Time := Clock;
             Ada.Text_IO.Put_Line("INT!");
          end if;
 

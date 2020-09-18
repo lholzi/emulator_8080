@@ -38,6 +38,8 @@ package Emulator_8080.Processor is
       Memory : Memory_Type := (others => 0);
       Program_Counter : Address_Type := 0;
       Stack_Pointer : Address_Type := Address_Type'Last;
+
+      Set_Interrupt : Boolean := False;
    end record;
 
    function Initialize(Rom : in Byte_Array_Type) return Processor_Type;
