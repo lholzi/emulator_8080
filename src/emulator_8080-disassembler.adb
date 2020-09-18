@@ -1,6 +1,8 @@
 with Ada.Text_IO;
 with Ada.Text_IO.Bounded_IO;
 with GNAT.Current_Exception;
+with Ada.Real_Time; use Ada.Real_Time;
+
 private with Interfaces;
 private with Ada.Unchecked_Conversion;
 
@@ -11,10 +13,20 @@ package body Emulator_8080.Disassembler is
                       Processor            : in out Emulator_8080.Processor.Processor_Type) is
       use Emulator_8080.Processor;
       Current_Instruction : Byte_Type := 0;
+      Start_Time : Time := Clock;
+      TS : Time_Span;
    begin
       while Processor.Program_Counter <= Emulator_8080.Processor.Rom_Address_Type'Last loop
+
+         TS := Clock - Start_Time;
+
+         if TS >= Milliseconds(60) then
+            Ada.Text_IO.Put_Line("INT!");
+         end if;
+
          Current_Instruction := Processor.Memory(Processor.Program_Counter);
          if Execution_Mode = Execute_And_Print then Print_Mnemonic_Information(Processor); end if;
+
          if Render_Step_Callback /= null then
             declare
                Vram : constant Vram_Type := Vram_Type(Processor.Memory(Vram_Address_Type'First .. Vram_Address_Type'Last));
@@ -22,6 +34,9 @@ package body Emulator_8080.Disassembler is
                Render_Step_Callback(Vram);
             end;
          end if;
+
+
+
          case Current_Instruction is
             when 16#0# =>
                Emulator_8080.Processor.NOP(Processor);
