@@ -18,13 +18,14 @@ package body Emulator_8080.Disassembler is
    begin
       while Processor.Program_Counter <= Emulator_8080.Processor.Rom_Address_Type'Last loop
 
-         -- Handle interrupts 60 times per second
+         -- Handle interrupts 60 times per second (every 16 ms)
          TS := Clock - Start_Time;
          if TS >= Milliseconds(16) then
             Processor.Set_Interrupt := True;
             Start_Time := Clock;
          end if;
 
+         -- Handle next instruction
          Current_Instruction := Processor.Memory(Processor.Program_Counter);
          if Execution_Mode = Execute_And_Print then Print_Mnemonic_Information(Processor); end if;
 
@@ -35,8 +36,6 @@ package body Emulator_8080.Disassembler is
                Render_Step_Callback(Vram);
             end;
          end if;
-
-
 
          case Current_Instruction is
             when 16#0# =>
