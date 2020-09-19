@@ -1,13 +1,16 @@
 with Ada.Directories;
 with Ada.Sequential_IO;
 with Ada.Text_IO;
+with GNAT.Current_Exception;
 with Emulator_8080.Processor;
 with Emulator_8080.Disassembler;
+with Emulator_8080.Vram_Sender;
+
 
 procedure Emulator_Main is
    package Rom_IO is new Ada.Sequential_IO(Element_Type => Emulator_8080.Byte_Type);
 
-   Rom_Directory_Path : constant String := "/home/lholzi/Schreibtisch/Projects/emulator_8080/rom/";
+   Rom_Directory_Path : constant String := Ada.Directories.Current_Directory & "/rom/";
    Rom_File_Size : constant Natural :=
        Natural(Ada.Directories.Size(Rom_Directory_Path & "invaders.h")) +
        Natural(Ada.Directories.Size(Rom_Directory_Path & "invaders.g")) +
@@ -31,13 +34,42 @@ procedure Emulator_Main is
       Rom_IO.Close(Rom_File);
    end Read_Rom_File;
 
+   procedure Write_Invaders_Rom(Rom_File_Path : in String) is
+   begin
+      Rom_IO.Open(File => Rom_File, Mode => Rom_IO.Out_File, Name => Rom_File_Path);
+      for I in Rom_File_Content'Range loop
+         Rom_IO.Write(File => Rom_File, Item => Rom_File_Content(I));
+      end loop;
+      Rom_IO.Close(Rom_File);
+   end Write_Invaders_Rom;
+
 begin
+   Ada.Text_IO.Put_Line("Starting emulator_8080.");
+   Ada.Text_IO.Put_Line("Reading Rom...");
    Read_Rom_File(Rom_Directory_Path & "invaders.h");
    Read_Rom_File(Rom_Directory_Path & "invaders.g");
    Read_Rom_File(Rom_Directory_Path & "invaders.f");
    Read_Rom_File(Rom_Directory_Path & "invaders.e");
-   Ada.Text_IO.Put_Line("File size: " & Rom_File_Size'Img);
-   Ada.Text_IO.Put_Line("last Index: " & Rom_Byte_Index'Img);
+
+   if not Ada.Directories.Exists(Rom_Directory_Path & "invaders.rom") then
+      Write_Invaders_Rom(Rom_Directory_Path & "invaders.rom");
+   end if;
+
+   Ada.Text_IO.Put_Line("File read successfully.");
+   Ada.Text_IO.Put_Line("--> File size:  " & Rom_File_Size'Img);
+   Ada.Text_IO.Put_Line("--> last Index: " & Rom_Byte_Index'Img);
+
+   Ada.Text_IO.Put_Line("Initializing CPU");
+   Emulator_8080.Vram_Sender.Initialize(Port       => 4242,
+                                        Ip_Address => "192.168.178.32");
    Processor := Emulator_8080.Processor.Initialize(Rom_File_Content);
-   Emulator_8080.Disassembler.Read_Rom(Processor);
+   Ada.Text_IO.Put_Line("Running emulation...");
+   Emulator_8080.Disassembler.Read_Rom(Render_Step_Callback => Emulator_8080.Vram_Sender.Send_Vram'Access,
+                                       Execution_Mode => Emulator_8080.Disassembler.Execute_And_Print,
+                                       Processor      => Processor);
+   Emulator_8080.Vram_Sender.Close;
+exception
+   when others =>
+      Ada.Text_IO.Put_Line("EXCEPTION CAUGHT IN MAIN");
+      Ada.Text_IO.Put_Line(GNAT.Current_Exception.Exception_Information);
 end Emulator_Main;

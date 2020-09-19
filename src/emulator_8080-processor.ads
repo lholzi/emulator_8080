@@ -3,10 +3,23 @@ with Interfaces;
 
 package Emulator_8080.Processor is
    subtype Register_Type is Emulator_8080.Byte_Type;
+
    type Address_Type is new Natural range 0 .. 16#FFFF#;
    subtype Rom_Address_Type is Address_Type range 0 .. 16#1FFF#;
+   subtype Ram_Address_Type is Address_Type range 16#2000# .. 16#23FF#;
+   subtype Vram_Address_Type is Address_Type range 16#2400# .. 16#3FFF#;
+
    type Flag_Type is (Not_Set, Set) with Size => 1;
+   for Flag_Type use (Not_Set => 0, Set => 1);
+
    type Memory_Type is array (Address_Type) of Byte_Type;
+   type Vram_Type is array (Vram_Address_Type) of Byte_Type;
+
+   type Parity_Type is (Odd, Even) with Size => 1;
+   for Parity_Type use (Odd => 0, Even => 1);
+
+   --type Shift_Hardware_Type is limited record
+   --end record;
    type Processor_Type is record
       A : Register_Type := 0;
       B : Register_Type := 0;
@@ -18,17 +31,19 @@ package Emulator_8080.Processor is
 
       Sign_Flag : Flag_Type := Not_Set;
       Zero_Flag : Flag_Type := Not_Set;
-      Parity_Flag : Flag_Type := Not_Set;
       Carry_Flag : Flag_Type := Not_Set;
       Auxillary_Carry : Flag_Type := Not_Set;
+      Parity : Parity_Type := Odd;
 
       Memory : Memory_Type := (others => 0);
       Program_Counter : Address_Type := 0;
       Stack_Pointer : Address_Type := Address_Type'Last;
+
+      Set_Interrupt : Boolean := False;
    end record;
 
    function Initialize(Rom : in Byte_Array_Type) return Processor_Type;
-   procedure NOP;
+   procedure NOP(Processor : in out Processor_Type);
    procedure LXI_BxD16(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
    procedure STAX_B(Processor : in out Processor_Type);
    procedure INX_B(Processor : in out Processor_Type);
@@ -257,21 +272,79 @@ package Emulator_8080.Processor is
    procedure POP_D(Processor : in out Processor_Type);
    procedure JNC(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
    procedure OUT_D8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
+   procedure CNC(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
+   procedure PUSH_D(Processor : in out Processor_Type);
+   procedure SUI_D8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
+   procedure RST_2(Processor : in out Processor_Type);
+   procedure RC(Processor : in out Processor_Type);
+   --
+   procedure JC(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
+   procedure IN_D8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
+   procedure CC(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
+   procedure SBI_D8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
+   procedure RST_3(Processor : in out Processor_Type);
+   procedure RPO(Processor : in out Processor_Type);
+   procedure POP_H(Processor : in out Processor_Type);
+   procedure JPO(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
+   procedure XTHL(Processor : in out Processor_Type);
+   procedure CPO(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
+   procedure PUSH_H(Processor : in out Processor_Type);
+   procedure ANI_D8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
+   procedure RST_4(Processor : in out Processor_Type);
+   procedure RPE(Processor : in out Processor_Type);
+   procedure PCHL(Processor : in out Processor_Type);
+   procedure JPE(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
+   procedure XCHG(Processor : in out Processor_Type);
+   procedure CPE(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
+   --
+   procedure XRI_D8(Byte_2 : in Byte_Type; Processor: in out Processor_Type);
+   procedure RST_5(Processor : in out Processor_Type);
+   procedure RP(Processor : in out Processor_Type);
+   procedure POP_PSW(Processor : in out Processor_Type);
+   procedure JP(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
+   procedure DI(Processor : in out Processor_Type);
+   procedure CP(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
+   procedure PUSH_PSW(Processor : in out Processor_Type);
+   procedure ORI_D8(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
+   procedure RST_6(Processor : in out Processor_Type);
+   procedure RM(Processor: in out Processor_Type);
+   procedure SPHL(Processor : in out Processor_Type);
+   procedure JM(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
+   procedure EI(Processor : in out Processor_Type);
+   procedure CM(Byte_2, Byte_3 : in Byte_Type; Processor : in out Processor_Type);
+   procedure CPI(Byte_2 : in Byte_Type; Processor : in out Processor_Type);
+   procedure RST_7(Processor : in out Processor_Type);
 
 
-   procedure Unimplemented_Instruction;
+   procedure Unimplemented_Instruction(Processor : in out Processor_Type);
 
 private
    subtype Concatenated_Register_Type is Interfaces.Unsigned_16;
    type Byte_Pair_Type is record
-      High_Order_Byte : Byte_Type := 0;
       Low_Order_Byte  : Byte_Type := 0;
+      High_Order_Byte : Byte_Type := 0;
    end record;
    for Byte_Pair_Type use record
-      High_Order_Byte at 0 range 0 .. 7;
-      Low_Order_Byte at 1 range 0 .. 7;
+      Low_Order_Byte at 0 range 0 .. 7;
+      High_Order_Byte at 1 range 0 .. 7;
    end record;
    for Byte_Pair_Type'Size use 16;
+   type Flag_Storage_Type is record
+      Sign_Flag : Flag_Type := Not_Set;
+      Zero_Flag : Flag_Type := Not_Set;
+      Carry_Flag : Flag_Type := Not_Set;
+      Auxillary_Carry : Flag_Type := Not_Set;
+      Parity : Parity_Type := Odd;
+      Spare : Interfaces.Unsigned_8 range 0 .. 3;
+   end record;
+   for Flag_Storage_Type use record
+      Sign_Flag at 0 range 0 .. 0;
+      Zero_Flag at 0 range 1 .. 1;
+      Carry_Flag at 0 range 2 .. 2;
+      Auxillary_Carry at 0 range 3 .. 3;
+      Parity at 0 range 4 .. 4;
+      Spare at 0 range 5 .. 7;
+   end record;
 
    procedure Set_Zero_Flag_If_Applicable(Value : in Interfaces.Unsigned_16; Processor : in out Processor_Type);
    procedure Set_Sign_Flag_If_Applicable(Value : in Interfaces.Unsigned_16; Processor : in out Processor_Type);
@@ -279,20 +352,27 @@ private
    procedure Add(Summand : in Register_Type; Processor : in out Processor_Type);
    procedure Add_With_Carry(Summand : in Register_Type; Processor : in out Processor_Type);
    procedure Sub(Subtrahend : in Register_Type; Processor : in out Processor_Type);
+   procedure Sub(Subtrahend : in Byte_Type; Register : in out Register_Type; Processor : in out Processor_Type);
    procedure Sub_With_Carry(Subtrahend : in Register_Type; Processor : in out Processor_Type);
    procedure And_A(Value : in Register_Type; Processor : in out Processor_Type);
    procedure Xor_A(Value : in Register_Type; Processor : in out Processor_Type);
    procedure Or_A(Value : in Register_Type; Processor : in out Processor_Type);
    procedure Compare_A(Value : in Register_Type; Processor : in out Processor_Type);
+   procedure Inx(V1, V2 : in out Register_Type);
 
+
+   function Convert_To_Address is new Unchecked_Conversion(Source => Byte_Pair_Type,
+                                                            Target => Address_Type);
    function Convert_To_Concatenated_Register is new Unchecked_Conversion(Source => Byte_Pair_Type,
                                                                          Target => Concatenated_Register_Type);
-   function Convert_To_Address is new Unchecked_Conversion(Source => Byte_Pair_Type,
-                                                           Target => Address_Type);
    function Convert_To_Byte_Pair is new Unchecked_Conversion(Source => Address_Type,
                                                              Target => Byte_Pair_Type);
    function Convert_To_Byte_Pair is new Unchecked_Conversion(Source => Concatenated_Register_Type,
                                                              Target => Byte_Pair_Type);
+   function Convert_To_Byte is new Unchecked_Conversion(Source => Flag_Storage_Type,
+                                                        Target => Byte_Type);
+   function Convert_To_Flag_Storage is new Unchecked_Conversion(Source => Byte_Type,
+                                                                Target => Flag_Storage_Type);
 
 
 end Emulator_8080.Processor;
