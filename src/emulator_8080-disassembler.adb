@@ -18,12 +18,11 @@ package body Emulator_8080.Disassembler is
    begin
       while Processor.Program_Counter <= Emulator_8080.Processor.Rom_Address_Type'Last loop
 
+         -- Handle interrupts 60 times per second
          TS := Clock - Start_Time;
-
-         if TS >= Milliseconds(60) then
+         if TS >= Milliseconds(16) then
             Processor.Set_Interrupt := True;
             Start_Time := Clock;
-            Ada.Text_IO.Put_Line("INT!");
          end if;
 
          Current_Instruction := Processor.Memory(Processor.Program_Counter);
