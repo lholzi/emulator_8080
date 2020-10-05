@@ -1,5 +1,6 @@
-private with Unchecked_Conversion;
 with Interfaces;
+with Ada.Real_Time; use Ada.Real_Time;
+private with Unchecked_Conversion;
 
 package Emulator_8080.Processor is
    subtype Register_Type is Emulator_8080.Byte_Type;
@@ -35,11 +36,12 @@ package Emulator_8080.Processor is
       Auxillary_Carry : Flag_Type := Not_Set;
       Parity : Parity_Type := Odd;
 
-      Memory : Memory_Type := (others => 0);
-      Program_Counter : Address_Type := 0;
-      Stack_Pointer : Address_Type := Address_Type'Last;
+      Memory          : Memory_Type   := (others => 0);
+      Program_Counter : Address_Type  := 0;
+      Stack_Pointer   : Address_Type  := Address_Type'Last;
 
-      Set_Interrupt : Boolean := False;
+      Interrupt_Enabled  : Boolean := False;
+      Last_Interrupt : Time    := Clock;
    end record;
 
    function Initialize(Rom : in Byte_Array_Type) return Processor_Type;
@@ -362,7 +364,7 @@ private
 
 
    function Convert_To_Address is new Unchecked_Conversion(Source => Byte_Pair_Type,
-                                                            Target => Address_Type);
+                                                           Target => Address_Type);
    function Convert_To_Concatenated_Register is new Unchecked_Conversion(Source => Byte_Pair_Type,
                                                                          Target => Concatenated_Register_Type);
    function Convert_To_Byte_Pair is new Unchecked_Conversion(Source => Address_Type,
@@ -373,6 +375,7 @@ private
                                                         Target => Byte_Type);
    function Convert_To_Flag_Storage is new Unchecked_Conversion(Source => Byte_Type,
                                                                 Target => Flag_Storage_Type);
-
+   type Restart_Instruction_Type is new Natural range 0 .. 7;
+   type Restart_Memory_Mapping_Type is array (Restart_Instruction_Type'Range) of Address_Type;
 
 end Emulator_8080.Processor;

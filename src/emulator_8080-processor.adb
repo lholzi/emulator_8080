@@ -6,6 +6,8 @@ with Ada.Unchecked_Conversion;
 with GNAT.OS_Lib;
 
 package body Emulator_8080.Processor is
+   Restart_Memory_Mapping : constant Restart_Memory_Mapping_Type :=
+     (0 => 0, 1 => 8, 2 => 16, 3 => 24, 4 => 32, 5 => 40, 6 => 48, 7 => 56);
 
    procedure Print_Exception(Throwing_Function, Exception_Cause : in String) is
    begin
@@ -159,6 +161,21 @@ package body Emulator_8080.Processor is
          Processor.Carry_Flag := Set;
       end if;
    end Compare_A;
+
+   -- Handle interrupts 60 times per second (every 16 ms)
+   procedure Generate_Interrupt(Restart_Instruction : Restart_Instruction_Type;
+                                Processor : in out Processor_Type) is
+      TS      : constant Time_Span := Clock - Processor.Last_Interrupt;
+      Next_PC : constant Byte_Pair_Type := Convert_To_Byte_Pair(Restart_Memory_Mapping(Restart_Instruction));
+   begin
+      Ada.Text_Io.Put_Line("Called Rst " & Restart_Instruction'Img);
+      if Processor.Interrupt_Enabled and then TS >= Milliseconds(16) then
+         Processor.Last_Interrupt := Clock;
+         CALL(Byte_2    => Next_PC.Low_Order_Byte,
+              Byte_3    => Next_PC.High_Order_Byte,
+              Processor => Processor);
+      end if;
+   end Generate_Interrupt;
 
    procedure Inx(V1, V2 : in out Register_Type) is
    begin
@@ -2340,8 +2357,8 @@ package body Emulator_8080.Processor is
 
    procedure RST_0(Processor : in out Processor_Type) is
    begin
-      Ada.Text_IO.Put_Line("RST 0");
-      GNAT.OS_Lib.OS_Exit (0);
+      Generate_Interrupt(Restart_Instruction => 0,
+                         Processor           => Processor);
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2434,8 +2451,8 @@ package body Emulator_8080.Processor is
 
    procedure RST_1(Processor : in out Processor_Type) is
    begin
-      Ada.Text_IO.Put_Line("RST 1");
-      GNAT.OS_Lib.OS_Exit (0);
+      Generate_Interrupt(Restart_Instruction => 1,
+                         Processor           => Processor);
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2548,8 +2565,8 @@ package body Emulator_8080.Processor is
 
    procedure RST_2(Processor : in out Processor_Type) is
    begin
-      Ada.Text_IO.Put_Line("RST 2");
-      GNAT.OS_Lib.OS_Exit (0);
+      Generate_Interrupt(Restart_Instruction => 2,
+                         Processor           => Processor);
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2622,8 +2639,8 @@ package body Emulator_8080.Processor is
 
    procedure RST_3(Processor : in out Processor_Type) is
    begin
-      Ada.Text_IO.Put_Line("RST 3");
-      GNAT.OS_Lib.OS_Exit (0);
+      Generate_Interrupt(Restart_Instruction => 3,
+                         Processor           => Processor);
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2732,8 +2749,8 @@ package body Emulator_8080.Processor is
 
    procedure RST_4(Processor : in out Processor_Type) is
    begin
-      Ada.Text_IO.Put_Line("RST 4");
-      GNAT.OS_Lib.OS_Exit (0);
+      Generate_Interrupt(Restart_Instruction => 4,
+                         Processor           => Processor);
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2824,8 +2841,8 @@ package body Emulator_8080.Processor is
 
    procedure RST_5(Processor : in out Processor_Type) is
    begin
-      Ada.Text_IO.Put_Line("RST 5");
-      GNAT.OS_Lib.OS_Exit (0);
+      Generate_Interrupt(Restart_Instruction => 5,
+                         Processor           => Processor);
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2879,7 +2896,7 @@ package body Emulator_8080.Processor is
 
    procedure DI(Processor : in out Processor_Type) is
    begin
-      Ada.Text_IO.Put_Line("DISABLE INTERRUPT!");
+      Processor.Interrupt_Enabled := False;
       Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
@@ -2933,8 +2950,8 @@ package body Emulator_8080.Processor is
 
    procedure RST_6(Processor : in out Processor_Type) is
    begin
-      Ada.Text_IO.Put_Line("RST 6");
-      GNAT.OS_Lib.OS_Exit (0);
+      Generate_Interrupt(Restart_Instruction => 6,
+                         Processor           => Processor);
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
@@ -2983,7 +3000,7 @@ package body Emulator_8080.Processor is
 
    procedure EI(Processor : in out Processor_Type) is
    begin
-      Ada.Text_IO.Put_Line("ENABLE INTERRUPT!");
+      Processor.Interrupt_Enabled := True;
       Processor.Program_Counter := Processor.Program_Counter + 1;
    exception
       when others =>
@@ -3019,8 +3036,8 @@ package body Emulator_8080.Processor is
 
    procedure RST_7(Processor : in out Processor_Type) is
    begin
-      Ada.Text_IO.Put_Line("RST 7");
-      --GNAT.OS_Lib.OS_Exit (0);
+      Generate_Interrupt(Restart_Instruction => 7,
+                         Processor           => Processor);
    exception
       when others =>
          Print_Exception(Throwing_Function => GNAT.Source_Info.Enclosing_Entity,
