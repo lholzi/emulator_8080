@@ -8,23 +8,26 @@ private with Ada.Unchecked_Conversion;
 
 package body Emulator_8080.Disassembler is
 
+   -- Handle interrupts 60 times per second (every 16 ms)
+   procedure Generate_Interrupt(Last_Interrupt : in out Time; Processor : in out Emulator_8080.Processor.Processor_Type) is
+      TS : constant Time_Span := Clock - Last_Interrupt;
+   begin
+      if TS >= Milliseconds(16) then
+         Processor.Set_Interrupt := True;
+         Last_Interrupt := Clock;
+      end if;
+   end Generate_Interrupt;
+
    procedure Read_Rom(Render_Step_Callback : in Render_Step_Callback_Type := null;
                       Execution_Mode       : in Execution_Mode_Type;
                       Processor            : in out Emulator_8080.Processor.Processor_Type) is
       use Emulator_8080.Processor;
       Current_Instruction : Byte_Type := 0;
       Start_Time : Time := Clock;
-      TS : Time_Span;
    begin
       while Processor.Program_Counter <= Emulator_8080.Processor.Rom_Address_Type'Last loop
-
-         -- Handle interrupts 60 times per second (every 16 ms)
-         TS := Clock - Start_Time;
-         if TS >= Milliseconds(16) then
-            Processor.Set_Interrupt := True;
-            Start_Time := Clock;
-         end if;
-
+         Generate_Interrupt(Last_Interrupt => Start_Time,
+                            Processor      => Processor);
          -- Handle next instruction
          Current_Instruction := Processor.Memory(Processor.Program_Counter);
          if Execution_Mode = Execute_And_Print then Print_Mnemonic_Information(Processor); end if;
