@@ -19,9 +19,6 @@ private
       Size     : Positive range 1 .. 3;
    end record;
    type Opcode_Mapper_Type is array(Byte_Type'Range) of Opcode_Information_Type;
-   --Opcode_Mapper : constant Opcode_Mapper_Type := (others => Opcode_Information_Type'(Mnemonic    => Opcode_String.To_Bounded_String("TEST"),
-   --                                                                                   Description => Opcode_String.To_Bounded_String("TEST"),
-   --                                                                                   Size        => 1));
    Opcode_Mapper : constant Opcode_Mapper_Type :=
      (16#00# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("NOP"), Size => 1, Description => Opcode_String.To_Bounded_String("NOP")),
       16#01# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("LXI B,D16"), Size => 3, Description => Opcode_String.To_Bounded_String("B <- byte 3, C <- byte 2")),
