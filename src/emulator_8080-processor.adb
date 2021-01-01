@@ -2604,6 +2604,7 @@ package body Emulator_8080.Processor is
    procedure IN_D8(Byte_2 : in Byte_Type; Processor : in out Processor_Type) is
    begin
       Ada.Text_IO.Put_Line("NOT IMPLEMENTED IN_D8");
+      Processor.A := 0;
       Processor.Program_Counter := Processor.Program_Counter + 2;
    exception
       when others =>

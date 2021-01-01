@@ -40,7 +40,7 @@ package Emulator_8080.Processor is
       Program_Counter : Address_Type  := 0;
       Stack_Pointer   : Address_Type  := Address_Type'Last;
 
-      Interrupt_Enabled  : Boolean := False;
+      Interrupt_Enabled  : Boolean := True;
       Last_Interrupt : Time    := Clock;
    end record;
 
