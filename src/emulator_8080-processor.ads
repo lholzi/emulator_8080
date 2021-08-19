@@ -19,6 +19,9 @@ package Emulator_8080.Processor is
    type Parity_Type is (Odd, Even) with Size => 1;
    for Parity_Type use (Odd => 0, Even => 1);
 
+   type Port_Type is new Natural range 0 .. 7;
+   type Ports_Type is array (Port_Type) of Byte_Type;
+
    --type Shift_Hardware_Type is limited record
    --end record;
    type Processor_Type is record
@@ -30,8 +33,8 @@ package Emulator_8080.Processor is
       H : Register_Type := 0;
       L : Register_Type := 0;
 
-      Sign_Flag : Flag_Type := Not_Set;
-      Zero_Flag : Flag_Type := Not_Set;
+      Sign_Flag  : Flag_Type := Not_Set;
+      Zero_Flag  : Flag_Type := Not_Set;
       Carry_Flag : Flag_Type := Not_Set;
       Auxillary_Carry : Flag_Type := Not_Set;
       Parity : Parity_Type := Odd;
@@ -39,6 +42,7 @@ package Emulator_8080.Processor is
       Memory          : Memory_Type   := (others => 0);
       Program_Counter : Address_Type  := 0;
       Stack_Pointer   : Address_Type  := Address_Type'Last;
+      Ports           : Ports_Type    := (others => 0);
 
       Interrupt_Enabled  : Boolean := True;
       Last_Interrupt : Time    := Clock;

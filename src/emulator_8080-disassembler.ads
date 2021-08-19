@@ -18,12 +18,12 @@ private
       Description : Opcode_String.Bounded_String;
       Size     : Positive range 1 .. 3;
    end record;
+   Undefined_Opcode_Descriptor : constant Opcode_String.Bounded_String := Opcode_String.To_Bounded_String("UNDEFINED OPCODE");
    type Opcode_Mapper_Type is array(Byte_Type'Range) of Opcode_Information_Type;
    Opcode_Mapper : constant Opcode_Mapper_Type :=
      (16#00# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("NOP"), Size => 1, Description => Opcode_String.To_Bounded_String("NOP")),
       16#01# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("LXI B,D16"), Size => 3, Description => Opcode_String.To_Bounded_String("B <- byte 3, C <- byte 2")),
       16#02# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("STAX B"), Size => 1, Description => Opcode_String.To_Bounded_String("(BC) <- A")),
-
       16#03# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("INX B"), Size => 1, Description => Opcode_String.To_Bounded_String("BC <- BC+1")),
       16#04# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("INR B"), Size => 1, Description => Opcode_String.To_Bounded_String("(Z, S, P, AC): B <- B+1")),
       16#05# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("DCR B"), Size => 1, Description => Opcode_String.To_Bounded_String("(Z, S, P, AC): B <- B-1")),
@@ -250,20 +250,20 @@ private
       16#ec# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("CPE adr"), Size => 3, Description => Opcode_String.To_Bounded_String("if PE, CALL adr")),
       16#ee# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("XRI D8"), Size => 2, Description => Opcode_String.To_Bounded_String("(Z, S, P, CY, AC): A <- A ^ data")),
       16#ef# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("RST 5"), Size => 1, Description => Opcode_String.To_Bounded_String("CALL $28")),
-      16#f0# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("RP"), Size => 1, Description => Opcode_String.To_Bounded_String("if P, RET")),
-      16#f1# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("POP PSW"), Size => 1, Description => Opcode_String.To_Bounded_String("flags <- (sp); A <- (sp+1); sp <- sp+2")),
-      16#f2# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("JP adr"), Size => 3, Description => Opcode_String.To_Bounded_String("if P=1 PC <- adr")),
-      16#f3# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("DI"), Size => 1, Description => Opcode_String.To_Bounded_String("special")),
-      16#f4# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("CP adr"), Size => 3, Description => Opcode_String.To_Bounded_String("if P, PC <- adr")),
+      16#f0# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("RP"),       Size => 1, Description => Opcode_String.To_Bounded_String("if P, RET")),
+      16#f1# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("POP PSW"),  Size => 1, Description => Opcode_String.To_Bounded_String("flags <- (sp); A <- (sp+1); sp <- sp+2")),
+      16#f2# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("JP adr"),   Size => 3, Description => Opcode_String.To_Bounded_String("if P=1 PC <- adr")),
+      16#f3# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("DI"),       Size => 1, Description => Opcode_String.To_Bounded_String("special")),
+      16#f4# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("CP adr"),   Size => 3, Description => Opcode_String.To_Bounded_String("if P, PC <- adr")),
       16#f5# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("PUSH PSW"), Size => 1, Description => Opcode_String.To_Bounded_String("(sp-2)<-flags; (sp-1)<-A; sp <- sp - 2")),
-      16#f6# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("ORI D8"), Size => 2, Description => Opcode_String.To_Bounded_String("(Z, S, P, CY, AC): A <- A | data")),
-      16#f7# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("RST 6"), Size => 1, Description => Opcode_String.To_Bounded_String("CALL $30")),
-      16#f8# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("RM"), Size => 1, Description => Opcode_String.To_Bounded_String("if M, RET")),
-      16#f9# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("SPHL"), Size => 1, Description => Opcode_String.To_Bounded_String("SP=HL")),
-      16#fa# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("JM adr"), Size => 3, Description => Opcode_String.To_Bounded_String("if M, PC <- adr")),
-      16#fb# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("EI"), Size => 1, Description => Opcode_String.To_Bounded_String("special")),
-      16#fc# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("CM adr"), Size => 3, Description => Opcode_String.To_Bounded_String("if M, CALL adr")),
-      16#fe# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("CPI D8"), Size => 2, Description => Opcode_String.To_Bounded_String("(Z, S, P, CY, AC): A - data")),
-      16#ff# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("RST 7"), Size => 1, Description => Opcode_String.To_Bounded_String("CALL $38")),
-      others => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("UNDEFINED OPCODE"), Description => Opcode_String.To_Bounded_String("UNDEFINED OPCODE"), Size => 1));
+      16#f6# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("ORI D8"),   Size => 2, Description => Opcode_String.To_Bounded_String("(Z, S, P, CY, AC): A <- A | data")),
+      16#f7# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("RST 6"),    Size => 1, Description => Opcode_String.To_Bounded_String("CALL $30")),
+      16#f8# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("RM"),       Size => 1, Description => Opcode_String.To_Bounded_String("if M, RET")),
+      16#f9# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("SPHL"),     Size => 1, Description => Opcode_String.To_Bounded_String("SP=HL")),
+      16#fa# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("JM adr"),   Size => 3, Description => Opcode_String.To_Bounded_String("if M, PC <- adr")),
+      16#fb# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("EI"),       Size => 1, Description => Opcode_String.To_Bounded_String("special")),
+      16#fc# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("CM adr"),   Size => 3, Description => Opcode_String.To_Bounded_String("if M, CALL adr")),
+      16#fe# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("CPI D8"),   Size => 2, Description => Opcode_String.To_Bounded_String("(Z, S, P, CY, AC): A - data")),
+      16#ff# => Opcode_Information_Type'(Mnemonic => Opcode_String.To_Bounded_String("RST 7"),    Size => 1, Description => Opcode_String.To_Bounded_String("CALL $38")),
+      others => Opcode_Information_Type'(Mnemonic => Undefined_Opcode_Descriptor, Description => Undefined_Opcode_Descriptor, Size => 1));
 end Emulator_8080.Disassembler;
